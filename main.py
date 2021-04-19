@@ -1,3 +1,3 @@
 import eel
-eel.init('gui')
+eel.init('www')
 eel.start('index.html')
