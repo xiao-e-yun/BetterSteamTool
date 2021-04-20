@@ -75,7 +75,9 @@ div.title#div.title_content {
     padding: 10px 5vw;
     color: #fff;
 }
-
+main#fadeOut{
+    position: absolute;
+}
 main#main_contant{
     width: 100%;
 }
