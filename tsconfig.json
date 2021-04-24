@@ -4,12 +4,11 @@
         "target": "es2016",
         "jsx": "preserve",
         "strictFunctionTypes": true,
-        "sourceMap": true,
         "outDir":"app/gui/js",
     },
     "include": [
-        "ts/page.ts",
-        "ts/page/*.ts",
+        "ts/*.ts",
+        "ts/**/*.ts",
     ],
     "exclude": [
         "node_modules",
