@@ -1,5 +1,6 @@
-import * as $ from "jquery";
+declare var $page:any
 
+$(()=>{
 window.onresize = function () {
     window.resizeTo(300, 600)
 }
@@ -7,7 +8,6 @@ window.onresize = function () {
 var footer=$('footer')
 var main=$('main#main_contant')
 var page={}
-export declare var $page:any
 
 $('#menu_toggle').on('mousedown',function(){
     footer.slideToggle()
@@ -28,3 +28,4 @@ function load_page(id, href = false) {
         $.getScript("/js/page/"+id+".js")
     })
 }
+})

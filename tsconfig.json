@@ -1,16 +1,15 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "es6",
         "target": "es2016",
         "jsx": "preserve",
-        "declaration":true,
         "strictFunctionTypes": true,
         "sourceMap": true,
         "outDir":"app/gui/js",
-        "declarationDir" : "ts"
     },
     "include": [
-        "ts/"
+        "ts/page.ts",
+        "ts/page/*.ts",
     ],
     "exclude": [
         "node_modules",

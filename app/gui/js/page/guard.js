@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const page_1 = require("../page");
+/// <reference path="../page.ts" />
 console.log("guard is ready");
-page_1.$page.account = localStorage.getItem('guard_acc');
+$page.account = localStorage.getItem('guard_acc');
 //# sourceMappingURL=guard.js.map
 //# sourceMappingURL=guard.js.map
