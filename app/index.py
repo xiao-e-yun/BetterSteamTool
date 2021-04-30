@@ -1,10 +1,14 @@
 #module
 import eel,logging,steam,os
+from python import guard,api,main
 logging.basicConfig(level=logging.INFO)
 
+main.start()
+guard.load_user()
 
 eel.init(os.path.dirname(os.path.abspath(__file__))+'\gui')
-eel.start('index.html',suppress_error=True,size = (300,600), mode='edge',cmdline_args=['--no-default-browser-check'],block=True)
-logging.info("app ready")
-
-from guard import *
+eel.start('index.html',
+    suppress_error=True,
+    size = (300,600),
+    mode='edge',
+)

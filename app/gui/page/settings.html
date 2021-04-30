@@ -1,0 +1,52 @@
+<div class="items">
+    <h2>帳號</h2>
+    <div id="account"></div>
+    <button data-link="settings$create" id="new-account">+</button>
+</div>
+<div class="items">
+    <h2>基礎設置</h2>
+    <div id="account">
+        
+    </div>
+</div>
+<style>
+    .items>h2 {
+        display: inline;
+        cursor:n-resize;
+        user-select:none;
+        position: relative;
+    }
+    #account {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .items>h2::before{
+        height: auto;
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: -8px;
+        width: 4px;
+        background-color: #f1dac4;
+        transform: scaleY(0);
+        transform-origin: center bottom;
+        transition: transform 0.5s ease-in-out;
+    }
+    .items>h2:hover::before {
+    transform-origin: center top;
+    transform: scaleY(1);
+    }
+    #new-account {
+        margin: 5px;
+        width: -webkit-fill-available;
+    }
+    #account>button {
+        width: 46%;
+        height:fit-content;
+        margin: 2%;
+        font-size: 100%;
+        border: 2px solid #f1dac4;
+    }
+</style>

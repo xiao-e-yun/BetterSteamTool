@@ -49,7 +49,7 @@ header {
         padding: 5px;
         font-size: 30px;
         height: 40px;
-        width: 100%;
+        width: cacl(100% - 42px);
         line-height: 30px;
         overflow: hidden;
         transition: all 0.3s ease-in-out;
@@ -85,6 +85,7 @@ header {
         height: 100%;
         width: 42px;
         border: none;
+        border-radius: 0;
         border-left: 2px solid #f1dac4;
         transition: background ease-in-out .2s,color ease-in-out .2s;
     }
@@ -114,14 +115,29 @@ a.title#a.title_content {
     padding: 10px 5vw;
     color: #fff;
 }
-
 main#main_contant {
+    overflow: overlay;
     width: 100%;
+    height: calc(100% - 42px);
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
+    transition:width ease-in-out .5s;
+    scrollbar-width: 10px;
 }
+main#main_contant>div{
+    width: 100%;
+}
+main#main_contant::-webkit-scrollbar  {
+    background-color: #0000000000;
+    width:10px;
+}
+main#main_contant::-webkit-scrollbar-thumb  {
+    background-color:#0d0c1d;
+    border:#f1dac4 solid 2px;
+}
+
 
     main#main_contant h1 {
         font-size: 50px;
