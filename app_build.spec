@@ -10,7 +10,8 @@ a = Analysis(['app/index.py'],
              datas=[
                 ('C:\\Users\\a0970\\AppData\\Local\\Programs\\Python\\Python39\\lib\\site-packages\\eel\\eel.js', 'eel'),
                 ('app\\gui', 'gui'),
-                ('C:\\Users\\a0970\\Desktop\\project\\app\\logo.ico','gui')  ],
+                ('C:\\Users\\a0970\\Desktop\\project\\app\\logo.ico','.')
+                ],
              hiddenimports=['bottle_websocket'],
              hookspath=[],
              runtime_hooks=[],
@@ -18,7 +19,8 @@ a = Analysis(['app/index.py'],
              win_no_prefer_redirects=False,
              win_private_assemblies=False,
              cipher=block_cipher,
-             noarchive=False)
+             noarchive=False,
+			 )
 pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
 exe = EXE(pyz,
@@ -31,7 +33,8 @@ exe = EXE(pyz,
           strip=False,
           upx=True,
           console=False,
-          icon="C:\\Users\\a0970\\Desktop\\project\\app\\logo.ico")
+          icon="C:\\Users\\a0970\\Desktop\\project\\app\\logo.ico"
+		  )
 coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,
@@ -39,4 +42,6 @@ coll = COLLECT(exe,
                strip=False,
                upx=True,
                upx_exclude=[],
-               name='Bsteam')
+               name='Bsteam',
+			      icon="C:\\Users\\a0970\\Desktop\\project\\app\\logo.ico"
+			   )

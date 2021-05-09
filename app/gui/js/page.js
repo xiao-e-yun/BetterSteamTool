@@ -36,6 +36,9 @@ else { //初始化設置
             break;
     }
 }
+WebSocket["onclose"] = function () {
+    window.close();
+};
 $(() => {
     if (w !== 0 && h !== 0) {
         window.onresize = function () {

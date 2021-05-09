@@ -43,6 +43,10 @@ if (location.pathname === "/index.html" || location.pathname === "/") { w = 300;
     }
 }
 
+WebSocket["onclose"] = function() {
+    window.close()
+  };
+
 $(() => {
     if (w !== 0 && h !== 0) {
         window.onresize = function () {

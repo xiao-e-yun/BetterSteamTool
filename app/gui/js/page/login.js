@@ -26,7 +26,7 @@ function show_acc_items() {
             event.stopPropagation();
         });
         let session = false;
-        let Sdata = sessionStorage.getItem("better_steam_tool$get_client_users");
+        let Sdata = localStorage.getItem("better_steam_tool$get_client_users");
         if (Sdata !== null) {
             session = true;
             Sdata = JSON.parse(Sdata);
@@ -59,12 +59,12 @@ function get_req(data, original) {
         <p>${original.PersonaName}</p>
     </div>
     `);
-    let $data = JSON.parse(sessionStorage.getItem("better_steam_tool$get_client_users"));
+    let $data = JSON.parse(localStorage.getItem("better_steam_tool$get_client_users"));
     if ($data === null) {
         $data = {};
     }
     $data[original.AccountID] = data;
-    sessionStorage.setItem("better_steam_tool$get_client_users", JSON.stringify($data));
+    localStorage.setItem("better_steam_tool$get_client_users", JSON.stringify($data));
 }
 $("#reload").on("click", () => {
     let list = $("#account");
@@ -73,7 +73,7 @@ $("#reload").on("click", () => {
             .off()
             .html("")
             .show();
-        sessionStorage.removeItem("better_steam_tool$get_client_users");
+        localStorage.removeItem("better_steam_tool$get_client_users");
         show_acc_items();
     });
 });
