@@ -1,0 +1,19 @@
+@import "../root.scss";
+
+main>div {
+    width: 96%;
+    margin: 2%;
+}
+
+#new-account {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    border:$border;
+    
+    &>button {
+        width: 50%;
+        margin: 0;
+        border: none;
+        font-size: large;
+    }
+}

@@ -7,7 +7,8 @@
     <meta name="author" content=" 小惡運 / xiao e yun ">
     <meta http-equiv="Content-Language" content="zh-TW">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/page.css">
+    <link rel="icon" href="/logo.ico">
+    <link rel="stylesheet" href="/css/page.css">
     <script type="text/javascript" src="/eel.js"></script>
     <script type="text/javascript" src="/jquery.js"></script>
     <script type="text/javascript" src="/js/page.js"></script>
@@ -17,172 +18,26 @@
     <h1>登入帳號</h1>
     <div id="form">
         <label class="field">
-            <input type="text" class="field__input" placeholder="請輸入 STEAM 帳號">
+            <input type="text" id="username" class="field__input" placeholder="請輸入 STEAM 帳號">
             <span class="field__label-wrap">
               <span class="field__label">帳號</span>
             </span>
         </label>
         <br>
         <label class="field">
-            <input type="password" class="field__input" placeholder="請輸入 STEAM 密碼">
+            <input type="password" id="password" class="field__input" placeholder="請輸入 STEAM 密碼">
             <span class="field__label-wrap">
               <span class="field__label">密碼</span>
             </span>
         </label>
-        <button id="next_step">繼續</button>
+        <label class="field" style="display: none;" id="unknow">
+          <input type="text" class="field__input" placeholder="請輸入 STEAM 密碼">
+          <span class="field__label-wrap">
+            <span class="field__label">unknow</span>
+          </span>
+      </label>
+        <button id="next_step" data-step="login">繼續</button>
           </div>
-        <style>
-            h1 {
-                font-size: 80px;
-                text-align: left;
-                margin: 20px 0 20px 50px;
-            }
-#form{
-    float: right;
-    margin: 0 5em 0 0;
-}
-button{
-    width: 50%;
-    position: relative;
-    text-align: center;
-    clear: both;
-    display: block;
-    margin: 0 auto;
-}
-/*
-=====
-RESET STYLES
-=====
-*/
-
-.field__input{ 
-  --uiFieldPlaceholderColor: var(--fieldPlaceholderColor, #767676);
-  color: #fff;
-  background-color: transparent;
-  border-radius: 0;
-  border: none;
-
-  -webkit-appearance: none;
-  -moz-appearance: none;
-
-  font-family: inherit;
-  font-size: inherit;
-}
-
-.field__input:focus::-webkit-input-placeholder{
-  color: var(--uiFieldPlaceholderColor);
-}
-
-.field__input:focus::-moz-placeholder{
-  color: var(--uiFieldPlaceholderColor);
-}
-
-/*
-=====
-CORE STYLES
-=====
-*/
-
-.field{
-  --uiFieldBorderWidth: var(--fieldBorderWidth, 4px);
-  --uiFieldPaddingRight: var(--fieldPaddingRight, 2rem);
-  --uiFieldPaddingLeft: var(--fieldPaddingLeft, 2rem);   
-  --uiFieldBorderColorActive: var(--fieldBorderColorActive, rgba(22, 22, 22, 1));
-
-  display: var(--fieldDisplay, inline-flex);
-  position: relative;
-  font-size: var(--fieldFontSize, 2rem);
-  margin: 0 0 .8em 0;
-}
-
-.field__input{
-  box-sizing: border-box;
-  width: 100%;
-  height: 100%;
-  padding: var(--fieldPaddingTop, 1.25rem) var(--uiFieldPaddingRight) var(--fieldPaddingBottom, .5rem) var(--uiFieldPaddingLeft);
-  border-bottom: var(--uiFieldBorderWidth) solid var(--fieldBorderColor, rgba(0, 0, 0, .25));  
-}
-
-.field__input:focus{
-  outline: none;
-}
-
-.field__input::-webkit-input-placeholder{
-  opacity: 0;
-  transition: opacity .2s ease-out;
-}
-
-.field__input::-moz-placeholder{
-  opacity: 0;
-  transition: opacity .2s ease-out;
-}
-
-.field__input:focus::-webkit-input-placeholder{
-  opacity: 1;
-  transition-delay: .2s;
-}
-
-.field__input:focus::-moz-placeholder{
-  opacity: 1;
-  transition-delay: .2s;
-}
-
-.field__label-wrap{
-  box-sizing: border-box;
-  pointer-events: none;
-  cursor: text;
-
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-}
-
-.field__label-wrap::after{
-  content: "";
-  box-sizing: border-box;
-  width: 100%;
-  height: 0;
-  opacity: 0;
-
-  position: absolute;
-  bottom: 0;
-  left: 0;
-}
-
-.field__input:focus ~ .field__label-wrap::after{
-  opacity: 1;
-}
-
-.field__label{
-  position: absolute;
-  left: var(--uiFieldPaddingLeft);
-  top: calc(50% - .5em);
-
-  line-height: 1;
-  font-size: var(--fieldHintFontSize, inherit);
-
-  transition: top .2s cubic-bezier(0.9, -0.15, 0.1, 1.15), opacity .2s ease-out, font-size .2s ease-out;
-  will-change: bottom, opacity, font-size;
-}
-
-.field__input:focus ~ .field__label-wrap .field__label,
-.field__input:not(:placeholder-shown) ~ .field__label-wrap .field__label{
-  --fieldHintFontSize: var(--fieldHintFontSizeFocused, 1rem);
-
-  top: var(--fieldHintTopHover, .25rem);
-}
-.field .field__label-wrap::after{
-  border-bottom: var(--uiFieldBorderWidth) solid var(--uiFieldBorderColorActive);
-  transition: opacity .2s ease-out;
-  will-change: opacity;
-}
-.field{
-  --fieldBorderColor: #D1C4E9;
-  --fieldBorderColorActive: #673AB7;
-}
-</style>
+        <div id="info"></div>
 </body>
-
 </html>

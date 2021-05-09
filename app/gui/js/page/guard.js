@@ -1,3 +1,4 @@
+"use strict";
 /// <reference path="../page.ts" />
 $page.account = localStorage.getItem('guard_acc');
 $("#new-account>button").on("click", function () {

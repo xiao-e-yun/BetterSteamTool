@@ -1,0 +1,13 @@
+main > div {
+  width: 96%;
+  margin: 2%; }
+
+#new-account {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  border: #f1dac4 solid 2px; }
+  #new-account > button {
+    width: 50%;
+    margin: 0;
+    border: none;
+    font-size: large; }

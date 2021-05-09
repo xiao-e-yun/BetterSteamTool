@@ -1,4 +1,5 @@
 import eel
+
 @eel.expose
 def load_user():
     print("get users")

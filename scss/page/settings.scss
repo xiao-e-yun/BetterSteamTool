@@ -1,0 +1,63 @@
+@import "../root.scss";
+
+#account {
+    display: -webkit-inline-box;
+    margin: 5px;
+    overflow-x: hidden;
+    height: min-content;
+    width: -webkit-fill-available;
+    & > div {
+        width: 80px;
+        height: 80px;
+        background-size: cover !important;
+        position: relative;
+        overflow: hidden;
+        & > p {
+            height: 0;
+            position: absolute;
+            bottom: 0;
+            margin: 0 -100px;
+            width: -webkit-fill-available;
+            text-align: center;
+            background: #161b334d;
+            border-top: solid 1px;
+            transition: height ease-in-out 0.2s;
+            box-sizing: border-box;
+        }
+        &:hover > p {
+            height: 23px;
+        }
+    }
+}
+.items > h2 {
+    display: inline;
+    cursor: n-resize;
+    user-select: none;
+    position: relative;
+
+    &::before {
+        height: auto;
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: -8px;
+        width: 4px;
+        background-color: #f1dac4;
+        transform: scaleY(0);
+        transform-origin: center bottom;
+        transition: transform 0.5s ease-in-out;
+    }
+
+    &:hover::before {
+        transform-origin: center top;
+        transform: scaleY(1);
+    }
+}
+#new-account {
+    flex: 5;
+}
+#reload-account {
+    flex: 1;
+    border-left: #f1dac4 solid 2px;
+}

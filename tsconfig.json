@@ -5,6 +5,7 @@
         "jsx": "preserve",
         "strictFunctionTypes": true,
         "outDir":"app/gui/js",
+        "alwaysStrict":true
     },
     "include": [
         "ts/*.ts",

@@ -1,3 +1,8 @@
+"use strict";
+let Eclose = function () { window.close(); };
+eel.expose(Eclose, "close");
+let Eget_req = function (a, b) { (() => { get_req(a, b); })(); };
+eel.expose(Eget_req, "get_req");
 window["w"] = 0;
 window["h"] = 0;
 if (location.pathname === "/index.html" || location.pathname === "/") {
@@ -41,7 +46,10 @@ $(() => {
     window["main"] = $('main#main_contant');
     window["page"] = {};
     if (opener) {
-        $.getScript("/js" + location.pathname.slice(0, -5) + ".js"); //取得js
+        $("body").append(`
+        <script type="text/javascript" src="/js${location.pathname.slice(0, -5)}.js"></script>
+        <link rel="stylesheet" href="/css${location.pathname.slice(0, -5)}.css">
+        `);
         let moveX = (opener.screenX + (opener["w"] / 2)) - (w / 2);
         let moveY = (opener.screenY + (opener["h"] / 2)) - (h / 2);
         moveTo(w === opener["w"] ? moveX + 10 : moveX, h === opener["h"] ? moveY + 10 : moveY);
@@ -72,19 +80,25 @@ $(() => {
     });
     footer.on('click', 'button', function () {
         footer.slideUp();
-        load_page(this.id);
+        load_page(this.dataset.$link);
     });
     $("body").on('click', '[data-link]', function () {
         open_page(this.dataset.link);
     });
-    function load_page(id) {
-        console.log("open \"" + id + "\" page");
-        page[id] = {};
-        $page = page[id];
-        $.get("/page/" + id + ".html", function (data) {
-            main.off(); //刪除監聽
-            main.html(data);
-            $.getScript("/js/page/" + id + ".js");
-        });
-    }
 });
+function load_page(id) {
+    console.log("open \"" + id + "\" page");
+    page[id] = {};
+    window["$page"] = page[id];
+    main.fadeOut(100, () => {
+        $.get("/page/" + id + ".html", function (data) {
+            main
+                .off() //刪除監聽
+                .html(data + `
+                <script type="text/javascript" src="/js/page/${id}.js"></script>
+                <link rel="stylesheet" href="/css/page/${id}.css">
+                `)
+                .fadeIn(100);
+        });
+    });
+}

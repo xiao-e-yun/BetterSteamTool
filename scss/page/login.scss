@@ -1,0 +1,55 @@
+@import "../root.scss";
+
+#account{
+    display: flex;
+    flex-wrap: wrap;
+}
+.account_items{
+    flex: 0 0 46%;
+    position: relative;
+    background-size: cover;
+    margin: 2%;
+    height: 0;
+    padding-top: 46%;
+    animation: fade_in .5s;
+    border:$border;
+    box-sizing: border-box;
+    cursor: pointer;
+
+    &>p{
+        margin: 0!important;
+        left: 0;
+        bottom: 0;
+        text-align: center;
+        white-space: nowrap;
+        height: min-content;
+        position: absolute;
+        overflow-x: overlay;
+        background: #0d0c1d99;
+        width: 100%;
+        border-top:$border;
+        cursor: default;
+
+        &:hover{
+            overflow-x:auto;
+            border-bottom: 0;
+            &::-webkit-scrollbar{
+                height: 10px;
+                background-color: $background;
+            }
+            &::-webkit-scrollbar-thumb{
+                border-bottom: 0;
+            }
+        }
+
+        &::-webkit-scrollbar{
+            height: 4px;
+        }
+    }
+}
+.inline_btn{
+    position: fixed;
+    bottom: 0;
+    margin: 5px 2%!important;
+    width:96%!important;
+}
