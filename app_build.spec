@@ -9,8 +9,7 @@ a = Analysis(['app/index.py'],
              binaries=[],
              datas=[
                 ('C:\\Users\\a0970\\AppData\\Local\\Programs\\Python\\Python39\\lib\\site-packages\\eel\\eel.js', 'eel'),
-                ('app\\gui', 'gui'),
-                ('C:\\Users\\a0970\\Desktop\\project\\app\\logo.ico','.')
+                ('app\\gui', 'gui')
                 ],
              hiddenimports=['bottle_websocket'],
              hookspath=[],
@@ -42,6 +41,5 @@ coll = COLLECT(exe,
                strip=False,
                upx=True,
                upx_exclude=[],
-               name='Bsteam',
-			      icon="C:\\Users\\a0970\\Desktop\\project\\app\\logo.ico"
+               name='Bsteam'
 			   )

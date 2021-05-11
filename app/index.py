@@ -1,32 +1,29 @@
-import psutil,sys
-pids = psutil.pids()
+import os,sys,datetime
+def info(txt):
+    print(txt+" |"+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
 
-run_status = {"Status":False,"Port":8701,"open":0}
-
-for pid in pids:
-    try:
-        name = psutil.Process(pid).name()
-        if (name == 'Bsteam.exe'):
-            if(run_status["open"]==0):
-                run_status["open"]=1
-            else:
-                run_status["open"]=2
-    except:
-        pass
-if (run_status["open"]==2):
-    print("close")
+#================================================
+info("set LOCK")#設置鎖並檢測
+path = os.getcwd()+"\\"
+try:
+    if os.path.exists(path+".LOCK"):
+        os.remove(path+".LOCK")
+except:
     sys.exit()
+lock = open(path+".LOCK","w")
+lock.write("0")
 
-import eel,logging,steam,os,socket
-from python import guard,api,main
-logging.basicConfig(level=logging.INFO)
-def check_port_in_use(): #檢視port
+#================================================
+info("test port")#檢視port
+run_status = {"Status":False,"Port":8701}
+import eel,socket
+def check_port_in_use(): 
     s = None
 
 while not run_status["Status"]:
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.settimeout(1)
+        s.settimeout(0.2)
         s.connect(('127.0.0.1', run_status["Port"]))
         run_status["Status"] = False
         run_status["Port"]+=1
@@ -36,18 +33,16 @@ while not run_status["Status"]:
         if s:
             s.close()
 
+#================================================
+info("start")
+from python import main,api,guard 
+main.start()
+guard.load_user()
 
-def close_callback():
-    eel.close()
-
-if(not check_port_in_use()):
-    main.start()
-    guard.load_user()
-
-    eel.init(os.path.dirname(os.path.abspath(__file__))+'\gui')
-    eel.start('index.html',
-        port = run_status["Port"],
-        suppress_error=True,
-        size = (300,600),
-        mode='edge',
-    )
+eel.init(os.path.dirname(os.path.abspath(__file__))+'\gui')
+eel.start('index.html',
+port = run_status["Port"],
+suppress_error=True,
+size = (300,600),
+mode='edge'
+)

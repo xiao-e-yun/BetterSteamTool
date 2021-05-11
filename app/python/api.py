@@ -27,7 +27,7 @@ def get_client_users():
 
     if(rewrite):
         print("重寫 loginusers.")
-        with open(path,"w",encodivdfng="utf-8") as file :
+        with open(path,"w",encoding="utf-8") as file :
             vdf.dump({"users":users},file)
     return(users)
 
