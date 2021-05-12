@@ -19,8 +19,6 @@ lock.write("0")
 info("test port")#檢視port
 run_status = {"Status":False,"Port":8701}
 import eel,socket
-def check_port_in_use(): 
-    s = None
 
 while not run_status["Status"]:
     try:
