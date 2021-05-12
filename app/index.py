@@ -1,4 +1,4 @@
-import os,sys,datetime
+import os,sys,datetime,stat
 def info(txt):
     print(txt+" |"+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
 
@@ -7,10 +7,13 @@ info("set LOCK")#設置鎖並檢測
 path = os.getcwd()+"\\"
 try:
     if os.path.exists(path+".LOCK"):
+        os.chmod(path+".LOCK",stat.S_IWRITE)
         os.remove(path+".LOCK")
 except:
     sys.exit()
-lock = open(path+".LOCK","w")
+    
+lock=open(path+".LOCK","w")
+os.chmod(path+".LOCK",stat.S_IWRITE)
 lock.write("0")
 
 #================================================

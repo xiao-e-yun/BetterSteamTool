@@ -58,7 +58,7 @@ def create_account(lvl,data): #引入帳號
     if(lvl == "login"):
         global create_acc,acc_setting
 
-        newacc = create_acc=wa.MobileWebAuth(data["username"],data["password"])
+        create_acc = wa.MobileWebAuth(data["username"],data["password"])
 
         try:
             create_acc.login()
