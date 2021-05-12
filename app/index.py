@@ -7,7 +7,6 @@ info("set LOCK")#設置鎖並檢測
 path = os.getcwd()+"\\"
 try:
     if os.path.exists(path+".LOCK"):
-        os.chmod(path+".LOCK",stat.S_IWRITE)
         os.remove(path+".LOCK")
 except:
     sys.exit()
