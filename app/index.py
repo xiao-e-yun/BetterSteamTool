@@ -12,7 +12,6 @@ except:
     sys.exit()
     
 lock=open(path+".LOCK","w")
-os.chmod(path+".LOCK",stat.S_IWRITE)
 lock.write("0")
 
 #================================================
