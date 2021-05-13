@@ -116,10 +116,10 @@ function load_page(id: string) {
             main
                 .off() //刪除監聽
                 .html(data + `
-                <script type="text/javascript" src="/js/page/${id}.js"></script>
                 <link rel="stylesheet" href="/css/page/${id}.css">
                 `)
                 .fadeIn(100)
+            $.getScript(`/js/page/${id}.js`)
         })
     })
 }

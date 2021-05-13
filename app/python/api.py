@@ -1,4 +1,4 @@
-import eel,steam,os,winreg,datetime,vdf,requests,json,asyncio,aiohttp
+import eel,os,winreg,datetime,vdf,json,asyncio,aiohttp
 import steam.steamid as Sid
 loop = asyncio.get_event_loop()
 
@@ -40,7 +40,11 @@ def get(urls,original,JSON = True):
                 req = await response.text()
                 print("req "+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
                 if (JSON==True):
-                    eel.get_req(json.loads(req),original)
+                    try:
+                        eel.get_req(json.loads(req),original)
+                    except:
+                        print("錯誤!\n" + req)
+                        eel.get_req("",original)
                 else:
                     eel.get_req(req,original)
 
@@ -51,6 +55,21 @@ def get(urls,original,JSON = True):
         loop.run_until_complete(asyncio.wait(tasks))
     else:
         loop.run_until_complete(_get(urls,JSON,original))
+
+@eel.expose
+def del_client_user(steamID):
+    key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,"SOFTWARE\Valve\Steam", 0, winreg.KEY_QUERY_VALUE) 
+    path , type = winreg.QueryValueEx(key, "SteamPath")
+    users = {}
+
+    with open(path+"/config/loginusers.vdf","r",encoding="utf-8") as file :
+        users = vdf.load(file)
+        print(users)
+        del users["users"][steamID]
+    
+    with open(path+"/config/loginusers.vdf","w",encoding="utf-8") as file :
+        vdf.dump(users,file)
+
 
 @eel.expose
 def auto_login(name):
