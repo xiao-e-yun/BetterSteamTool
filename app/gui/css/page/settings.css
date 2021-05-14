@@ -3,26 +3,54 @@
   margin: 5px;
   overflow-x: hidden;
   height: min-content;
-  width: -webkit-fill-available; }
+  width: -webkit-fill-available;
+  overflow-x: auto; }
+  #account::-webkit-scrollbar {
+    height: 10px; }
   #account > div {
+    box-sizing: border-box;
+    border: #F1DAC4 solid 2px;
     width: 80px;
     height: 80px;
     background-size: cover !important;
     position: relative;
-    overflow: hidden; }
-    #account > div > p {
-      height: 0;
-      position: absolute;
-      bottom: 0;
-      margin: 0 -100px;
-      width: -webkit-fill-available;
-      text-align: center;
-      background: #161b334d;
-      border-top: solid 1px;
-      transition: height ease-in-out 0.2s;
-      box-sizing: border-box; }
-    #account > div:hover > p {
+    overflow: hidden;
+    margin: 0 5px 5px 0; }
+    #account > div:last-child {
+      margin: 0 0 5px 0; }
+    #account > div:hover > .acc_txt {
+      border-top: solid 2px;
       height: 23px; }
+      #account > div:hover > .acc_txt > p {
+        display: block; }
+
+.acc_txt {
+  height: 0;
+  position: absolute;
+  bottom: 0;
+  margin: 0;
+  width: 100%;
+  background: #161b334d;
+  border-top: hidden;
+  transition: height ease-in-out 0.2s;
+  box-sizing: border-box; }
+  .acc_txt > p {
+    position: relative;
+    margin: 0 !important;
+    animation: marqee 7.5s linear infinite;
+    white-space: nowrap;
+    width: fit-content;
+    padding: 0 10px;
+    box-sizing: border-box;
+    display: none; }
+
+@keyframes marqee {
+  0% {
+    left: 100%;
+    transform: translateX(0%); }
+  100% {
+    left: 0;
+    transform: translateX(-100%); } }
 
 .items > h2 {
   display: inline;

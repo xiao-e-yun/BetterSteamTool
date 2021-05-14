@@ -82,8 +82,8 @@
   margin: 5px 2%;
   width: 96% !important;
   padding-top: 20px;
-  background: #161b33;
-  border: #f1dac4 solid 2px;
+  background: #161B33;
+  border: #F1DAC4 solid 2px;
   animation: fade_in ease-in-out 0.3s both 0.5s; }
   .tag:hover {
     transition: padding-top 0s 0.3s;

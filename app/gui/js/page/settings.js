@@ -12,20 +12,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 main.on("click", ".items>h2", function () {
     $(this).siblings().slideToggle(1000);
 });
-let account = JSON.parse(localStorage.getItem("account"));
-if (localStorage.getItem("account") === null) {
+function account() { return JSON.parse(localStorage.getItem("better_steam_tool$account")); }
+if (localStorage.getItem("better_steam_tool$account") === null) {
     (() => __awaiter(void 0, void 0, void 0, function* () {
         reload_account_list();
     }))();
 }
 else {
     let $html = "";
-    account.forEach(user => {
+    account().forEach(user => {
         $html += `
         <div id="${user.name}" style="background:url('${user.avatar_url}')">
-            <p>
-                ${user.persona_name}
-            </p>
+            <div class="acc_txt">
+                <p>${user.persona_name}</p>
+            </div>
         </div>
         `;
     });
@@ -39,20 +39,22 @@ function reload_account_list() {
         let $data = yield eel.get_account_list()();
         let $acc = $("#account");
         $("#reload-account").attr("disabled", "");
-        localStorage.setItem("account", JSON.stringify($data));
+        localStorage.setItem("better_steam_tool$account", JSON.stringify($data));
         $acc.fadeOut(400, () => {
             let $html = "";
-            account.forEach(user => {
+            account().forEach(user => {
                 $html += `
             <div id="${user.name}" style="background:url('${user.avatar_url}')">
-                ${user.persona_name}
+                <div class="acc_txt">
+                    <p>${user.persona_name}</p>
+                </div>
             </div>
             `;
             });
             $acc.html($html).fadeIn();
+            console.log("reload user list");
+            setTimeout(() => { $("#reload-account").removeAttr("disabled"); }, 1000);
         });
-        console.log("reload user list");
-        setTimeout(() => { $("#reload-account").removeAttr("disabled"); }, 1000);
     });
 }
 console.log("settings is ready");

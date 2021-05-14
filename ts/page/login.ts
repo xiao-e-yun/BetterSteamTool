@@ -1,6 +1,6 @@
 /// <reference path="../page.ts" />
 
-let $acc = $("#account")
+var $acc = $("#account")
 
 async function show_acc_items(reload: boolean = true) {
     let list: any = await eel.get_client_users()()
@@ -72,7 +72,7 @@ function get_req(data: any, original: any) {
     }
 }
 
-$("#reload").on("click", () => {
+$("#reload").on("click", function(){
     let list = $acc
     list.fadeOut(100, () => {
         list
@@ -81,6 +81,11 @@ $("#reload").on("click", () => {
             .show()
         show_acc_items(false)
     })
+    let $this=$(this)
+    $this.attr("disabled","")
+    setTimeout(()=>{
+        $this.removeAttr("disabled")
+    },1500)
 })
 
 $("#delete").on("click", function () {

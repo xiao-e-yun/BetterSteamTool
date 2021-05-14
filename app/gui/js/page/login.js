@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-let $acc = $("#account");
+var $acc = $("#account");
 function show_acc_items(reload = true) {
     return __awaiter(this, void 0, void 0, function* () {
         let list = yield eel.get_client_users()();
@@ -84,7 +84,7 @@ function get_req(data, original) {
         localStorage.setItem("better_steam_tool$get_client_users", JSON.stringify($data));
     }
 }
-$("#reload").on("click", () => {
+$("#reload").on("click", function () {
     let list = $acc;
     list.fadeOut(100, () => {
         list
@@ -93,6 +93,11 @@ $("#reload").on("click", () => {
             .show();
         show_acc_items(false);
     });
+    let $this = $(this);
+    $this.attr("disabled", "");
+    setTimeout(() => {
+        $this.removeAttr("disabled");
+    }, 1500);
 });
 $("#delete").on("click", function () {
     let acc = $acc;

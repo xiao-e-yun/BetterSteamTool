@@ -6,27 +6,61 @@
     overflow-x: hidden;
     height: min-content;
     width: -webkit-fill-available;
+    overflow-x: auto;
+    &::-webkit-scrollbar{
+        height: 10px;
+    }
     & > div {
+        box-sizing: border-box;
+        border: $main solid 2px;
         width: 80px;
         height: 80px;
         background-size: cover !important;
         position: relative;
         overflow: hidden;
-        & > p {
-            height: 0;
-            position: absolute;
-            bottom: 0;
-            margin: 0 -100px;
-            width: -webkit-fill-available;
-            text-align: center;
-            background: #161b334d;
-            border-top: solid 1px;
-            transition: height ease-in-out 0.2s;
-            box-sizing: border-box;
+        margin: 0 5px 5px 0;
+        &:last-child{
+            margin: 0 0 5px 0;
         }
-        &:hover > p {
+        &:hover > .acc_txt {
+            border-top: solid 2px;
             height: 23px;
+            &>p{
+                display: block;
+            }
         }
+    }
+}
+.acc_txt {
+    height: 0;
+    position: absolute;
+    bottom: 0;
+    margin: 0;
+    width: 100%;
+    background: #161b334d;
+    border-top: hidden;
+    transition: height ease-in-out 0.2s;
+    box-sizing: border-box;
+    &>p{
+        position: relative;
+        margin: 0!important;
+        animation: marqee 7.5s linear infinite;
+        white-space: nowrap;
+        width: fit-content;
+        padding: 0 10px;
+        box-sizing: border-box;
+        display: none;
+    }
+}
+@keyframes marqee {
+    0% {
+     left: 100%;
+     transform: translateX(0%);
+    }
+   
+    100% {
+     left: 0;
+     transform: translateX(-100%);
     }
 }
 .items > h2 {
