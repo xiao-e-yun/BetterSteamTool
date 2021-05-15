@@ -4,3 +4,5 @@ build
 dist
 data
 Bsteam.lnk
+Pipfile
+Pipfile.lock
