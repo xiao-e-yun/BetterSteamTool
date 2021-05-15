@@ -1,4 +1,4 @@
-import eel,os,winreg,datetime,vdf,json,asyncio,aiohttp,subprocess
+import eel,winreg,datetime,vdf,json,asyncio,aiohttp,subprocess
 import steam.steamid as Sid
 loop = asyncio.get_event_loop()
 
@@ -79,3 +79,19 @@ def auto_login(name):
     si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
     subprocess.call('taskkill /f /IM "steam.exe" & start steam:', startupinfo=si,shell=True)
     winreg.CloseKey(key)
+
+@eel.expose
+def user_login(name,password,guard=False):
+    print("username:"+name+"\npassword:"+password)
+
+    key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,"SOFTWARE\Valve\Steam", 0, winreg.KEY_QUERY_VALUE) 
+    exe , t = winreg.QueryValueEx(key, "SteamExe")
+    winreg.CloseKey(key)
+
+    si = subprocess.STARTUPINFO()
+    si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+
+    subprocess.call('taskkill /f /IM "steam.exe"', startupinfo=si,shell=True)
+    from python import login_steam
+    login_steam.login(name,password,exe,guard)
+    return True

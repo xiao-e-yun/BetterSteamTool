@@ -72,10 +72,10 @@ function get_req(data, original) {
     }
     else {
         $acc.append(`
-    <div class="account_items" data-username="${original.AccountName}" data-steamid="${original.steamid}" style="background-image:url('${data.avatar_url}');order:${original.AccountID};">
-        <p>${original.PersonaName}</p>
-    </div>
-    `);
+        <div class="account_items" data-username="${original.AccountName}" data-steamid="${original.steamid}" style="background-image:url('${data.avatar_url}');order:${original.AccountID};">
+            <p>${original.PersonaName}</p>
+        </div>
+        `);
         let $data = JSON.parse(localStorage.getItem("better_steam_tool$get_client_users"));
         if ($data === null) {
             $data = {};
@@ -84,10 +84,12 @@ function get_req(data, original) {
         localStorage.setItem("better_steam_tool$get_client_users", JSON.stringify($data));
     }
 }
+$("#import").on("click", function () {
+    open_page("login$import");
+});
 $("#reload").on("click", function () {
-    let list = $acc;
-    list.fadeOut(100, () => {
-        list
+    $acc.fadeOut(100, () => {
+        $acc
             .off()
             .html("")
             .show();
@@ -101,14 +103,13 @@ $("#reload").on("click", function () {
 });
 $("#delete")
     .on("click", function () {
-    let acc = $acc;
     let $this = $(this);
     if (!del_mode()) {
-        acc
+        $acc
             .off()
             .addClass("del_mode")
             .on("click", ".account_items", function () {
-            acc
+            $acc
                 .removeClass("del_mode")
                 .off()
                 .on("click", ".account_items p", (event) => {
@@ -127,7 +128,7 @@ $("#delete")
         del_mode(true);
     }
     else {
-        acc
+        $acc
             .removeClass("del_mode")
             .off();
         onClick();
@@ -136,7 +137,7 @@ $("#delete")
     $this.attr("disabled", "");
     setTimeout(() => { $this.removeAttr("disabled"); }, 300);
     function onClick() {
-        acc.one("click", ".account_items", function () {
+        $acc.one("click", ".account_items", function () {
             let user = this.dataset.username;
             console.log(user);
             eel.auto_login(user);
@@ -161,7 +162,15 @@ function del_mode(type) {
         console.log("delete mode:" + type);
     }
 }
-$("#del_mode").hide();
+function need_reload() {
+    let reload_mode = $("#reload_mode");
+    reload_mode.fadeIn(500, () => {
+        $("#reload").one("click", () => {
+            reload_mode.fadeOut(300);
+        });
+    });
+}
+$(".tip").hide();
 main.on("mouseenter mouseleave", ".account_items", function () {
     $acc.toggleClass("act");
 });

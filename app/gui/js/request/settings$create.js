@@ -8,6 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+w = 1000;
+h = 500;
 $("body>h1").hover(function () {
     let $this = $(this);
     window["reload_page"] = setTimeout(() => {

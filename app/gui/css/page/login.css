@@ -40,7 +40,7 @@
       border-bottom: 0; }
       .account_items > p:hover::-webkit-scrollbar {
         height: 10px;
-        background-color: #0D0C1D; }
+        background-color: transparent; }
       .account_items > p:hover::-webkit-scrollbar-thumb {
         border-bottom: 0; }
     .account_items > p::-webkit-scrollbar {
@@ -67,7 +67,11 @@
     backdrop-filter: blur(3px); }
 
 .will_del {
-  cursor: default; }
+  cursor: default;
+  color: #A69CAC;
+  border-color: #A69CAC; }
+  .will_del > p {
+    border-color: #A69CAC; }
   .will_del::before {
     transition: all ease-in-out 0.3s;
     content: "";
@@ -88,6 +92,7 @@
   padding-top: 15px;
   background: #161B33;
   border: #F1DAC4 solid 2px;
+  z-index: 100;
   animation: fade_in ease-in-out .3s both .5s;
   transition: padding-top .3s .3s; }
   .tag:hover {
@@ -102,13 +107,24 @@
     height: 0;
     transition: height 0.3s 0.3s; }
 
-#del_mode {
+#del_mode, #reload_mode {
   display: inline;
   text-align: center;
-  margin: 0 auto;
+  margin: 3% 0 0 0 !important;
+  padding: 5px 10px;
+  position: absolute;
+  font-weight: 1000;
+  font-size: 1.2em !important;
+  letter-spacing: 2px; }
+
+#del_mode {
   border: #A69CAC solid 2px;
   color: #A69CAC;
   background: #0D0C1D;
-  padding: 5px 15px;
-  position: absolute;
   z-index: 10; }
+
+#reload_mode {
+  border: #0D0C1D solid 2px;
+  color: #0D0C1D;
+  background: #F1DAC4;
+  z-index: 11; }

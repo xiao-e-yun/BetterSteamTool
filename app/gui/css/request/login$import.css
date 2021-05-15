@@ -1,0 +1,42 @@
+body {
+  display: flex;
+  flex-wrap: wrap; }
+
+.item {
+  flex: 0 0 46%;
+  position: relative;
+  background-size: cover;
+  margin: 2%;
+  height: 0;
+  padding-top: 46%;
+  animation: fade_in 0.5s;
+  border: #f1dac4 solid 2px;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: opacity ease-in-out .3s, color .3s, border-color .3s;
+  opacity: 1; }
+  .item > p {
+    z-index: 2;
+    margin: 0 !important;
+    left: 0;
+    bottom: 0;
+    text-align: center;
+    white-space: nowrap;
+    height: min-content;
+    position: absolute;
+    overflow-x: overlay;
+    background: #0d0c1d99;
+    width: 100%;
+    border-top: #f1dac4 solid 2px;
+    cursor: default;
+    transition: border-color; }
+    .item > p:hover {
+      overflow-x: auto;
+      border-bottom: 0; }
+      .item > p:hover::-webkit-scrollbar {
+        height: 10px;
+        background-color: transparent; }
+      .item > p:hover::-webkit-scrollbar-thumb {
+        border-bottom: 0; }
+    .item > p::-webkit-scrollbar {
+      height: 4px; }

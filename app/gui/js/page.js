@@ -9,45 +9,16 @@ if (location.pathname === "/index.html" || location.pathname === "/") {
     w = 300;
     h = 600;
 }
-else { //初始化設置
-    let reg = /\/request\/(?<page>.*)\$(?<type>.*).html/gm;
-    reg.lastIndex = 0;
-    let path = reg.exec(location.pathname)["groups"];
-    switch (path["page"]) {
-        case "settings":
-            switch (path["type"]) {
-                case "create":
-                    w = 1000;
-                    h = 500;
-                    break;
-                case "import":
-                    w = 300;
-                    h = 600;
-                    break;
-            }
-            break;
-        case "待填":
-            switch (path["type"]) {
-                case "待填":
-                    break;
-                case "待填":
-                    break;
-            }
-            break;
-    }
-}
 WebSocket["onclose"] = function () {
     window.close();
 };
+window.onresize = function () {
+    window.resizeTo(w, h);
+};
 $(() => {
-    if (w !== 0 && h !== 0) {
-        window.onresize = function () {
-            window.resizeTo(w, h);
-        };
-    }
     window["footer"] = $('footer');
     window["main"] = $('main#main_contant');
-    window["page"] = {};
+    window["$page"] = {};
     if (opener) {
         $("body").append(`
         <script type="text/javascript" src="/js${location.pathname.slice(0, -5)}.js"></script>
@@ -67,7 +38,8 @@ $(() => {
         let dis = $("#sys_disabled");
         dis.fadeIn();
         window["waiting_screen"] = true;
-        let win = window.open("/request/" + href + ".html", "", `app=true ,height=1 ,width=1`);
+        let win = window.open("/request/" + href + ".html", "", `app=true`);
+        win.resizeTo(0, 0);
         //關閉時啟用
         let I = setInterval(() => {
             if (win.closed === true) {
@@ -91,17 +63,25 @@ $(() => {
 });
 function load_page(id) {
     console.log("open \"" + id + "\" page");
-    page[id] = {};
-    window["$page"] = page[id];
-    main.fadeOut(100, () => {
-        $.get("/page/" + id + ".html", function (data) {
+    if (window["$page"][id]) {
+        main.fadeOut(100, () => {
             main
                 .off() //刪除監聽
-                .html(data + `
-                <link rel="stylesheet" href="/css/page/${id}.css">
-                `)
+                .html(window["$page"][id])
                 .fadeIn(100);
             $.getScript(`/js/page/${id}.js`);
         });
-    });
+    }
+    else {
+        main.fadeOut(100, () => {
+            $.get("/page/" + id + ".html", function (data) {
+                window["$page"][id] = data + `<link rel="stylesheet" href="/css/page/${id}.css">`;
+                main
+                    .off() //刪除監聽
+                    .html(window["$page"][id])
+                    .fadeIn(100);
+                $.getScript(`/js/page/${id}.js`);
+            });
+        });
+    }
 }

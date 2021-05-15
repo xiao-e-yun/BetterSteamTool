@@ -61,10 +61,10 @@ function get_req(data: any, original: any) {
         `)
     } else {
         $acc.append(`
-    <div class="account_items" data-username="${original.AccountName}" data-steamid="${original.steamid}" style="background-image:url('${data.avatar_url}');order:${original.AccountID};">
-        <p>${original.PersonaName}</p>
-    </div>
-    `)
+        <div class="account_items" data-username="${original.AccountName}" data-steamid="${original.steamid}" style="background-image:url('${data.avatar_url}');order:${original.AccountID};">
+            <p>${original.PersonaName}</p>
+        </div>
+        `)
         let $data = JSON.parse(localStorage.getItem("better_steam_tool$get_client_users"))
         if ($data === null) { $data = {} }
         $data[original.AccountID] = data
@@ -72,10 +72,13 @@ function get_req(data: any, original: any) {
     }
 }
 
+$("#import").on("click", function () {
+    open_page("login$import")
+})
+
 $("#reload").on("click", function () {
-    let list = $acc
-    list.fadeOut(100, () => {
-        list
+    $acc.fadeOut(100, () => {
+        $acc
             .off()
             .html("")
             .show()
@@ -90,18 +93,17 @@ $("#reload").on("click", function () {
 
 $("#delete")
     .on("click", function () {
-        let acc = $acc
         let $this = $(this)
         if (!del_mode()) {
-            acc
+            $acc
                 .off()
                 .addClass("del_mode")
                 .on("click", ".account_items", function () {
-                    acc
+                    $acc
                         .removeClass("del_mode")
                         .off()
                         .on("click", ".account_items p", (event) => {
-                        event.stopPropagation()
+                            event.stopPropagation()
                         })
                     del_mode(false)
 
@@ -116,17 +118,17 @@ $("#delete")
                 })
             del_mode(true)
         } else {
-            acc
+            $acc
                 .removeClass("del_mode")
                 .off()
             onClick()
             del_mode(false)
         }
-        $this.attr("disabled","")
-        setTimeout(() => {$this.removeAttr("disabled")}, 300);
-        
+        $this.attr("disabled", "")
+        setTimeout(() => { $this.removeAttr("disabled") }, 300);
+
         function onClick() {
-            acc.one("click", ".account_items", function () {
+            $acc.one("click", ".account_items", function () {
                 let user = this.dataset.username
                 console.log(user)
                 eel.auto_login(user)
@@ -135,13 +137,13 @@ $("#delete")
         }
     })
 
-function del_mode(type?:boolean) {
+function del_mode(type?: boolean) {
     let e = $("#del_mode")
     let b = $("#delete")
-if(typeof(type) === "undefined"){
+    if (typeof (type) === "undefined") {
         return (b.data("use") == 'true')
-    }else{
-        b.data("use",type.toString())
+    } else {
+        b.data("use", type.toString())
         if (type) {
             e.fadeIn(300)
         } else {
@@ -150,7 +152,15 @@ if(typeof(type) === "undefined"){
         console.log("delete mode:" + type)
     }
 }
-$("#del_mode").hide()
+function need_reload(){
+    let reload_mode=$("#reload_mode")
+    reload_mode.fadeIn(500,()=>{
+        $("#reload").one("click",()=>{
+            reload_mode.fadeOut(300)
+        })
+    })
+}
+$(".tip").hide()
 
 main.on("mouseenter mouseleave", ".account_items", function () {
     $acc.toggleClass("act")

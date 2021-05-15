@@ -1,3 +1,6 @@
+w = 1000
+h = 500
+
 $("body>h1").hover(function () { //重新輸入
     let $this = $(this)
     window["reload_page"] = setTimeout(() => {

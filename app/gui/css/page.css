@@ -35,7 +35,19 @@ body {
   height: 100vh;
   width: 100vw; }
   #sys_disabled > p {
-    font-size: xx-large; }
+    font-size: xx-large;
+    background-repeat: no-repeat;
+    background-size: 80%;
+    background-image: linear-gradient(90deg, transparent, #f1dac4b3, #F1DAC4, #F1DAC4, #f1dac4b3, transparent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: #00000000;
+    animation: _sys_disabled 6s cubic-bezier(0.1, 0.8, 0.9, 0.2) infinite; }
+
+@keyframes _sys_disabled {
+  0% {
+    background-position: -500%; }
+  100% {
+    background-position: 500%; } }
 
 header {
   z-index: 500;
@@ -120,13 +132,17 @@ a.title#a.title_content {
 main#main_contant {
   overflow: hidden overlay;
   width: 100%;
-  height: calc(100% - 42px);
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   transition: width ease-in-out .5s;
-  scrollbar-width: 10px; }
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding-top: 42px;
+  box-sizing: border-box; }
   main#main_contant > div {
     width: 100%; }
   main#main_contant h1 {
