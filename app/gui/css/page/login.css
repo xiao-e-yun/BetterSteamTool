@@ -18,7 +18,7 @@
   border: #f1dac4 solid 2px;
   box-sizing: border-box;
   cursor: pointer;
-  transition: opacity ease-in-out .3s;
+  transition: opacity ease-in-out .3s, color .3s, border-color .3s;
   opacity: 1; }
   .account_items > p {
     z-index: 2;
@@ -33,7 +33,8 @@
     background: #0d0c1d99;
     width: 100%;
     border-top: #f1dac4 solid 2px;
-    cursor: default; }
+    cursor: default;
+    transition: border-color; }
     .account_items > p:hover {
       overflow-x: auto;
       border-bottom: 0; }
@@ -46,9 +47,12 @@
       height: 4px; }
 
 .del_mode > div {
-  cursor: pointer; }
+  cursor: pointer;
+  color: #A69CAC;
+  border-color: #A69CAC; }
   .del_mode > div > p {
-    cursor: pointer; }
+    cursor: pointer;
+    border-color: #A69CAC; }
   .del_mode > div::before {
     transition: all ease-in-out 0.3s;
     content: "";
@@ -79,20 +83,32 @@
 .tag {
   position: fixed;
   bottom: 0;
-  margin: 5px 2%;
+  margin: 5px 0;
   width: 96% !important;
-  padding-top: 20px;
+  padding-top: 15px;
   background: #161B33;
   border: #F1DAC4 solid 2px;
-  animation: fade_in ease-in-out 0.3s both 0.5s; }
+  animation: fade_in ease-in-out .3s both .5s;
+  transition: padding-top .3s .3s; }
   .tag:hover {
-    transition: padding-top 0s 0.3s;
     padding-top: 0px; }
-    .tag:hover > .inline_btn {
-      transition: height 0s 0.3s;
-      height: 100%; }
+    .tag:hover > .inline_btn > button {
+      height: 1.3em; }
 
 .inline_btn {
   margin: 0;
-  height: 0;
   border: none; }
+  .inline_btn > button {
+    height: 0;
+    transition: height 0.3s 0.3s; }
+
+#del_mode {
+  display: inline;
+  text-align: center;
+  margin: 0 auto;
+  border: #A69CAC solid 2px;
+  color: #A69CAC;
+  background: #0D0C1D;
+  padding: 5px 15px;
+  position: absolute;
+  z-index: 10; }

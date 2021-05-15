@@ -12,7 +12,7 @@
     }
     & > div {
         box-sizing: border-box;
-        border: $main solid 2px;
+        border:$border;
         width: 80px;
         height: 80px;
         background-size: cover !important;
@@ -23,7 +23,7 @@
             margin: 0 0 5px 0;
         }
         &:hover > .acc_txt {
-            border-top: solid 2px;
+            border-top:$border;
             height: 23px;
             &>p{
                 display: block;
@@ -45,7 +45,7 @@
         position: relative;
         margin: 0!important;
         animation: marqee 7.5s linear infinite;
-        white-space: nowrap;
+        white-space: nowrap;                
         width: fit-content;
         padding: 0 10px;
         box-sizing: border-box;
@@ -93,5 +93,5 @@
 }
 #reload-account {
     flex: 1;
-    border-left: #f1dac4 solid 2px;
+    border-left: $border;
 }

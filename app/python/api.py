@@ -1,4 +1,4 @@
-import eel,os,winreg,datetime,vdf,json,asyncio,aiohttp
+import eel,os,winreg,datetime,vdf,json,asyncio,aiohttp,subprocess
 import steam.steamid as Sid
 loop = asyncio.get_event_loop()
 
@@ -75,5 +75,7 @@ def del_client_user(steamID):
 def auto_login(name):
     key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,"SOFTWARE\Valve\Steam", 0, winreg.KEY_SET_VALUE ) 
     winreg.SetValueEx(key,"AutoLoginUser",0,winreg.REG_SZ,name)
-    os.system('taskkill /f /IM "steam.exe" & start steam:')
+    si = subprocess.STARTUPINFO()
+    si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+    subprocess.call('taskkill /f /IM "steam.exe" & start steam:', startupinfo=si,shell=True)
     winreg.CloseKey(key)

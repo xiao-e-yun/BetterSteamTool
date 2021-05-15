@@ -34,9 +34,9 @@ function show_acc_items(reload = true) {
         let loop = { org: [], url: [] };
         $.each(list, function (key, val) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (Sdata[val.AccountID]) {
+                if (session && Sdata[val.AccountID]) {
                     $acc.append(`
-            <div class="account_items" data-username="${val.AccountName}" data-steamid="${key}" style="background-image:url('${Sdata[val.AccountID]["avatar_url"]};order:${val.AccountID};')">
+            <div class="account_items" data-username="${val.AccountName}" data-steamid="${key}" style="background-image:url('${Sdata[val.AccountID]["avatar_url"]}');order:${val.AccountID};">
                 <p>${val.PersonaName}</p>
             </div>
             `);
@@ -99,10 +99,11 @@ $("#reload").on("click", function () {
         $this.removeAttr("disabled");
     }, 1500);
 });
-$("#delete").on("click", function () {
+$("#delete")
+    .on("click", function () {
     let acc = $acc;
-    let used = this.dataset;
-    if (used.use == "false") {
+    let $this = $(this);
+    if (!del_mode()) {
         acc
             .off()
             .addClass("del_mode")
@@ -113,7 +114,7 @@ $("#delete").on("click", function () {
                 .on("click", ".account_items p", (event) => {
                 event.stopPropagation();
             });
-            used.use = "false";
+            del_mode(false);
             eel.del_client_user(this.dataset.steamid);
             let $this = $(this);
             $this
@@ -122,17 +123,18 @@ $("#delete").on("click", function () {
                 $this.remove();
                 onClick();
             });
-            console.log("delete mode:false");
         });
-        used.use = "true";
+        del_mode(true);
     }
     else {
         acc
             .removeClass("del_mode")
             .off();
         onClick();
-        used.use = "false";
+        del_mode(false);
     }
+    $this.attr("disabled", "");
+    setTimeout(() => { $this.removeAttr("disabled"); }, 300);
     function onClick() {
         acc.one("click", ".account_items", function () {
             let user = this.dataset.username;
@@ -141,8 +143,25 @@ $("#delete").on("click", function () {
             setTimeout(() => { onClick(); }, 1000);
         });
     }
-    console.log("delete mode:" + used.use);
 });
+function del_mode(type) {
+    let e = $("#del_mode");
+    let b = $("#delete");
+    if (typeof (type) === "undefined") {
+        return (b.data("use") == 'true');
+    }
+    else {
+        b.data("use", type.toString());
+        if (type) {
+            e.fadeIn(300);
+        }
+        else {
+            e.fadeOut(300);
+        }
+        console.log("delete mode:" + type);
+    }
+}
+$("#del_mode").hide();
 main.on("mouseenter mouseleave", ".account_items", function () {
     $acc.toggleClass("act");
 });

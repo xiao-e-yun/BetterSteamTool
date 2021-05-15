@@ -21,7 +21,10 @@
     border: $border;
     box-sizing: border-box;
     cursor: pointer;
-    transition: opacity ease-in-out .3s;
+    transition:
+        opacity ease-in-out .3s,
+        color .3s,
+        border-color .3s;
     opacity: 1;
 
     & > p {
@@ -38,6 +41,7 @@
         width: 100%;
         border-top: $border;
         cursor: default;
+        transition: border-color;
 
         &:hover {
             overflow-x: auto;
@@ -58,8 +62,11 @@
 }
 .del_mode > div {
     cursor: pointer;
+    color: $side-1;
+    border-color: $side-1;
     & > p {
         cursor: pointer;
+        border-color: $side-1;
     }
     &::before {
         transition: all ease-in-out 0.3s;
@@ -76,6 +83,7 @@
         backdrop-filter: blur(3px);
     }
 }
+
 .will_del {
     cursor: default;
     &::before {
@@ -95,24 +103,37 @@
 .tag {
     position: fixed;
     bottom: 0;
-    margin: 5px 2%;
+    margin: 5px 0;
     width: 96% !important;
-    padding-top: 20px;
+    padding-top: 15px;
     background: $side-3;
     border: $main solid 2px;
-    animation: fade_in ease-in-out 0.3s both 0.5s;
+    animation: fade_in ease-in-out .3s both .5s;
+    transition: padding-top .3s .3s;
 
     &:hover {
-        transition: padding-top 0s 0.3s;
         padding-top: 0px;
-        & > .inline_btn {
-            transition: height 0s 0.3s;
-            height: 100%;
+        & > .inline_btn  > button{
+            height: 1.3em;
         }
     }
 }
-.inline_btn {
+.inline_btn{
     margin: 0;
-    height: 0;
     border: none;
+    &>button{
+        height: 0;
+        transition: height 0.3s 0.3s;
+    }
+}
+#del_mode{
+    display: inline;
+    text-align: center;
+    margin: 0 auto;
+    border: $side-1 solid 2px;
+    color: $side-1;
+    background: $background;
+    padding: 5px 15px;
+    position: absolute;
+    z-index: 10;
 }
