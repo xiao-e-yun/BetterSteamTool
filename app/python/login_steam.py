@@ -1,4 +1,3 @@
-from time import time
 import winreg
 from pywinauto import Application as APP
 from pywinauto import keyboard
@@ -14,7 +13,7 @@ def login(name,pwd,path,guard):
     winreg.SetValueEx(key,"AutoLoginUser",0,winreg.REG_SZ,"")
     winreg.CloseKey(key)
     # auto login
-    app = APP().start(path)
+    app = APP().start(path+" -noverifyfiles")
     login_gui = app.window(title_re='Steam [^Guard].*',class_name='vguiPopupWindow')
     try:
         login_gui.wait("ready")

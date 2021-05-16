@@ -22,7 +22,7 @@ $(() => {
     if (opener) {
         $("body").append(`
         <script type="text/javascript" src="/js${location.pathname.slice(0, -5)}.js"></script>
-        <link rel="stylesheet" href="/css${location.pathname.slice(0, -5)}.css">
+        <link rel="stylesheet" href="/css${location.pathname.slice(0, -5)}.css" title="main">
         `);
         let moveX = (opener.screenX + (opener["w"] / 2)) - (w / 2);
         let moveY = (opener.screenY + (opener["h"] / 2)) - (h / 2);
@@ -75,7 +75,8 @@ function load_page(id) {
     else {
         main.fadeOut(100, () => {
             $.get("/page/" + id + ".html", function (data) {
-                window["$page"][id] = data + `<link rel="stylesheet" href="/css/page/${id}.css">`;
+                window["$page"][id] =
+                    data + `<link rel="stylesheet" href="/css/page/${id}.css">`;
                 main
                     .off() //刪除監聽
                     .html(window["$page"][id])

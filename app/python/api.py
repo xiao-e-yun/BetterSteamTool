@@ -5,7 +5,7 @@ loop = asyncio.get_event_loop()
 @eel.expose
 def get_client_users():
     key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,"SOFTWARE\Valve\Steam", 0, winreg.KEY_QUERY_VALUE) 
-    path , type = winreg.QueryValueEx(key, "SteamPath")
+    path , t = winreg.QueryValueEx(key, "SteamPath")
     users = {}
 
     path+="/config/loginusers.vdf"
@@ -73,11 +73,12 @@ def del_client_user(steamID):
 
 @eel.expose
 def auto_login(name):
-    key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,"SOFTWARE\Valve\Steam", 0, winreg.KEY_SET_VALUE ) 
+    key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,"SOFTWARE\Valve\Steam", 0, winreg.KEY_ALL_ACCESS ) 
     winreg.SetValueEx(key,"AutoLoginUser",0,winreg.REG_SZ,name)
+    exe , t = winreg.QueryValueEx(key, "SteamExe")
     si = subprocess.STARTUPINFO()
     si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-    subprocess.call('taskkill /f /IM "steam.exe" & start steam:', startupinfo=si,shell=True)
+    subprocess.Popen('taskkill /f /IM steam.exe /FI "STATUS eq RUNNING" & '+exe+" -noverifyfiles  & exit", startupinfo=si,shell=True)
     winreg.CloseKey(key)
 
 @eel.expose
@@ -91,7 +92,7 @@ def user_login(name,password,guard=False):
     si = subprocess.STARTUPINFO()
     si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 
-    subprocess.call('taskkill /f /IM "steam.exe"', startupinfo=si,shell=True)
+    subprocess.Popen('taskkill /f /IM steam.exe /FI "STATUS eq RUNNING" & exit', startupinfo=si,shell=True)
     from python import login_steam
     login_steam.login(name,password,exe,guard)
     return True

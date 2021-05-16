@@ -50,7 +50,6 @@ function show_acc_items(reload = true) {
             });
         });
         if (!session) {
-            console.log(loop);
             eel.get(loop["url"], loop["org"]);
         }
     });

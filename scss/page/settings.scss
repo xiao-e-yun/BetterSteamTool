@@ -1,34 +1,61 @@
 @import "../root.scss";
 
-#account {
+#OPTaccount {
     display: -webkit-inline-box;
     margin: 5px;
     overflow-x: hidden;
     height: min-content;
     width: -webkit-fill-available;
     overflow-x: auto;
-    &::-webkit-scrollbar{
+    &::-webkit-scrollbar {
         height: 10px;
     }
     & > div {
         box-sizing: border-box;
-        border:$border;
+        border: $border;
         width: 80px;
         height: 80px;
         background-size: cover !important;
         position: relative;
         overflow: hidden;
         margin: 0 5px 5px 0;
-        &:last-child{
+        &:last-child {
             margin: 0 0 5px 0;
         }
         &:hover > .acc_txt {
-            border-top:$border;
+            border-top: $border;
             height: 23px;
-            &>p{
+            & > p {
                 display: block;
             }
         }
+    }
+}
+.card{
+    margin: .6em;
+    border-left: $main;
+    &>.title{
+        margin: 0 5% 0 10%;
+        font-size: 1.5em;
+        border-bottom:$border;
+    }
+    &>.info{
+        margin: .4em 0 0 0!important;
+        &>a{
+            color:$background;
+            background-color: $main;
+            text-decoration: none;
+        }
+    }
+    &>input{
+        height: 1.5em;
+        font-size: .8em;
+        width: -webkit-fill-available;
+        border: $background;
+        border-radius: 0;
+        background-color: $main;
+        color: $background;
+        outline: none;
     }
 }
 .acc_txt {
@@ -41,11 +68,11 @@
     border-top: hidden;
     transition: height ease-in-out 0.2s;
     box-sizing: border-box;
-    &>p{
+    & > p {
         position: relative;
-        margin: 0!important;
+        margin: 0 !important;
         animation: marqee 7.5s linear infinite;
-        white-space: nowrap;                
+        white-space: nowrap;
         width: fit-content;
         padding: 0 10px;
         box-sizing: border-box;
@@ -54,38 +81,41 @@
 }
 @keyframes marqee {
     0% {
-     left: 100%;
-     transform: translateX(0%);
+        left: 100%;
+        transform: translateX(0%);
     }
-   
+
     100% {
-     left: 0;
-     transform: translateX(-100%);
+        left: 0;
+        transform: translateX(-100%);
     }
 }
-.items > h2 {
-    display: inline;
-    cursor: n-resize;
-    user-select: none;
-    position: relative;
+.items {
+    margin: 0 0 .5em 0 ;
+    & > h2 {
+        display: inline;
+        cursor: n-resize;
+        user-select: none;
+        position: relative;
 
-    &::before {
-        height: auto;
-        content: "";
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: -8px;
-        width: 4px;
-        background-color: #f1dac4;
-        transform: scaleY(0);
-        transform-origin: center bottom;
-        transition: transform 0.5s ease-in-out;
-    }
+        &::before {
+            height: auto;
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: -8px;
+            width: 4px;
+            background-color: #f1dac4;
+            transform: scaleY(0);
+            transform-origin: center bottom;
+            transition: transform 0.5s ease-in-out;
+        }
 
-    &:hover::before {
-        transform-origin: center top;
-        transform: scaleY(1);
+        &:hover::before {
+            transform-origin: center top;
+            transform: scaleY(1);
+        }
     }
 }
 #new-account {

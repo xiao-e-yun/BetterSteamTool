@@ -40,7 +40,6 @@ async function show_acc_items(reload: boolean = true) {
         }
     })
     if (!session) {
-        console.log(loop)
         eel.get(loop["url"], loop["org"])
     }
 }

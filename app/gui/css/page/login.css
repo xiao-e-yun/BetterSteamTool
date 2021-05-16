@@ -1,3 +1,6 @@
+main#main_contant {
+  padding-bottom: 26px; }
+
 #account {
   display: flex;
   flex-wrap: wrap; }
@@ -112,7 +115,7 @@
   text-align: center;
   margin: 3% 0 0 0 !important;
   padding: 5px 10px;
-  position: absolute;
+  position: fixed;
   font-weight: 1000;
   font-size: 1.2em !important;
   letter-spacing: 2px; }

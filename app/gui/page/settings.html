@@ -1,7 +1,7 @@
 <div class="items">
     <h2>帳號</h2>
     <div class="content">
-        <div id="account"></div>
+        <div id="OPTaccount"></div>
         <div class="inline_btn">
             <button data-link="settings$create" id="new-account"><svg width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path fill="#f1dac4" stroke-width="0" stroke="null" id="svg_1" d="m8.046296,0.018833a0.997685,0.997707 0 0 1 0.997685,0.997707l0,5.986241l5.986111,0a0.997685,0.997707 0 0 1 0,1.995414l-5.986111,0l0,5.986241a0.997685,0.997707 0 0 1 -1.99537,0l0,-5.986241l-5.986111,0a0.997685,0.997707 0 0 1 0,-1.995414l5.986111,0l0,-5.986241a0.997685,0.997707 0 0 1 0.997685,-0.997707z"/></svg></button>
             <button id="reload-account"><svg width="20" height="16" xmlns="http://www.w3.org/2000/svg" class="bi bi-arrow-repeat"><path fill="#f1dac4" stroke="null" id="svg_1" d="m14.530607,6.651514l5.040844,0a0.320501,0.337122 0 0 1 0.246145,0.55288l-2.520422,3.182431a0.320501,0.337122 0 0 1 -0.49229,0l-2.520422,-3.182431a0.320501,0.337122 0 0 1 0.246145,-0.55288zm-14.102057,2.696975l5.040844,0a0.320501,0.337122 0 0 0 0.246145,-0.55288l-2.520422,-3.182431a0.320501,0.337122 0 0 0 -0.49229,0l-2.520422,3.182431a0.320501,0.337122 0 0 0 0.246145,0.55288z"/><path fill="#f1dac4" stroke="null" id="svg_2" d="m9.953704,1.359737c-2.086305,0 -3.95215,0.938933 -5.184844,2.4144a0.672134,0.664026 0 1 1 -1.036431,-0.844642a8.0683,7.970973 0 0 1 14.175313,3.742453l-1.367121,0a6.724032,6.64292 0 0 0 -6.586916,-5.312211zm-6.586916,7.968317a6.724032,6.64292 0 0 0 11.77176,2.897811a0.672134,0.664026 0 1 1 1.036431,0.844642a8.0683,7.970973 0 0 1 -14.175313,-3.742453l1.367121,0z" fill-rule="evenodd"/></svg></button>
@@ -11,8 +11,10 @@
 <div class="items">
     <h2>基礎設置</h2>
     <div class="content">
-        <div id="settings">
-            
+        <div class="card">
+            <h2 class="title">SteamAPI</h2>
+            <p class="info">使用API取得帳號資料 <a target="_blank" href="https://steamcommunity.com/dev/apikey">此處取得</a><br>否則使用大量帳號可能會無頭像<br></p>
+            <input id="steam_api_key" placeholder="Steam Web API">
         </div>
     </div>
 </div>

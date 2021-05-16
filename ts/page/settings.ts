@@ -3,14 +3,14 @@ main.on("click", ".items>h2", function () {
     $(this).siblings().slideToggle(1000)
 })
 
-function account(): [{ bg: boolean | string, avatar_url: string, lvl: number, name: string, oauth: string, pwd: string, persona_name: string }] { return JSON.parse(localStorage.getItem("better_steam_tool$account")) }
-if (localStorage.getItem("better_steam_tool$account") === null) {
-    (async () => {
-        reload_account_list()
-    })()
+function account():{string:{ bg: boolean | string, avatar_url: string, lvl: number, name: string, oauth: string, pwd: string, persona_name: string }}
+{ return JSON.parse(localStorage.getItem("better_steam_tool$get_account_users")) }
+
+if (localStorage.getItem("better_steam_tool$get_account_users") === null) {
+    reload_account_list()
 } else {
     let $html = ""
-    account().forEach(user => {
+    $.each(account(),(sid,user) => {
         $html += `
         <div id="${user.name}" style="background:url('${user.avatar_url}')">
             <div class="acc_txt">
@@ -18,8 +18,8 @@ if (localStorage.getItem("better_steam_tool$account") === null) {
             </div>
         </div>
         `
-    });
-    $("#account").html($html).fadeIn()
+    })
+    $("#OPTaccount").html($html).fadeIn()
 }
 
 $("#reload-account").on("click", () => {
@@ -28,12 +28,12 @@ $("#reload-account").on("click", () => {
 
 async function reload_account_list() {
     let $data = await eel.get_account_list()()
-    let $acc = $("#account")
+    let $acc = $("#OPTaccount")
     $("#reload-account").attr("disabled", "")
-    localStorage.setItem("better_steam_tool$account", JSON.stringify($data))
+    localStorage.setItem("better_steam_tool$get_account_users", JSON.stringify($data))
     $acc.fadeOut(400, () => {
         let $html = ""
-        account().forEach(user => {
+        $.each(account(),(sid,user) => {
             $html += `
             <div id="${user.name}" style="background:url('${user.avatar_url}')">
                 <div class="acc_txt">
@@ -47,5 +47,16 @@ async function reload_account_list() {
         setTimeout(() => { $("#reload-account").removeAttr("disabled") }, 1000)
     })
 }
+
+(async function(){
+    let config = await eel.app_get_settings()()
+    console.log(config)
+    $.each(config,(key:string,val)=>{
+        $("#"+key).val(val)
+    })
+})()
+main.on("input","input",function(){
+    eel.app_chang_setting(this.id,this.value)
+})
 
 console.log("settings is ready")

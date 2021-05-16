@@ -12,15 +12,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 main.on("click", ".items>h2", function () {
     $(this).siblings().slideToggle(1000);
 });
-function account() { return JSON.parse(localStorage.getItem("better_steam_tool$account")); }
-if (localStorage.getItem("better_steam_tool$account") === null) {
-    (() => __awaiter(void 0, void 0, void 0, function* () {
-        reload_account_list();
-    }))();
+function account() { return JSON.parse(localStorage.getItem("better_steam_tool$get_account_users")); }
+if (localStorage.getItem("better_steam_tool$get_account_users") === null) {
+    reload_account_list();
 }
 else {
     let $html = "";
-    account().forEach(user => {
+    $.each(account(), (sid, user) => {
         $html += `
         <div id="${user.name}" style="background:url('${user.avatar_url}')">
             <div class="acc_txt">
@@ -29,7 +27,7 @@ else {
         </div>
         `;
     });
-    $("#account").html($html).fadeIn();
+    $("#OPTaccount").html($html).fadeIn();
 }
 $("#reload-account").on("click", () => {
     reload_account_list();
@@ -37,12 +35,12 @@ $("#reload-account").on("click", () => {
 function reload_account_list() {
     return __awaiter(this, void 0, void 0, function* () {
         let $data = yield eel.get_account_list()();
-        let $acc = $("#account");
+        let $acc = $("#OPTaccount");
         $("#reload-account").attr("disabled", "");
-        localStorage.setItem("better_steam_tool$account", JSON.stringify($data));
+        localStorage.setItem("better_steam_tool$get_account_users", JSON.stringify($data));
         $acc.fadeOut(400, () => {
             let $html = "";
-            account().forEach(user => {
+            $.each(account(), (sid, user) => {
                 $html += `
             <div id="${user.name}" style="background:url('${user.avatar_url}')">
                 <div class="acc_txt">
@@ -57,4 +55,16 @@ function reload_account_list() {
         });
     });
 }
+(function () {
+    return __awaiter(this, void 0, void 0, function* () {
+        let config = yield eel.app_get_settings()();
+        console.log(config);
+        $.each(config, (key, val) => {
+            $("#" + key).val(val);
+        });
+    });
+})();
+main.on("input", "input", function () {
+    eel.app_chang_setting(this.id, this.value);
+});
 console.log("settings is ready");

@@ -28,7 +28,7 @@ $body
 (function () {
     return __awaiter(this, void 0, void 0, function* () {
         let user_list = yield eel.get_account_list()();
-        user_list.forEach((users) => {
+        $.each(user_list, (sid, users) => {
             $body.append(`
         <div class="item" data-name="${users.name}" data-pwd="${users.pwd}" style="background-image:url('${users.avatar_url}');">
             <p>${users.persona_name}</p>

@@ -2,53 +2,138 @@
 #   後臺主程序
 #   帳戶控制器
 #
-import eel,logging,steam,os,sys,json,requests
+import eel
+import steam
+import os
+import sys
+import json
+import requests
+import asyncio
+import datetime
+import aiohttp
 import steam.webauth as wa
 import steam.steamid as Sid
+import steam.webapi as SAPI
+loop = asyncio.get_event_loop()
+
+path = os.getcwd()
+path += '/data/'
 
 def start():
-    global path
-    path = os.getcwd()
-    if(not os.path.exists('data')):#已創建
-        os.mkdir(path+'/data')
-        os.mkdir(path+'/data/user_config')
-        print("create data")
-    path += '/data/'
+    if(not os.path.exists('data')):  # 已創建
+        os.mkdir(path)
+        os.mkdir(path+'user_config')
+        with open(path+"settings.json", "w") as f:
+            wr = {'key': ''}
+            f.write(json.dump(wr))
 
-#==============================================================
-#                           顯示帳號
-#==============================================================
+        print("create data")
+
+# ==============================================================
+#                         系統設置修改
+# ==============================================================
+
 @eel.expose
-def get_account_list():
+def app_get_settings():
+    with open(path+"settings.json", "r") as f:
+        return json.load(f)
+
+@eel.expose
+def app_chang_setting(key,val):
+    with open(path+"settings.json", "r") as f:
+        conf = json.load(f)
+    conf[key]=val
+    with open(path+"settings.json", "w") as f:
+        json.dump(conf,f)
+
+# ==============================================================
+#                           顯示帳號
+# ==============================================================
+
+
+@eel.expose
+def get_account_list(stop_api=False):
+    with open(path+"settings.json", "r") as f:
+        conf = json.load(f)
+    try:
+        SAPI.WebAPI(key=conf["steam_api_key"])
+        api = True
+    except:
+        api = False
+    
+    print("steamAPI status:"+str(api))
+
     user_path = path + "user_config/"
     _list = os.listdir(user_path)
-    users = []
-    for account in _list :
+    users = {}
+    tasks = []
 
-        if(account[-5:] == ".json") :
-            file = {}
-            with open(user_path + account,"r") as f :
-                file = json.load(f)
-            req = json.loads(requests.get('https://steamcommunity.com/miniprofile/' + str(file["account_id"]) + '/json').text)
-            data = {
-                "name" : account[:-5],
-                "pwd" : file["password"],
-                "oauth" : file['oauth'],
-                "avatar_url" : req["avatar_url"],
-                "lvl" : req["level"],
-                "persona_name" : req["persona_name"],
-            }
-            try:
-                data["bg"]=(list(req["profile_background"].values())[0])
-            except:
-                data["bg"]=False
-            users.append(data)
-            print(data)
+    async def get(url,sid,type):
+        print("start "+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url) as response:
+                req = json.loads(await response.text())
+                print("req "+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
+                if(type == "CDN"):
+                    data = {
+                        "persona_name":req["persona_name"],
+                        "avatar_url":req["avatar_url"]
+                    }
+                    users[sid] = {**users[sid], **data}
+
+                else: # Api
+                    req = req["response"]["players"]
+                    for q in req:
+                        data = {
+                            "persona_name":q["personaname"],
+                            "avatar_url":q["avatarfull"]
+                        }
+                        users[q["steamid"]] = {**users[q["steamid"]], **data}
+
+
+    if (api is False|stop_api):  # use CDN
+
+        for account in _list:
+            if(account[-5:] == ".json") : 
+                with open(user_path + account,"r") as f :
+                    file = json.load(f)
+                data = {
+                    "name" : account[:-5],
+                    "pwd" : file["password"],
+                    "oauth" : file['oauth'],
+                    }
+                users[str(file["steam_id"])]=data
+                url = 'https://steamcommunity.com/miniprofile/'+str(file["account_id"])+'/json'
+                tasks.append(asyncio.ensure_future(get(url,str(file["steam_id"]),"CDN")))
+
+    else : #webAPi
+        steamids=[]
+
+        for account in _list:
+            if(account[-5:] == ".json") : 
+                with open(user_path + account,"r") as f :
+                    file = json.load(f)
+                data = {
+                    "name" : account[:-5],
+                    "pwd" : file["password"],
+                    "oauth" : file['oauth'],
+                    }
+                users[str(file["steam_id"])]=data
+                steamids.append(str(file["steam_id"]))
+                
+        def tolist():
+            for i in range(0, len(steamids),100):yield steamids[i:i + 100]
+        dot = ","
+        for user in list(tolist()):
+            url = 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key='+str(conf["steam_api_key"])+'&steamids='+dot.join(user)
+            tasks.append(asyncio.ensure_future(get(url,"","API")))
+
+    loop.run_until_complete(asyncio.wait(tasks))
     return users
 
-#==============================================================
+# ==============================================================
 #                           登入帳號
-#==============================================================
+# ==============================================================
 @eel.expose
 def captcha_url():
     return create_acc.captcha_gid
