@@ -25,7 +25,7 @@ def start():
         os.mkdir(path+'user_config')
         with open(path+"settings.json", "w") as f:
             wr = {'key': ''}
-            f.write(json.dump(wr))
+            json.dump(wr,f)
 
         print("create data")
 
