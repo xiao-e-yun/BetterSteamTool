@@ -2,7 +2,6 @@
     "compilerOptions": {
         "module": "ES2020",
         "target": "ES2020",
-        "jsx": "preserve",
         "strictFunctionTypes": true,
         "outDir":"app/gui/js",
         "alwaysStrict":true
