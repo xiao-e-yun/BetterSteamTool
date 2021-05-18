@@ -1,86 +1,118 @@
 "use strict";
 /// <reference path="../page.ts" />
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var $acc = $("#account");
-function show_acc_items(reload = true) {
-    return __awaiter(this, void 0, void 0, function* () {
-        let list = yield eel.get_client_users()();
-        onClick();
-        function onClick() {
-            $acc.one("click", ".account_items", function () {
-                let user = this.dataset.username;
-                console.log(user);
-                eel.auto_login(user);
-                setTimeout(() => { onClick(); }, 1000);
-            });
-        }
-        $acc.on("click", ".account_items p", (event) => {
-            event.stopPropagation();
+async function show_acc_items(reload = true) {
+    let list = await eel.get_client_users()();
+    onClick();
+    function onClick() {
+        $acc.one("click", ".account_items", function () {
+            let user = this.dataset.username;
+            console.log(user);
+            eel.auto_login(user);
+            setTimeout(() => { onClick(); }, 1000);
         });
-        let session = false;
-        let Sdata = localStorage.getItem("better_steam_tool$get_client_users");
-        if (Sdata !== null && reload) {
-            session = true;
-            Sdata = JSON.parse(Sdata);
-        }
-        let loop = { org: [], url: [] };
-        $.each(list, function (key, val) {
-            return __awaiter(this, void 0, void 0, function* () {
-                if (session && Sdata[val.AccountID]) {
-                    $acc.append(`
+    }
+    $acc.on("click", ".account_items p", (event) => {
+        event.stopPropagation();
+    });
+    let session = false;
+    let Sdata = localStorage.getItem("better_steam_tool$get_client_users");
+    if (Sdata !== null && reload) {
+        session = true;
+        Sdata = JSON.parse(Sdata);
+    }
+    let api_key = await eel.get_steam_web_api()(); //if err return false
+    let $html = "";
+    let loop = [];
+    let api_org = {};
+    $.each(list, async function (key, val) {
+        if (session && Sdata[val.AccountID]) {
+            $html += `
             <div class="account_items" data-username="${val.AccountName}" data-steamid="${key}" style="background-image:url('${Sdata[val.AccountID]["avatar_url"]}');order:${val.AccountID};">
                 <p>${val.PersonaName}</p>
             </div>
-            `);
-                }
-                else {
-                    session = false;
-                    loop["url"].push(`https://steamcommunity.com/miniprofile/${val.AccountID}/json`);
-                    val["steamid"] = key;
-                    loop["org"].push(val);
-                }
-            });
-        });
-        if (!session) {
-            eel.get(loop["url"], loop["org"]);
+            `;
+        }
+        else {
+            session = false;
+            val["steamid"] = key;
+            if (api_key === false) { //使用 CDN
+                let url = `https://steamcommunity.com/miniprofile/${val.AccountID}/json`;
+                loop.push({
+                    "url": url,
+                    "org": val
+                });
+            }
+            else {
+                loop.push({
+                    "url": key,
+                });
+                api_org[key] = val;
+            }
         }
     });
-}
-function get_req(data, original) {
-    if (data === "") {
-        let avatar_url;
-        try {
-            avatar_url = JSON.parse(localStorage.getItem("better_steam_tool$get_client_users"))[original.AccountID]["avatar_url"];
-        }
-        catch (e) {
-            avatar_url = "/img/user_noimg.png";
-        }
-        $acc.append(`
-        <div class="account_items" data-username="${original.AccountName}" data-steamid="${original.steamid}" style="background-image:url('${avatar_url}');order:${original.AccountID};">
-            <p>${original.PersonaName}</p>
-        </div>
-        `);
+    if (session) {
+        $acc.html($html);
     }
     else {
-        $acc.append(`
-        <div class="account_items" data-username="${original.AccountName}" data-steamid="${original.steamid}" style="background-image:url('${data.avatar_url}');order:${original.AccountID};">
-            <p>${original.PersonaName}</p>
-        </div>
-        `);
-        let $data = JSON.parse(localStorage.getItem("better_steam_tool$get_client_users"));
-        if ($data === null) {
-            $data = {};
+        let $data = {};
+        if (api_key === false) { //使用 CDN
+            let req = await eel.get(loop)();
+            for (let data of req) { //一次性請求
+                let req;
+                let org;
+                let avatar_url;
+                if (data === "") {
+                    try {
+                        avatar_url = JSON.parse(localStorage.getItem("better_steam_tool$get_client_users"))[org.AccountID]["avatar_url"];
+                    }
+                    catch (e) {
+                        avatar_url = "/img/user_noimg.png";
+                    }
+                }
+                else {
+                    req = data["req"];
+                    avatar_url = req.avatar_url;
+                    org = data["org"];
+                }
+                $html += `
+                <div class="account_items" data-username="${org.AccountName}" data-steamid="${org.steamid}" style="background-image:url('${avatar_url}');order:${org.AccountID};">
+                    <p>${org.PersonaName}</p>
+                </div>`;
+                $data[org.AccountID] = req;
+            }
+            console.log("CDN call");
         }
-        $data[original.AccountID] = data;
+        else { //使用 web api
+            loop = group(loop, 100);
+            for (const list of loop) { //一次性請求
+                let ids = [];
+                list.forEach((data) => {
+                    ids.push(data.url);
+                });
+                let req = await eel.get(`https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${api_key}&steamids=${ids.join()}`)();
+                $.each(req["response"]["players"], (i, req) => {
+                    let org = api_org[req["steamid"]];
+                    $html += `
+                    <div class="account_items" data-username="${org.AccountName}" data-steamid="${org.steamid}" style="background-image:url('${req["avatarfull"]}');order:${org.AccountID};">
+                        <p>${org.PersonaName}</p>
+                    </div>`;
+                    req["avatar_url"] = req["avatarfull"];
+                    $data[org.AccountID] = req;
+                });
+            }
+            function group(array, subGroupLength) {
+                let index = 0;
+                let newArray = [];
+                while (index < array.length) {
+                    newArray.push(array.slice(index, index += subGroupLength));
+                }
+                return newArray;
+            }
+            console.log("steam API call");
+        }
         localStorage.setItem("better_steam_tool$get_client_users", JSON.stringify($data));
+        $acc.html($html);
     }
 }
 $("#import").on("click", function () {

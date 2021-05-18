@@ -5,10 +5,7 @@ declare var footer: JQuery<HTMLElement>, main: JQuery<HTMLElement>
 declare function open_page(id: string): void
 
 let Eclose = function () { window.close() }
-eel.expose(Eclose, "close");
-
-let Eget_req = function (a, b) { (() => { get_req(a, b) })() }
-eel.expose(Eget_req, "get_req");
+eel.expose(Eclose, "close")
 
 window["w"] = 0
 window["h"] = 0

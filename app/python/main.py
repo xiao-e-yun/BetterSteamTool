@@ -47,6 +47,21 @@ def app_chang_setting(key,val):
         json.dump(conf,f)
 
 # ==============================================================
+#                           測試api
+# ==============================================================
+
+@eel.expose
+def get_steam_web_api():
+    with open(path+"settings.json", "r") as f:
+        conf = json.load(f)
+    try:
+        api = conf["steam_api_key"]
+        SAPI.WebAPI(key=api)
+    except:
+        api = False
+    return api
+
+# ==============================================================
 #                           顯示帳號
 # ==============================================================
 
@@ -55,11 +70,8 @@ def app_chang_setting(key,val):
 def get_account_list(stop_api=False):
     with open(path+"settings.json", "r") as f:
         conf = json.load(f)
-    try:
-        SAPI.WebAPI(key=conf["steam_api_key"])
-        api = True
-    except:
-        api = False
+
+    api = get_steam_web_api()
     
     print("steamAPI status:"+str(api))
 
@@ -125,14 +137,17 @@ def get_account_list(stop_api=False):
             for i in range(0, len(steamids),100):yield steamids[i:i + 100]
         dot = ","
         for user in list(tolist()):
-            url = 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key='+str(conf["steam_api_key"])+'&steamids='+dot.join(user)
+            url = 'https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key='+str(conf["steam_api_key"])+'&steamids='+dot.join(user)
             tasks.append(asyncio.ensure_future(get(url,"","API")))
 
-    loop.run_until_complete(asyncio.wait(tasks))
-    return users
+    if (len(_list) == 0):
+        return {}
+    else:
+        loop.run_until_complete(asyncio.wait(tasks))
+        return users
 
 # ==============================================================
-#                           登入帳號
+#                           bs登入帳號
 # ==============================================================
 @eel.expose
 def captcha_url():
@@ -196,6 +211,7 @@ def create_account(lvl,data): #引入帳號
             print("create user config [\""+data["username"]+"\"]")
 
     return next
+
 
 if __name__ == '__main__':
     start()

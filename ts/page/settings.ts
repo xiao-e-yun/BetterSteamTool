@@ -50,7 +50,6 @@ async function reload_account_list() {
 
 (async function(){
     let config = await eel.app_get_settings()()
-    console.log(config)
     $.each(config,(key:string,val)=>{
         $("#"+key).val(val)
     })

@@ -2,6 +2,62 @@ import eel,winreg,datetime,vdf,json,asyncio,aiohttp,subprocess
 import steam.steamid as Sid
 loop = asyncio.get_event_loop()
 
+# ==============================================================
+#                         外抓系統
+# ==============================================================
+
+@eel.expose #req_list:list|dict|str
+def get(req_list,JSON = True):
+    data=[]
+
+    #設置async取得
+    async def _get(url,JSON,original=False,once=False):
+        print("start "+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url) as response:
+                req = await response.text()
+                print("req "+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
+                if (JSON==True):
+                    try:
+                        req = json.loads(req)
+                    except:
+                        print("error!req is not JSON\n")
+                        pass
+                if(not once):
+                    if(original != False):
+                        data.append({"req":req,"org":original})
+                    else:
+                        data.append({"req":req})
+                else: #once
+                    if(original != False):
+                        return {"req":req,"org":original}
+                    else:
+                        return req
+            
+                
+    tasks = []
+    ty=type(req_list)
+    if(ty == list):
+        for obj in req_list:
+            if("org" in obj):
+                tasks.append(asyncio.ensure_future(_get(obj["url"],JSON,obj["org"])))
+            else:
+                tasks.append(asyncio.ensure_future(_get(obj["url"],JSON)))
+    elif(ty == dict):
+        if("org" in req_list):
+            return loop.run_until_complete(_get(req_list["url"],JSON,req_list["org"],True))
+        else:
+            return loop.run_until_complete(_get(req_list["url"],JSON,False,True))
+    else:#str
+        return loop.run_until_complete(_get(req_list,JSON,False,True))
+
+    loop.run_until_complete(asyncio.wait(tasks))
+    return data
+
+# ==============================================================
+#                         讀取steam帳號列表
+# ==============================================================
+
 @eel.expose
 def get_client_users():
     key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,"SOFTWARE\Valve\Steam", 0, winreg.KEY_QUERY_VALUE) 
@@ -18,9 +74,6 @@ def get_client_users():
 
     rewrite = False
     for key,val in users.items():
-        if(val["RememberPassword"] == "0"):
-            users[key]["RememberPassword"] = 1
-            rewrite = True
         if("AccountID" not in val):
             users[key]["AccountID"] = str(Sid.SteamID(key).id)
             rewrite = True
@@ -31,35 +84,14 @@ def get_client_users():
             vdf.dump({"users":users},file)
     return(users)
 
-@eel.expose
-def get(urls,original,JSON = True):
-    async def _get(url,JSON,original):
-        print("start "+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url) as response:
-                req = await response.text()
-                print("req "+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
-                if (JSON==True):
-                    try:
-                        eel.get_req(json.loads(req),original)
-                    except:
-                        print("錯誤!\n" + req)
-                        eel.get_req("",original)
-                else:
-                    eel.get_req(req,original)
-
-    if (type(urls) is list and type(original) is list ):
-        tasks = []
-        for url,original in zip(urls,original):
-            tasks.append(asyncio.ensure_future(_get(url,JSON,original)))
-        loop.run_until_complete(asyncio.wait(tasks))
-    else:
-        loop.run_until_complete(_get(urls,JSON,original))
+# ==============================================================
+#                           刪除steam帳號
+# ==============================================================
 
 @eel.expose
 def del_client_user(steamID):
     key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,"SOFTWARE\Valve\Steam", 0, winreg.KEY_QUERY_VALUE) 
-    path , type = winreg.QueryValueEx(key, "SteamPath")
+    path , t= winreg.QueryValueEx(key, "SteamPath")
     users = {}
 
     with open(path+"/config/loginusers.vdf","r",encoding="utf-8") as file :
@@ -70,6 +102,9 @@ def del_client_user(steamID):
     with open(path+"/config/loginusers.vdf","w",encoding="utf-8") as file :
         vdf.dump(users,file)
 
+# ==============================================================
+#                         普通登入steam帳號
+# ==============================================================
 
 @eel.expose
 def auto_login(name):
@@ -78,8 +113,12 @@ def auto_login(name):
     exe , t = winreg.QueryValueEx(key, "SteamExe")
     si = subprocess.STARTUPINFO()
     si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-    subprocess.Popen('taskkill /f /IM steam.exe /FI "STATUS eq RUNNING" & '+exe+" -noverifyfiles  & exit", startupinfo=si,shell=True)
+    subprocess.Popen('taskkill /f /IM steam.exe /FI "STATUS eq RUNNING" & '+exe+"& exit", startupinfo=si,shell=True)
     winreg.CloseKey(key)
+
+# ==============================================================
+#                        系統模擬登入steam帳號
+# ==============================================================
 
 @eel.expose
 def user_login(name,password,guard=False):

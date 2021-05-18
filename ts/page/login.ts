@@ -24,50 +24,98 @@ async function show_acc_items(reload: boolean = true) {
         session = true
         Sdata = JSON.parse(Sdata)
     }
-    let loop = { org: [], url: [] }
+    let api_key = await eel.get_steam_web_api()() //if err return false
+    let $html = ""
+    let loop = []
+    let api_org = {}
     $.each(list, async function (key: string, val: { "AccountID": string, "AccountName": string, "MostRecent": string, "PersonaName": string, "RememberPassword": string, "SkipOfflineModeWarning": string, "Timestamp": string, "WantsOfflineMode": string }) {
         if (session && Sdata[val.AccountID]) {
-            $acc.append(`
+            $html += `
             <div class="account_items" data-username="${val.AccountName}" data-steamid="${key}" style="background-image:url('${Sdata[val.AccountID]["avatar_url"]}');order:${val.AccountID};">
                 <p>${val.PersonaName}</p>
             </div>
-            `)
+            `
         } else {
             session = false
-            loop["url"].push(`https://steamcommunity.com/miniprofile/${val.AccountID}/json`)
             val["steamid"] = key
-            loop["org"].push(val)
+            if (api_key === false) { //使用 CDN
+
+                let url = `https://steamcommunity.com/miniprofile/${val.AccountID}/json`
+                loop.push({
+                    "url": url,
+                    "org": val
+                })
+            } else {
+                loop.push({
+                    "url": key,
+                })
+                api_org[key] = val
+            }
         }
     })
-    if (!session) {
-        eel.get(loop["url"], loop["org"])
-    }
-}
-function get_req(data: any, original: any) {
-    if (data === "") {
-        let avatar_url: string
-        try {
-            avatar_url = JSON.parse(localStorage.getItem("better_steam_tool$get_client_users"))[original.AccountID]["avatar_url"]
-        }
-        catch (e) {
-            avatar_url = "/img/user_noimg.png"
-        }
 
-        $acc.append(`
-        <div class="account_items" data-username="${original.AccountName}" data-steamid="${original.steamid}" style="background-image:url('${avatar_url}');order:${original.AccountID};">
-            <p>${original.PersonaName}</p>
-        </div>
-        `)
+    if (session) {
+        $acc.html($html)
     } else {
-        $acc.append(`
-        <div class="account_items" data-username="${original.AccountName}" data-steamid="${original.steamid}" style="background-image:url('${data.avatar_url}');order:${original.AccountID};">
-            <p>${original.PersonaName}</p>
-        </div>
-        `)
-        let $data = JSON.parse(localStorage.getItem("better_steam_tool$get_client_users"))
-        if ($data === null) { $data = {} }
-        $data[original.AccountID] = data
+        let $data = {}
+        if (api_key === false) {//使用 CDN
+            let req = await eel.get(loop)()
+            for (let data of req) {//一次性請求
+                let req: { "FavoriteBadge": { "name": string, "xp": string, "level": number, "description": string, "icon": string, }, "level": number, "level_class": string, "avatar_url": string, "persona_name": string, "avatar_frame": string, }
+                let org: { "AccountID": string, "AccountName": string, "MostRecent": string, "PersonaName": string, "RememberPassword": string, "SkipOfflineModeWarning": string, "Timestamp": string, "WantsOfflineMode": string, "steamid": string }
+                let avatar_url: string
+                if (data === "") {
+                    try {
+                        avatar_url = JSON.parse(localStorage.getItem("better_steam_tool$get_client_users"))[org.AccountID]["avatar_url"]
+                    }
+                    catch (e) {
+                        avatar_url = "/img/user_noimg.png"
+                    }
+                } else {
+                    req = data["req"]
+                    avatar_url = req.avatar_url
+                    org = data["org"]
+                }
+                $html += `
+                <div class="account_items" data-username="${org.AccountName}" data-steamid="${org.steamid}" style="background-image:url('${avatar_url}');order:${org.AccountID};">
+                    <p>${org.PersonaName}</p>
+                </div>`
+
+                $data[org.AccountID] = req
+            }
+            console.log("CDN call")
+        } else {//使用 web api
+            loop = group(loop, 100)
+            for (const list of loop) {//一次性請求
+                let ids = []
+                list.forEach((data: { "url": string }) => {
+                    ids.push(data.url)
+                })
+                let req = await eel.get(`https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${api_key}&steamids=${ids.join()}`)()
+                $.each(req["response"]["players"], (i, req) => {
+                    let org: { "AccountID": string, "AccountName": string, "MostRecent": string, "PersonaName": string, "RememberPassword": string, "SkipOfflineModeWarning": string, "Timestamp": string, "WantsOfflineMode": string, "steamid": string } = api_org[req["steamid"]]
+                    $html += `
+                    <div class="account_items" data-username="${org.AccountName}" data-steamid="${org.steamid}" style="background-image:url('${req["avatarfull"]}');order:${org.AccountID};">
+                        <p>${org.PersonaName}</p>
+                    </div>`
+                    req["avatar_url"] = req["avatarfull"]
+                    $data[org.AccountID] = req
+                })
+            }
+
+            function group(array, subGroupLength) {
+                let index = 0;
+                let newArray = [];
+                while (index < array.length) {
+                    newArray.push(array.slice(index, index += subGroupLength));
+                }
+                return newArray;
+            }
+            console.log("steam API call")
+
+        }
         localStorage.setItem("better_steam_tool$get_client_users", JSON.stringify($data))
+        $acc.html($html)
     }
 }
 
@@ -151,10 +199,10 @@ function del_mode(type?: boolean) {
         console.log("delete mode:" + type)
     }
 }
-function need_reload(){
-    let reload_mode=$("#reload_mode")
-    reload_mode.fadeIn(500,()=>{
-        $("#reload").one("click",()=>{
+function need_reload() {
+    let reload_mode = $("#reload_mode")
+    reload_mode.fadeIn(500, () => {
+        $("#reload").one("click", () => {
             reload_mode.fadeOut(300)
         })
     })
