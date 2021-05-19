@@ -125,3 +125,22 @@
     flex: 1;
     border-left: $border;
 }
+input[data-hide]{
+    color: transparent; 
+    position: relative;
+    box-sizing: border-box;
+    border-left: $black solid 2px;
+    background-color: $side-2;
+    padding-left: 4px;
+    user-select: none;
+    &:hover{
+        animation: data-hide-in .2s ease-in .3s both;
+    }
+}
+@keyframes data-hide-in{
+    to{
+        color:$main;
+        border-left-color:$main;
+        user-select: text;
+    }
+}

@@ -11,7 +11,7 @@ else {
     let $html = "";
     $.each(account(), (sid, user) => {
         $html += `
-        <div id="${user.name}" style="background:url('${user.avatar_url}')">
+        <div data-id="${user.name}" style="background:url('${user.avatar_url}')">
             <div class="acc_txt">
                 <p>${user.persona_name}</p>
             </div>
@@ -32,7 +32,7 @@ async function reload_account_list() {
         let $html = "";
         $.each(account(), (sid, user) => {
             $html += `
-            <div id="${user.name}" style="background:url('${user.avatar_url}')">
+            <div data-id="${user.name}" style="background:url('${user.avatar_url}')">
                 <div class="acc_txt">
                     <p>${user.persona_name}</p>
                 </div>
@@ -51,6 +51,6 @@ async function reload_account_list() {
     });
 })();
 main.on("input", "input", function () {
-    eel.app_chang_setting(this.id, this.value);
+    eel.app_chang_setting(this.dataset.id, this.value);
 });
 console.log("settings is ready");

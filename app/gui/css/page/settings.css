@@ -104,3 +104,20 @@
 #reload-account {
   flex: 1;
   border-left: #f1dac4 solid 2px; }
+
+input[data-hide] {
+  color: transparent;
+  position: relative;
+  box-sizing: border-box;
+  border-left: #3a3a3a solid 2px;
+  background-color: #474973;
+  padding-left: 4px;
+  user-select: none; }
+  input[data-hide]:hover {
+    animation: data-hide-in .2s ease-in .3s both; }
+
+@keyframes data-hide-in {
+  to {
+    color: #F1DAC4;
+    border-left-color: #F1DAC4;
+    user-select: text; } }
