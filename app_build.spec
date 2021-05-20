@@ -11,7 +11,7 @@ a = Analysis(['app/index.py'],
                 ('C:\\Users\\a0970\\AppData\\Local\\Programs\\Python\\Python39\\lib\\site-packages\\eel\\eel.js', 'eel'),
                 ('app\\gui', 'gui')
                 ],
-             hiddenimports=['bottle_websocket'],
+             hiddenimports=['bottle_websocket','google'],
              hookspath=[],
              runtime_hooks=[],
              excludes=[],

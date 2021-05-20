@@ -41,8 +41,6 @@ def get_2FA():
     time=30-(sa_time.get_time()%30)
     req["reload_time"]=time*1000
 
-    print("for")
-
     for Sid,data  in acc.items():
         if("guard" in data):
             sa = guard.SteamAuthenticator(data["guard"])
