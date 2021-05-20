@@ -67,7 +67,23 @@ def get_steam_web_api():
 
 
 @eel.expose
-def get_account_list(stop_api=False):
+def get_account_list(stop_api=False,no_avatar=False):
+    user_path = path + "user_config/"
+    _list = os.listdir(user_path)
+    users = {}
+
+    if(no_avatar):
+        for account in _list:
+            if(account[-5:] == ".json") : 
+                with open(user_path + account,"r") as f :
+                    file = json.load(f)
+                data = {
+                    "name" : account[:-5],
+                    }
+                data = {**data,**file}
+                users[str(file["steam_id"])]=data
+        return users
+
     with open(path+"settings.json", "r") as f:
         conf = json.load(f)
 
@@ -75,9 +91,6 @@ def get_account_list(stop_api=False):
     
     print("steamAPI status:"+str(api))
 
-    user_path = path + "user_config/"
-    _list = os.listdir(user_path)
-    users = {}
     tasks = []
 
     async def get(url,sid,type):
@@ -102,8 +115,7 @@ def get_account_list(stop_api=False):
                         }
                         users[q["steamid"]] = {**users[q["steamid"]], **data}
 
-
-    if (api is False|stop_api):  # use CDN
+    if (api == False or stop_api == True):  # use CDN
 
         for account in _list:
             if(account[-5:] == ".json") : 
@@ -111,9 +123,8 @@ def get_account_list(stop_api=False):
                     file = json.load(f)
                 data = {
                     "name" : account[:-5],
-                    "pwd" : file["password"],
-                    "oauth" : file['oauth'],
                     }
+                data = {**data,**file}
                 users[str(file["steam_id"])]=data
                 url = 'https://steamcommunity.com/miniprofile/'+str(file["account_id"])+'/json'
                 tasks.append(asyncio.ensure_future(get(url,str(file["steam_id"]),"CDN")))
@@ -127,9 +138,8 @@ def get_account_list(stop_api=False):
                     file = json.load(f)
                 data = {
                     "name" : account[:-5],
-                    "pwd" : file["password"],
-                    "oauth" : file['oauth'],
                     }
+                data = {**data,**file}
                 users[str(file["steam_id"])]=data
                 steamids.append(str(file["steam_id"]))
                 

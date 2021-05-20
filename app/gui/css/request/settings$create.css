@@ -45,6 +45,9 @@ button {
   display: block;
   margin: 0 auto; }
 
+#unknow > input {
+  text-transform: uppercase; }
+
 /*
 =====
 RESET STYLES

@@ -78,6 +78,7 @@ $("#next_step").on("click", async function () { //當下一步被點擊
             break;
         case true: //驗證成功
             $("body").fadeOut("fast", () => {
+                opener["reload_account_list"]()
                 window.close()
             })
             break;

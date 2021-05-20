@@ -8,6 +8,7 @@
   #OPTaccount::-webkit-scrollbar {
     height: 10px; }
   #OPTaccount > div {
+    cursor: pointer;
     box-sizing: border-box;
     border: #f1dac4 solid 2px;
     width: 80px;
@@ -48,6 +49,7 @@
     outline: none; }
 
 .acc_txt {
+  cursor: default;
   height: 0;
   position: absolute;
   bottom: 0;

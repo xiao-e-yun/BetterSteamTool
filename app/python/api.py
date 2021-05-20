@@ -1,5 +1,8 @@
+from steam import guard
+from python.main import get_account_list
 import eel,winreg,datetime,vdf,json,asyncio,aiohttp,subprocess
 import steam.steamid as Sid
+from steam import guard
 loop = asyncio.get_event_loop()
 
 # ==============================================================
@@ -96,7 +99,6 @@ def del_client_user(steamID):
 
     with open(path+"/config/loginusers.vdf","r",encoding="utf-8") as file :
         users = vdf.load(file)
-        print(users)
         del users["users"][steamID]
     
     with open(path+"/config/loginusers.vdf","w",encoding="utf-8") as file :
@@ -121,7 +123,18 @@ def auto_login(name):
 # ==============================================================
 
 @eel.expose
-def user_login(name,password,guard=False):
+def user_login(steamid):
+    try:
+        acc = get_account_list(False,True)
+        acc = acc[steamid]
+    except:
+        return False
+    name=acc["name"]
+    password=acc["password"]
+    if("guard" in acc):
+        se = acc["guard"]
+        sa = guard.SteamAuthenticator(se)
+
     print("username:"+name+"\npassword:"+password)
 
     key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,"SOFTWARE\Valve\Steam", 0, winreg.KEY_QUERY_VALUE) 
@@ -133,5 +146,9 @@ def user_login(name,password,guard=False):
 
     subprocess.Popen('taskkill /f /IM steam.exe /FI "STATUS eq RUNNING" & exit', startupinfo=si,shell=True)
     from python import login_steam
-    login_steam.login(name,password,exe,guard)
-    return True
+    login_steam.login(name,password,exe,sa)
+    Suser = get_client_users()
+    if(steamid not in Suser):
+        return True
+    else:
+        return False

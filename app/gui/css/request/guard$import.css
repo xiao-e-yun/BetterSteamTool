@@ -1,0 +1,32 @@
+#get_mafile {
+  position: relative;
+  width: 92%;
+  margin: 0.8rem auto 0;
+  padding: 0.2rem 0;
+  transition: background-color 0.3s, box-shadow 0.3s; }
+  #get_mafile:hover {
+    transition-delay: 0.2s;
+    background-color: #474973;
+    box-shadow: 0 0 0.3em 0.4em #474973; }
+  #get_mafile > h2 {
+    font-size: 2.5em;
+    margin: 0 0 0 1.6rem; }
+  #get_mafile > p {
+    border-top: #f1dac4 solid 2px;
+    margin: 0;
+    font-size: 1em;
+    overflow: hidden;
+    text-overflow: ellipsis; }
+
+#get_mafile_input {
+  width: 100%;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%; }
+
+#title {
+  margin: 0 0 0 1.2em;
+  border-bottom: #f1dac4 solid 2px;
+  font-size: 2em; }

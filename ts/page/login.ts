@@ -30,7 +30,7 @@ async function show_acc_items(reload: boolean = true) {
     let api_org = {}
     $.each(list, async function (key: string, val: { "AccountID": string, "AccountName": string, "MostRecent": string, "PersonaName": string, "RememberPassword": string, "SkipOfflineModeWarning": string, "Timestamp": string, "WantsOfflineMode": string }) {
         if (session && Sdata[val.AccountID]) {
-            $html += `
+            $html += /*html*/`
             <div class="account_items" data-username="${val.AccountName}" data-steamid="${key}" style="background-image:url('${Sdata[val.AccountID]["avatar_url"]}');order:${val.AccountID};">
                 <p>${val.PersonaName}</p>
             </div>
@@ -76,7 +76,7 @@ async function show_acc_items(reload: boolean = true) {
                     avatar_url = req.avatar_url
                     org = data["org"]
                 }
-                $html += `
+                $html += /*html*/`
                 <div class="account_items" data-username="${org.AccountName}" data-steamid="${org.steamid}" style="background-image:url('${avatar_url}');order:${org.AccountID};">
                     <p>${org.PersonaName}</p>
                 </div>`
@@ -94,7 +94,7 @@ async function show_acc_items(reload: boolean = true) {
                 let req = await eel.get(`https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${api_key}&steamids=${ids.join()}`)()
                 $.each(req["response"]["players"], (i, req) => {
                     let org: { "AccountID": string, "AccountName": string, "MostRecent": string, "PersonaName": string, "RememberPassword": string, "SkipOfflineModeWarning": string, "Timestamp": string, "WantsOfflineMode": string, "steamid": string } = api_org[req["steamid"]]
-                    $html += `
+                    $html += /*html*/`
                     <div class="account_items" data-username="${org.AccountName}" data-steamid="${org.steamid}" style="background-image:url('${req["avatarfull"]}');order:${org.AccountID};">
                         <p>${org.PersonaName}</p>
                     </div>`
@@ -199,21 +199,12 @@ function del_mode(type?: boolean) {
         console.log("delete mode:" + type)
     }
 }
-function need_reload() {
-    let reload_mode = $("#reload_mode")
-    reload_mode.fadeIn(500, () => {
-        $("#reload").one("click", () => {
-            reload_mode.fadeOut(300)
-        })
-    })
-}
+
 $(".tip").hide()
 
 main.on("mouseenter mouseleave", ".account_items", function () {
     $acc.toggleClass("act")
 })
-
-
 
 show_acc_items()
 console.log("settings is ready")

@@ -2,13 +2,17 @@ declare var eel: any
 declare var $page: any, page: any
 declare var w: number, h: number
 declare var footer: JQuery<HTMLElement>, main: JQuery<HTMLElement>
-declare function open_page(id: string): void
+declare var now_page:String
+declare function open_page(href: string, get?: object | boolean): void
+declare function account():{any:{ "bg": boolean | string, "avatar_url": string, "lvl": number, "name": string, "oauth": string, "password": string, "persona_name": string,"shared_secret"?:string}}|null
 
 let Eclose = function () { window.close() }
 eel.expose(Eclose, "close")
 
 window["w"] = 0
 window["h"] = 0
+
+window["account"] = function(){ return JSON.parse(localStorage.getItem("better_steam_tool$get_account_users")) }
 
 if (location.pathname === "/index.html" || location.pathname === "/") { w = 300; h = 600 }
 
@@ -44,11 +48,24 @@ $(() => {
     }
 
     $("#sys_disabled").hide()
-    window["open_page"] = function (href) {
+    window["open_page"] = function (href, get = false) {
         let dis = $("#sys_disabled")
         dis.fadeIn()
         window["waiting_screen"] = true
-        let win = window.open("/request/" + href + ".html", "", `app=true`)
+        let get_data = ""
+
+        if (get !== false) {
+            $.each(get, (key, data) => {
+                if (get_data != "") {
+                    get_data += "&";
+                }else{
+                    get_data += "?";
+                }
+                get_data += key + "=" + encodeURIComponent(data);
+            })
+        }
+
+        let win = window.open("/request/" + href + ".html" + get_data, "", `app=true,width=100,height=100`)
         win.resizeTo(0, 0)
         //關閉時啟用
         let I = setInterval(() => {
@@ -74,10 +91,16 @@ $(() => {
         open_page(this.dataset.link)
     })
 
+    /*body*/.on("mouseenter", "input[data-hide]", function () {
+        this.setAttribute("type", "text")
+    }).on("mouseleave", "input[data-hide]", function () {
+        this.setAttribute("type", "password")
+    })
 })
 
 function load_page(id: string) {
     console.log("open \"" + id + "\" page")
+    window["now_page"] = id
     if (window["$page"][id]) {
         main.fadeOut(100, () => {
             main
@@ -89,7 +112,7 @@ function load_page(id: string) {
     } else {
         main.fadeOut(100, () => {
             $.get("/page/" + id + ".html", function (data) {
-                window["$page"][id] = 
+                window["$page"][id] =
                     data + `<link rel="stylesheet" href="/css/page/${id}.css">`
                 main
                     .off() //刪除監聽

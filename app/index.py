@@ -36,7 +36,6 @@ while not run_status["Status"]:
 info("start")
 from python import main,api,guard 
 main.start()
-guard.load_user()
 
 eel.init(os.path.dirname(os.path.abspath(__file__))+'\gui')
 eel.start('index.html',

@@ -1,0 +1,21 @@
+#loading {
+  z-index: 99999;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(3px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw; }
+  #loading > p {
+    font-size: xx-large;
+    background-repeat: no-repeat;
+    background-size: 80%;
+    background-image: linear-gradient(90deg, transparent, #f1dac4b3, #F1DAC4, #F1DAC4, #f1dac4b3, transparent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: #00000000;
+    animation: _sys_disabled 6s cubic-bezier(0.1, 0.8, 0.9, 0.2) infinite; }

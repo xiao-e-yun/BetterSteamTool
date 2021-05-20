@@ -11,6 +11,7 @@
         height: 10px;
     }
     & > div {
+        cursor: pointer;
         box-sizing: border-box;
         border: $border;
         width: 80px;
@@ -59,6 +60,7 @@
     }
 }
 .acc_txt {
+    cursor: default;
     height: 0;
     position: absolute;
     bottom: 0;

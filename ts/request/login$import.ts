@@ -3,23 +3,21 @@ h = 550
 let $body = $("body")
 
 $body
-    .on("click",".item",async function(){
-        let TSdata = this.dataset
-        if(await eel.user_login(TSdata.name,TSdata.pwd)()){
-            //done
-            opener["need_reload"]()
-            window.close()
-        }
+    .on("click", ".item", async function () {
+        if (await eel.user_login(this.dataset.steamid)()) {
+            opener["show_acc_items"]()
+        }//done
+        window.close()
     })
     .on("click", ".item>p", (event) => {
         event.stopPropagation()
-    })
+    });
 
-;(async function(){
+(async function () {
     let user_list = await eel.get_account_list()()
-    $.each(user_list,(sid,users:{avatar_url: String,bg: String,lvl: Number,name: String,oauth: String,persona_name: String,pwd: String}) =>{
+    $.each(user_list, (sid: string, users: { avatar_url: String, bg: String, lvl: Number, name: String, oauth: String, persona_name: String, password: String }) => {
         $body.append(`
-        <div class="item" data-name="${users.name}" data-pwd="${users.pwd}" style="background-image:url('${users.avatar_url}');">
+        <div class="item" data-steamid="${sid}" style="background-image:url('${users.avatar_url}');">
             <p>${users.persona_name}</p>
         </div>
         `)

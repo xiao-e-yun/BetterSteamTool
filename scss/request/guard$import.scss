@@ -1,0 +1,37 @@
+@import "../root.scss";
+#get_mafile {
+    position: relative;
+    width: 92%;
+    margin: 0.8rem auto 0;
+    padding: 0.2rem 0;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    &:hover {
+        transition-delay: 0.2s;
+        background-color: $side-2;
+        box-shadow: 0 0 0.3em 0.4em $side-2;
+    }
+    & > h2 {
+        font-size: 2.5em;
+        margin: 0 0 0 1.6rem;
+    }
+    & > p {
+        border-top: $border;
+        margin: 0;
+        font-size: 1em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+#get_mafile_input {
+    width: 100%;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+}
+#title {
+    margin: 0 0 0 1.2em;
+    border-bottom: $border;
+    font-size: 2em;
+}
