@@ -19,8 +19,10 @@ if (localStorage.getItem("better_steam_tool$get_account_users") === null) {
         if (user["guard"]) {
             $html += /*html*/`
             <div data-steamid="${sid}" class="account_items">
-                <img src=${user.avatar_url}>
-                <code></code>
+                <div class="img" style="background-image:url(${user.avatar_url})"></div>
+                <div class="code">
+                    <h2 class="guard_code"></h2><p class="coped">已複製</p>
+                </div>
                 <p>${user.persona_name}</p>
             </div>
             `
@@ -39,8 +41,10 @@ async function reload_guard_account() {
             if (user["guard"]) {
                 $html += /*html*/`
                 <div data-steamid="${sid}" class="account_items">
-                    <img src=${user.avatar_url}>
-                    <code></code>
+                    <div class="img" style="background-image:url(${user.avatar_url})"></div>
+                    <div class="code">
+                        <h2 class="guard_code"></h2><p class="coped">已複製</p>
+                    </div>
                     <p>${user.persona_name}</p>
                 </div>
                 `
@@ -53,19 +57,42 @@ async function reload_guard_account() {
     })
 }
 
-async function get_2FA(always=false){
+async function get_2FA(always = false) {
     if (now_page === "guard") {
         let data = await eel.get_2FA()()
-        $.each(data["twoFA"],(key:string,val:string)=>{
-            $acc.find(`div[data-steamid="${key}"]>code`).text(val)
+        let time_line = $("#last_time")
+        $.each(data["twoFA"], (key: string, val: string) => {
+            $acc.find(`div[data-steamid="${key}"] .guard_code`).text(val)
         })
-        const time:number = data["reload_time"]
-        const next_time = time>0?time:1000 + 1000 //每三十秒刷新 30000ms
-        $("#last_time").css("width","100%").animate({width:"0%"},next_time,"linear")
-        console.log(next_time)
-        if(always){setTimeout(()=>{get_2FA(true)}, next_time)}
+        const time: number = data["reload_time"]
+        const next_time = time > 0 ? time : 1000 + 1000 //每三十秒刷新 30000ms
+
+        if (always) { 
+            time_line.css("width","100%").animate({ width: "0%" }, next_time, "linear")
+            setTimeout(() => {
+                get_2FA(true)
+            }, next_time) 
+        }
     }
 }
 get_2FA(true)
+
+main.on("click", "div.code", function () {
+    const text = $(this).children(".guard_code").text()
+    const coped = $(this).children(".coped")
+    if (coped.css("opacity") === "0") {
+        coped
+            .css({ height: "0em", opacity: 0 })
+            .animate({ height: '1em', opacity: 1 }, {
+                done: () => {
+                    setTimeout(() => {
+                        coped.animate({ height: '0em', opacity: 0 })
+                    }, 1000)
+                }
+            })
+    }
+    copy(text)
+    console.log("copy:" + text)
+})
 
 console.log("guard is ready");

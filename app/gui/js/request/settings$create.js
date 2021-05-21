@@ -1,6 +1,13 @@
 "use strict";
 w = 1000;
 h = 500;
+const call = call_data();
+const relogin = call["username"];
+if (relogin !== null) {
+    $("body>h1").text("重新登入");
+    $("#username").val(relogin);
+    document.title = "重新登入 " + relogin;
+}
 $("body>h1").hover(function () {
     let $this = $(this);
     window["reload_page"] = setTimeout(() => {
@@ -31,6 +38,9 @@ $("#next_step").on("click", async function () {
         let val = $(this).val().toString();
         data[key] = val;
     });
+    if (call["login_2FA"]) {
+        data["2FA"] = await call["login_2FA"](call["req"]);
+    }
     console.log(data);
     let req = await eel.create_account(step, data)();
     let stop = false;
@@ -62,10 +72,8 @@ $("#next_step").on("click", async function () {
             info("未 知 錯 誤");
             break;
         case true: //驗證成功
-            $("body").fadeOut("fast", () => {
-                opener["reload_account_list"]();
-                window.close();
-            });
+            await call["callback"](call["req"]);
+            window.close();
             break;
     }
     disabled(stop);

@@ -16,17 +16,29 @@ $("#get_mafile_input").on('change', (el) => {
     reader.onload = async () => {
         const req = reader.result;
         const status = await eel.import_shared_secret(req)();
-        if (status === true) {
+        if (status == true) {
             opener["reload_guard_account"]();
             close();
         }
         else {
-            switch (status) {
-                case ("login_error"):
-                    break;
-                case ("acc_not_found"):
-                    break;
-            }
+            let json_req = JSON.parse(req);
+            open_page("settings$create", {
+                username: json_req["account_name"],
+                req: req,
+                login_2FA: async (req) => {
+                    return await eel.shared_secret_to_2FA(req)();
+                },
+                callback: async (req) => {
+                    let status = await eel.import_shared_secret(req, true)();
+                    if (status == true) {
+                        opener["reload_guard_account"]();
+                        close();
+                    }
+                    else {
+                        console.error("unknow error:" + status);
+                    }
+                }
+            });
         }
     };
     reader.readAsText(file);

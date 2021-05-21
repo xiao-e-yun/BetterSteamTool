@@ -3,7 +3,9 @@ let Eclose = function () { window.close(); };
 eel.expose(Eclose, "close");
 window["w"] = 0;
 window["h"] = 0;
+window["copy"] = function (text) { navigator.clipboard.writeText(text); };
 window["account"] = function () { return JSON.parse(localStorage.getItem("better_steam_tool$get_account_users")); };
+window["call_data"] = function () { return opener["_$Bsteam_data"]; };
 if (location.pathname === "/index.html" || location.pathname === "/") {
     w = 300;
     h = 600;
@@ -37,20 +39,11 @@ $(() => {
         let dis = $("#sys_disabled");
         dis.fadeIn();
         window["waiting_screen"] = true;
-        let get_data = "";
-        if (get !== false) {
-            $.each(get, (key, data) => {
-                if (get_data != "") {
-                    get_data += "&";
-                }
-                else {
-                    get_data += "?";
-                }
-                get_data += key + "=" + encodeURIComponent(data);
-            });
-        }
-        let win = window.open("/request/" + href + ".html" + get_data, "", `app=true,width=100,height=100`);
+        let win = window.open("/request/" + href + ".html", "", `app=true,width=100,height=100`);
         win.resizeTo(0, 0);
+        if (get !== false) {
+            window["_$Bsteam_data"] = get;
+        }
         //關閉時啟用
         let I = setInterval(() => {
             if (win.closed === true) {
@@ -58,6 +51,7 @@ $(() => {
                 dis.fadeOut();
                 console.log("it was closed");
                 clearInterval(I);
+                window["_$Bsteam_data"] = undefined;
             }
         }, 300);
     };

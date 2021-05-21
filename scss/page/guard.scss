@@ -20,6 +20,7 @@ main#main_contant{
 #Gaccount {
     display: flex;
     flex-wrap: wrap;
+    user-select: none;
 }
 .account_items {
     $img_width:110px;
@@ -39,15 +40,20 @@ main#main_contant{
         color .3s,
         border-color .3s;
     opacity: 1;
-    & > img{
+    & > .img{
+        width: $img_width;
+        height: $img_width;
+        background-size: cover;
+        box-sizing: border-box;
+        border-right: beige;
         display: block;
-        width:$img_width ;
         border-right: $border;
         box-sizing: border-box;
     }
-    & > code{
+    & > .code{
+        padding-bottom: 5px;
+        box-sizing: border-box;
         text-transform:uppercase;
-        font-size: 4em;
         width: $img_end_width;
         height: calc(100% - 26px);
         display: flex;
@@ -56,7 +62,19 @@ main#main_contant{
         right: 0;
         justify-content: center;
         align-items: center;
+        align-content: center;
+        flex-wrap: wrap;
         cursor: pointer;
+    }
+    & .coped{
+        opacity: 0;
+        height: 0em;
+    }
+    & .guard_code{
+        height: 3.3rem;
+        font-family: monospace;
+        font-size: 3rem !important;
+        margin: 0 !important;
     }
     & > p {
         margin:0 0 0 $img_width!important;
@@ -71,6 +89,7 @@ main#main_contant{
         width: $img_end_width;
         border-top: $border;
         transition: border-color;
+        user-select: text;
 
         &:hover {
             overflow-x: auto;

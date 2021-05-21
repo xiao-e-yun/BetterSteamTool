@@ -16,7 +16,8 @@ main#main_contant {
 
 #Gaccount {
   display: flex;
-  flex-wrap: wrap; }
+  flex-wrap: wrap;
+  user-select: none; }
 
 .account_items {
   background-color: #161B33;
@@ -30,14 +31,19 @@ main#main_contant {
   box-sizing: border-box;
   transition: opacity ease-in-out .3s, color .3s, border-color .3s;
   opacity: 1; }
-  .account_items > img {
-    display: block;
+  .account_items > .img {
     width: 110px;
+    height: 110px;
+    background-size: cover;
+    box-sizing: border-box;
+    border-right: beige;
+    display: block;
     border-right: #f1dac4 solid 2px;
     box-sizing: border-box; }
-  .account_items > code {
+  .account_items > .code {
+    padding-bottom: 5px;
+    box-sizing: border-box;
     text-transform: uppercase;
-    font-size: 4em;
     width: calc(100% - 110px);
     height: calc(100% - 26px);
     display: flex;
@@ -46,7 +52,17 @@ main#main_contant {
     right: 0;
     justify-content: center;
     align-items: center;
+    align-content: center;
+    flex-wrap: wrap;
     cursor: pointer; }
+  .account_items .coped {
+    opacity: 0;
+    height: 0em; }
+  .account_items .guard_code {
+    height: 3.3rem;
+    font-family: monospace;
+    font-size: 3rem !important;
+    margin: 0 !important; }
   .account_items > p {
     margin: 0 0 0 110px !important;
     left: 0;
@@ -59,7 +75,8 @@ main#main_contant {
     background: #0d0c1d99;
     width: calc(100% - 110px);
     border-top: #f1dac4 solid 2px;
-    transition: border-color; }
+    transition: border-color;
+    user-select: text; }
     .account_items > p:hover {
       overflow-x: auto;
       border-bottom: 0; }

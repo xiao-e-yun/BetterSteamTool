@@ -4,6 +4,7 @@ h = 550;
 let $body = $("body");
 $body
     .on("click", ".item", async function () {
+    $("#loading").fadeIn();
     if (await eel.user_login(this.dataset.steamid)()) {
         opener["show_acc_items"]();
     } //done

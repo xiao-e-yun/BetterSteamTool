@@ -171,7 +171,10 @@ def create_account(lvl,data): #引入帳號
         create_acc = wa.MobileWebAuth(data["username"],data["password"])
 
         try:
-            create_acc.login()
+            if("2FA" in data):
+                create_acc.login(twofactor_code=data["2FA"])
+            else:
+                create_acc.login()
         except wa.LoginIncorrect:
             next = 'accpwd'
         except wa.HTTPError:

@@ -2,9 +2,12 @@ declare var eel: any
 declare var $page: any, page: any
 declare var w: number, h: number
 declare var footer: JQuery<HTMLElement>, main: JQuery<HTMLElement>
-declare var now_page:String
+declare var now_page: String
+declare var _$Bsteam_data: Object
+declare function copy(content: string): void
+declare function call_data(): object | null
 declare function open_page(href: string, get?: object | boolean): void
-declare function account():{any:{ "bg": boolean | string, "avatar_url": string, "lvl": number, "name": string, "oauth": string, "password": string, "persona_name": string,"shared_secret"?:string}}|null
+declare function account(): { any: { "bg": boolean | string, "avatar_url": string, "lvl": number, "name": string, "oauth": string, "password": string, "persona_name": string, "shared_secret"?: string } } | null
 
 let Eclose = function () { window.close() }
 eel.expose(Eclose, "close")
@@ -12,7 +15,9 @@ eel.expose(Eclose, "close")
 window["w"] = 0
 window["h"] = 0
 
-window["account"] = function(){ return JSON.parse(localStorage.getItem("better_steam_tool$get_account_users")) }
+window["copy"] = function (text) { navigator.clipboard.writeText(text) }
+window["account"] = function () { return JSON.parse(localStorage.getItem("better_steam_tool$get_account_users")) }
+window["call_data"] = function () {return opener["_$Bsteam_data"]}
 
 if (location.pathname === "/index.html" || location.pathname === "/") { w = 300; h = 600 }
 
@@ -48,25 +53,16 @@ $(() => {
     }
 
     $("#sys_disabled").hide()
-    window["open_page"] = function (href, get = false) {
+    window["open_page"] = function (href, get: object | boolean = false) {
         let dis = $("#sys_disabled")
         dis.fadeIn()
         window["waiting_screen"] = true
-        let get_data = ""
 
-        if (get !== false) {
-            $.each(get, (key, data) => {
-                if (get_data != "") {
-                    get_data += "&";
-                }else{
-                    get_data += "?";
-                }
-                get_data += key + "=" + encodeURIComponent(data);
-            })
-        }
-
-        let win = window.open("/request/" + href + ".html" + get_data, "", `app=true,width=100,height=100`)
+        let win = window.open("/request/" + href + ".html", "", `app=true,width=100,height=100`)
         win.resizeTo(0, 0)
+        if (get !== false) {
+            window["_$Bsteam_data"] = get
+        }
         //關閉時啟用
         let I = setInterval(() => {
             if (win.closed === true) {
@@ -74,6 +70,7 @@ $(() => {
                 dis.fadeOut()
                 console.log("it was closed")
                 clearInterval(I)
+                window["_$Bsteam_data"] = undefined
             }
         }, 300)
     }
