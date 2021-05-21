@@ -85,12 +85,15 @@ $("#next_step").on("click", async function () { //當下一步被點擊
             )
             auth_login("2FA")
             break;
-        case "unknow": //未知錯誤
-            info("未 知 錯 誤")
-            break;
         case true: //驗證成功
             await call["callback"](call["req"])
             window.close()
+            break;
+        default:
+            info(
+                "未 知 錯 誤",
+                req.toString()
+            )
             break;
     }
     disabled(stop)

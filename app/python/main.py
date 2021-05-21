@@ -187,7 +187,7 @@ def create_account(lvl,data): #引入帳號
         except wa.TwoFactorCodeRequired:
             next = '2FA'
         except :
-            next = 'unknow'
+            next = sys.exc_info()[0]
         else:
             next = True
 
