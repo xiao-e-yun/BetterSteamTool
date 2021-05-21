@@ -1,4 +1,3 @@
-from time import perf_counter, time
 import eel,json
 from steam import guard
 import steam.webauth as wa

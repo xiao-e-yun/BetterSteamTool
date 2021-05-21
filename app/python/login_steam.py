@@ -3,8 +3,9 @@ from pywinauto import Application as APP
 from pywinauto import keyboard
 from pywinauto import timings
 from time import sleep
+from steam import guard
 
-def login(name,pwd,path,sa=False):
+def login(name,pwd,path,se=False):
     # str replace
     pwd = str.replace(pwd," ","{SPACE}")
     # set RememberPassword
@@ -23,7 +24,8 @@ def login(name,pwd,path,sa=False):
     login_gui.set_focus()
     sleep(.1)
     keyboard.send_keys(name+"{TAB}"+pwd+"{TAB}{ENTER}")
-    if(sa != False):
+    if(se != False):
+        sa = guard.SteamAuthenticator(se)
         print("have guard")
         guard_gui = app.window(title_re ='Steam Guard - .*',class_name='vguiPopupWindow')
         try:
@@ -42,4 +44,4 @@ if __name__ == '__main__':
     winreg.CloseKey(key)
     u=input("username:")
     p=input("password:")
-    login(u,p,exe,g)
+    login(u,p,exe)

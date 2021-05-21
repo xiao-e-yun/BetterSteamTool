@@ -1,5 +1,5 @@
 from steam import guard
-from python.main import get_account_list
+from python.main import get_account_list,get_task
 import eel,winreg,datetime,vdf,json,asyncio,aiohttp,subprocess
 import steam.steamid as Sid
 from steam import guard
@@ -113,10 +113,17 @@ def auto_login(name):
     key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,"SOFTWARE\Valve\Steam", 0, winreg.KEY_ALL_ACCESS ) 
     winreg.SetValueEx(key,"AutoLoginUser",0,winreg.REG_SZ,name)
     exe , t = winreg.QueryValueEx(key, "SteamExe")
+    winreg.CloseKey(key)
     si = subprocess.STARTUPINFO()
     si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-    subprocess.Popen('taskkill /f /IM steam.exe /FI "STATUS eq RUNNING" & '+exe+"& exit", startupinfo=si,shell=True)
-    winreg.CloseKey(key)
+
+    if(get_task("steam.exe")):
+        subprocess.call(exe+" -shutdown", startupinfo=si,shell=True)
+        while(get_task("steam.exe") != False):
+            eel.sleep(.4)
+
+    subprocess.Popen(exe, startupinfo=si,shell=True)
+
 
 # ==============================================================
 #                        系統模擬登入steam帳號
@@ -133,7 +140,8 @@ def user_login(steamid):
     password=acc["password"]
     if("guard" in acc):
         se = acc["guard"]
-        sa = guard.SteamAuthenticator(se)
+    else:
+        se = False
 
     print("username:"+name+"\npassword:"+password)
 
@@ -144,9 +152,13 @@ def user_login(steamid):
     si = subprocess.STARTUPINFO()
     si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 
-    subprocess.Popen('taskkill /f /IM steam.exe /FI "STATUS eq RUNNING" & exit', startupinfo=si,shell=True)
+    if(get_task("steam.exe")):
+        subprocess.call(exe+" -shutdown", startupinfo=si,shell=True)
+        while(get_task("steam.exe") != False):
+            eel.sleep(.4)
+
     from python import login_steam
-    login_steam.login(name,password,exe,sa)
+    login_steam.login(name,password,exe,se)
     Suser = get_client_users()
     if(steamid not in Suser):
         return True

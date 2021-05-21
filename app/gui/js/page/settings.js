@@ -23,7 +23,7 @@ $("#reload-account").on("click", () => {
     reload_account_list();
 });
 $("#new-account").on("click", function () {
-    open_page("settings$create", { callback: () => { opener["reload_account_list"](); } });
+    open_page("settings$create", { callback: () => { reload_account_list(); } });
 });
 $("#OPTaccount").on("click", "div[data-id]", function () {
     open_page("settings$steam_user_config", { "Sid": this.dataset.id });

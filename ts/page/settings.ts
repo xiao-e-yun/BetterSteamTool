@@ -24,7 +24,7 @@ $("#reload-account").on("click", () => {
 })
 
 $("#new-account").on("click",function(){
-    open_page("settings$create",{callback:()=>{opener["reload_account_list"]()}})
+    open_page("settings$create",{callback:()=>{reload_account_list()}})
 })
 
 $("#OPTaccount").on("click","div[data-id]",function(){

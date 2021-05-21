@@ -2,6 +2,7 @@
 #   後臺主程序
 #   帳戶控制器
 #
+import win32com.client
 import eel
 import steam
 import os
@@ -225,6 +226,13 @@ def create_account(lvl,data): #引入帳號
 
     return next
 
+def get_task(task_name):
+    is_exist = False
+    wmi = win32com.client.GetObject('winmgmts:')
+    processCodeCov = wmi.ExecQuery('select * from Win32_Process where name=\"%s\"' %(task_name))
+    if len(processCodeCov) > 0:
+        is_exist = True
+    return is_exist
 
 if __name__ == '__main__':
     start()
