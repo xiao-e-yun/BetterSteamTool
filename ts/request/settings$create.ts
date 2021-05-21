@@ -3,7 +3,7 @@ h = 500
 
 const call = call_data()
 const relogin = call["username"]
-if(relogin!==null){
+if(relogin!==undefined){
     $("body>h1").text("重新登入")
     $("#username").val(relogin)
     document.title = "重新登入 "+relogin
