@@ -1,14 +1,10 @@
-import asyncio
-from asyncio.tasks import wait
-from socket import timeout
+from python.api import get_client_users
 import winreg,subprocess
-from eel import expose
 from pywinauto import Application as APP
 from pywinauto import keyboard
 from pywinauto import timings
 from time import sleep
 from steam import guard
-import steam
 from python.main import get_task,get_account_list
 
 def call_info(steamid):
@@ -59,16 +55,22 @@ def auto_login(steamid,name,lock):
             except:
                 pass
 
-    if(waiter()==False): #需要登入
-        login(steamid,_app=app)
+    if(waiter()==False): #需要模擬登入
+        login(steamid,_app=app,force=True)
 
     del app
     lock.release()
 
 
 
-def login(steamid,lock=False,_app=False):
+def login(steamid,lock=False,_app=False,force=False):
+
     acc = call_info(steamid)
+
+    if(force == False and (steamid in get_client_users())):
+        auto_login(steamid,acc["name"],lock)
+        return
+
     if(acc == False):
         return "no_account"
 
