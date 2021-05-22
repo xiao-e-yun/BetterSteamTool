@@ -1,4 +1,4 @@
-@import "../root.scss";
+@import "../main.scss";
 
 main#main_contant{
     padding-bottom: 26px;
@@ -65,11 +65,11 @@ main#main_contant{
 }
 .del_mode > div {
     cursor: pointer;
-    color: $side-1;
-    border-color: $side-1;
+    color: BScolor($side-1);
+    border-color: BScolor($side-1);
     & > p {
         cursor: pointer;
-        border-color: $side-1;
+        border-color: BScolor($side-1);
     }
     &::before {
         transition: all ease-in-out 0.3s;
@@ -89,10 +89,10 @@ main#main_contant{
 
 .will_del {
     cursor: default;
-    color: $side-1;
-    border-color: $side-1;
+    color: BScolor($side-1);
+    border-color: BScolor($side-1);
     &>p{
-        border-color: $side-1;
+        border-color: BScolor($side-1);
     }
     &::before {
         transition: all ease-in-out 0.3s;
@@ -114,8 +114,8 @@ main#main_contant{
     margin: 5px 0;
     width: 96% !important;
     padding-top: 15px;
-    background: $side-3;
-    border: $main solid 2px;
+    background: BScolor($side-3);
+    border: BScolor($main) solid 2px;
     z-index: 100;
     animation: fade_in ease-in-out .3s both .5s;
     transition: padding-top .3s .3s;
@@ -146,14 +146,14 @@ main#main_contant{
     letter-spacing: 2px;
 }
 #del_mode{
-    border: $side-1 solid 2px;
-    color: $side-1;
-    background: $background;
+    border: BScolor($side-1) solid 2px;
+    color: BScolor($side-1);
+    background: BScolor($bg);
     z-index: 10;
 }
 #reload_mode{
-    border: $background solid 2px;
-    color: $background;
-    background: $main;
+    border: BScolor($bg) solid 2px;
+    color: BScolor($bg);
+    background: BScolor($main);
     z-index: 11;
 }

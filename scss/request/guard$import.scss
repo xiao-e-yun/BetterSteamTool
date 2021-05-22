@@ -1,4 +1,4 @@
-@import "../root.scss";
+@import "../main.scss";
 #get_mafile {
     position: relative;
     width: 92%;
@@ -7,8 +7,8 @@
     transition: background-color 0.3s, box-shadow 0.3s;
     &:hover {
         transition-delay: 0.2s;
-        background-color: $side-2;
-        box-shadow: 0 0 0.3em 0.4em $side-2;
+        background-color: BScolor($side-2);
+        box-shadow: 0 0 0.3em 0.4em BScolor($side-2);
     }
     & > h2 {
         font-size: 2.5em;

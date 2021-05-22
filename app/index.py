@@ -44,3 +44,4 @@ suppress_error=True,
 size = (300,600),
 mode='edge'
 )
+print("closed")

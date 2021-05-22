@@ -7,10 +7,14 @@ async function show_acc_items(reload: boolean = true) {
 
     onClick()
     function onClick() {
-        $acc.one("click", ".account_items", function () {
+        $acc.one("click", ".account_items",async function () {
             let user = this.dataset.username
-            console.log(user)
-            eel.auto_login(user)
+            let steamid = this.dataset.steamid
+            console.log(steamid)
+            $("#loading").fadeIn()
+            eel.auto_login(steamid,user)().then(()=>{
+                $("#loading").fadeOut()
+            })
             setTimeout(() => { onClick() }, 1000)
         })
     }
@@ -177,8 +181,9 @@ $("#delete")
         function onClick() {
             $acc.one("click", ".account_items", function () {
                 let user = this.dataset.username
+                let steamid = this.dataset.steamid
                 console.log(user)
-                eel.auto_login(user)
+                eel.auto_login(steamid,user)
                 setTimeout(() => { onClick() }, 1000)
             })
         }

@@ -1,6 +1,19 @@
 "use strict";
 let Eclose = function () { window.close(); };
 eel.expose(Eclose, "close");
+let Einfo = function (title, text = "", type = "log") {
+    let info_type = {
+        log: "info_log",
+        error: "info_error",
+    };
+    $("#server_info").append(/*html*/ `
+    <div class="info_box ${info_type[type]}">
+        <h2>${title}</h2>
+        ${text === "" ? "" : "<p>" + text + "</p>"}
+    </div>
+`);
+};
+eel.expose(Einfo, "info");
 window["w"] = 0;
 window["h"] = 0;
 window["copy"] = function (text) { navigator.clipboard.writeText(text); };

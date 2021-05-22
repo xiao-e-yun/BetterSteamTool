@@ -1,4 +1,4 @@
-@import "../root.scss";
+@import "../main.scss";
 
 #OPTaccount {
     display: -webkit-inline-box;
@@ -34,7 +34,7 @@
 }
 .card{
     margin: .6em;
-    border-left: $main;
+    border-left: BScolor($main);
     &>.title{
         margin: 0 5% 0 10%;
         font-size: 1.5em;
@@ -43,8 +43,8 @@
     &>.info{
         margin: .4em 0 0 0!important;
         &>a{
-            color:$background;
-            background-color: $main;
+            color:BScolor($bg);
+            background-color: BScolor($main);
             text-decoration: none;
         }
     }
@@ -52,10 +52,10 @@
         height: 1.5em;
         font-size: .8em;
         width: -webkit-fill-available;
-        border: $background;
+        border: BScolor($bg);
         border-radius: 0;
-        background-color: $main;
-        color: $background;
+        background-color: BScolor($main);
+        color: BScolor($bg);
         outline: none;
     }
 }
@@ -131,8 +131,8 @@ input[data-hide]{
     color: transparent; 
     position: relative;
     box-sizing: border-box;
-    border-left: $black solid 2px;
-    background-color: $side-2;
+    border-left: BScolor($black) solid 2px;
+    background-color: BScolor($side-2);
     padding-left: 4px;
     user-select: none;
     &:hover{
@@ -141,8 +141,8 @@ input[data-hide]{
 }
 @keyframes data-hide-in{
     to{
-        color:$main;
-        border-left-color:$main;
+        color:BScolor($main);
+        border-left-color:BScolor($main);
         user-select: text;
     }
 }

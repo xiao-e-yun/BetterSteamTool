@@ -2,7 +2,8 @@
 #   後臺主程序
 #   帳戶控制器
 #
-import win32com.client
+import pythoncom
+from win32com.client import GetObject as win32_cli
 import eel
 import steam
 import os
@@ -78,11 +79,8 @@ def get_account_list(stop_api=False,no_avatar=False):
             if(account[-5:] == ".json") : 
                 with open(user_path + account,"r") as f :
                     file = json.load(f)
-                data = {
-                    "name" : account[:-5],
-                    }
-                data = {**data,**file}
-                users[str(file["steam_id"])]=data
+
+                users[str(file["steam_id"])]=file
         return users
 
     with open(path+"settings.json", "r") as f:
@@ -122,11 +120,8 @@ def get_account_list(stop_api=False,no_avatar=False):
             if(account[-5:] == ".json") : 
                 with open(user_path + account,"r") as f :
                     file = json.load(f)
-                data = {
-                    "name" : account[:-5],
-                    }
-                data = {**data,**file}
-                users[str(file["steam_id"])]=data
+
+                users[str(file["steam_id"])]=file
                 url = 'https://steamcommunity.com/miniprofile/'+str(file["account_id"])+'/json'
                 tasks.append(asyncio.ensure_future(get(url,str(file["steam_id"]),"CDN")))
 
@@ -137,11 +132,8 @@ def get_account_list(stop_api=False,no_avatar=False):
             if(account[-5:] == ".json") : 
                 with open(user_path + account,"r") as f :
                     file = json.load(f)
-                data = {
-                    "name" : account[:-5],
-                    }
-                data = {**data,**file}
-                users[str(file["steam_id"])]=data
+
+                users[str(file["steam_id"])]=file
                 steamids.append(str(file["steam_id"]))
                 
         def tolist():
@@ -220,15 +212,22 @@ def create_account(lvl,data): #引入帳號
 
     if(next == True): #保存資料
         with open(path+"user_config/"+data["username"]+".json","w+") as fcfg :
-            user_data = {"password":data["password"],"oauth":create_acc.oauth_token,"steam_id":create_acc.steam_id,"account_id":Sid.SteamID(create_acc.steam_id).id}
+            user_data = {
+                "name":data["username"],
+                "password":data["password"],
+                "oauth":create_acc.oauth_token,
+                "steam_id":create_acc.steam_id,
+                "account_id":Sid.SteamID(create_acc.steam_id).id
+                }
             json.dump(user_data,fcfg)
             print("create user config [\""+data["username"]+"\"]")
 
     return next
 
 def get_task(task_name):
+    pythoncom.CoInitialize()
     is_exist = False
-    wmi = win32com.client.GetObject('winmgmts:')
+    wmi = win32_cli('winmgmts:')
     processCodeCov = wmi.ExecQuery('select * from Win32_Process where name=\"%s\"' %(task_name))
     if len(processCodeCov) > 0:
         is_exist = True

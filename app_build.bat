@@ -1,1 +1,0 @@
-pipenv run pyinstaller app_build.spec -y

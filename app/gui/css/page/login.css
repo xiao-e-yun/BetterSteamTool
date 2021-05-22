@@ -1,14 +1,18 @@
 main#main_contant {
-  padding-bottom: 26px; }
+  padding-bottom: 26px;
+}
 
 #account {
   display: flex;
-  flex-wrap: wrap; }
+  flex-wrap: wrap;
+}
 
 .act > .account_items {
-  opacity: .5; }
-  .act > .account_items:hover {
-    opacity: 1; }
+  opacity: 0.5;
+}
+.act > .account_items:hover {
+  opacity: 1;
+}
 
 .account_items {
   flex: 0 0 46%;
@@ -18,74 +22,87 @@ main#main_contant {
   height: 0;
   padding-top: 46%;
   animation: fade_in 0.5s;
-  border: #f1dac4 solid 2px;
+  border: rgb(var(--main)) solid 2px;
   box-sizing: border-box;
   cursor: pointer;
-  transition: opacity ease-in-out .3s, color .3s, border-color .3s;
-  opacity: 1; }
-  .account_items > p {
-    z-index: 2;
-    margin: 0 !important;
-    left: 0;
-    bottom: 0;
-    text-align: center;
-    white-space: nowrap;
-    height: min-content;
-    position: absolute;
-    overflow-x: overlay;
-    background: #0d0c1d99;
-    width: 100%;
-    border-top: #f1dac4 solid 2px;
-    cursor: default;
-    transition: border-color; }
-    .account_items > p:hover {
-      overflow-x: auto;
-      border-bottom: 0; }
-      .account_items > p:hover::-webkit-scrollbar {
-        height: 10px;
-        background-color: transparent; }
-      .account_items > p:hover::-webkit-scrollbar-thumb {
-        border-bottom: 0; }
-    .account_items > p::-webkit-scrollbar {
-      height: 4px; }
+  transition: opacity ease-in-out 0.3s, color 0.3s, border-color 0.3s;
+  opacity: 1;
+}
+.account_items > p {
+  z-index: 2;
+  margin: 0 !important;
+  left: 0;
+  bottom: 0;
+  text-align: center;
+  white-space: nowrap;
+  height: min-content;
+  position: absolute;
+  overflow-x: overlay;
+  background: #0d0c1d99;
+  width: 100%;
+  border-top: rgb(var(--main)) solid 2px;
+  cursor: default;
+  transition: border-color;
+}
+.account_items > p:hover {
+  overflow-x: auto;
+  border-bottom: 0;
+}
+.account_items > p:hover::-webkit-scrollbar {
+  height: 10px;
+  background-color: transparent;
+}
+.account_items > p:hover::-webkit-scrollbar-thumb {
+  border-bottom: 0;
+}
+.account_items > p::-webkit-scrollbar {
+  height: 4px;
+}
 
 .del_mode > div {
   cursor: pointer;
-  color: #A69CAC;
-  border-color: #A69CAC; }
-  .del_mode > div > p {
-    cursor: pointer;
-    border-color: #A69CAC; }
-  .del_mode > div::before {
-    transition: all ease-in-out 0.3s;
-    content: "";
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1; }
-  .del_mode > div:hover::before {
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(3px); }
+  color: rgb(var(--side-1));
+  border-color: rgb(var(--side-1));
+}
+.del_mode > div > p {
+  cursor: pointer;
+  border-color: rgb(var(--side-1));
+}
+.del_mode > div::before {
+  transition: all ease-in-out 0.3s;
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+.del_mode > div:hover::before {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(3px);
+}
 
 .will_del {
   cursor: default;
-  color: #A69CAC;
-  border-color: #A69CAC; }
-  .will_del > p {
-    border-color: #A69CAC; }
-  .will_del::before {
-    transition: all ease-in-out 0.3s;
-    content: "";
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(3px); }
+  color: rgb(var(--side-1));
+  border-color: rgb(var(--side-1));
+}
+.will_del > p {
+  border-color: rgb(var(--side-1));
+}
+.will_del::before {
+  transition: all ease-in-out 0.3s;
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(3px);
+}
 
 .tag {
   position: fixed;
@@ -93,22 +110,27 @@ main#main_contant {
   margin: 5px 0;
   width: 96% !important;
   padding-top: 15px;
-  background: #161B33;
-  border: #F1DAC4 solid 2px;
+  background: rgb(var(--side-3));
+  border: rgb(var(--main)) solid 2px;
   z-index: 100;
-  animation: fade_in ease-in-out .3s both .5s;
-  transition: padding-top .3s .3s; }
-  .tag:hover {
-    padding-top: 0px; }
-    .tag:hover > .inline_btn > button {
-      height: 1.3em; }
+  animation: fade_in ease-in-out 0.3s both 0.5s;
+  transition: padding-top 0.3s 0.3s;
+}
+.tag:hover {
+  padding-top: 0px;
+}
+.tag:hover > .inline_btn > button {
+  height: 1.3em;
+}
 
 .inline_btn {
   margin: 0;
-  border: none; }
-  .inline_btn > button {
-    height: 0;
-    transition: height 0.3s 0.3s; }
+  border: none;
+}
+.inline_btn > button {
+  height: 0;
+  transition: height 0.3s 0.3s;
+}
 
 #del_mode, #reload_mode {
   display: inline;
@@ -118,16 +140,19 @@ main#main_contant {
   position: fixed;
   font-weight: 1000;
   font-size: 1.2em !important;
-  letter-spacing: 2px; }
+  letter-spacing: 2px;
+}
 
 #del_mode {
-  border: #A69CAC solid 2px;
-  color: #A69CAC;
-  background: #0D0C1D;
-  z-index: 10; }
+  border: rgb(var(--side-1)) solid 2px;
+  color: rgb(var(--side-1));
+  background: rgb(var(--bg));
+  z-index: 10;
+}
 
 #reload_mode {
-  border: #0D0C1D solid 2px;
-  color: #0D0C1D;
-  background: #F1DAC4;
-  z-index: 11; }
+  border: rgb(var(--bg)) solid 2px;
+  color: rgb(var(--bg));
+  background: rgb(var(--main));
+  z-index: 11;
+}

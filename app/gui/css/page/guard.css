@@ -1,130 +1,151 @@
 main#main_contant {
-  padding-bottom: 26px; }
+  padding-bottom: 26px;
+}
 
 #reload_line {
   width: 100%;
-  height: .3em;
-  background-color: #474973;
-  position: relative; }
-  #reload_line > #last_time {
-    background-color: #F1DAC4;
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
-    width: 100%; }
+  height: 0.3em;
+  background-color: rgb(var(--side-2));
+  position: relative;
+}
+#reload_line > #last_time {
+  background-color: rgb(var(--main));
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+}
 
 #Gaccount {
   display: flex;
   flex-wrap: wrap;
-  user-select: none; }
+  user-select: none;
+}
 
 .account_items {
-  background-color: #161B33;
+  background-color: rgb(var(--side-3));
   flex: 0 0 96%;
   position: relative;
   background-size: cover;
   margin: 2%;
   height: max-content;
   animation: fade_in 0.5s;
-  border: #f1dac4 solid 2px;
+  border: rgb(var(--main)) solid 2px;
   box-sizing: border-box;
-  transition: opacity ease-in-out .3s, color .3s, border-color .3s;
-  opacity: 1; }
-  .account_items > .img {
-    width: 110px;
-    height: 110px;
-    background-size: cover;
-    box-sizing: border-box;
-    border-right: beige;
-    display: block;
-    border-right: #f1dac4 solid 2px;
-    box-sizing: border-box; }
-  .account_items > .code {
-    padding-bottom: 5px;
-    box-sizing: border-box;
-    text-transform: uppercase;
-    width: calc(100% - 110px);
-    height: calc(100% - 26px);
-    display: flex;
-    position: absolute;
-    top: 0;
-    right: 0;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-    flex-wrap: wrap;
-    cursor: pointer; }
-  .account_items .coped {
-    opacity: 0;
-    height: 0em; }
-  .account_items .guard_code {
-    height: 3.3rem;
-    font-family: monospace;
-    font-size: 3rem !important;
-    margin: 0 !important; }
-  .account_items > p {
-    margin: 0 0 0 110px !important;
-    left: 0;
-    bottom: 0;
-    text-align: center;
-    white-space: nowrap;
-    height: min-content;
-    position: absolute;
-    overflow-x: overlay;
-    background: #0d0c1d99;
-    width: calc(100% - 110px);
-    border-top: #f1dac4 solid 2px;
-    transition: border-color;
-    user-select: text; }
-    .account_items > p:hover {
-      overflow-x: auto;
-      border-bottom: 0; }
-      .account_items > p:hover::-webkit-scrollbar {
-        height: 10px;
-        background-color: transparent; }
-      .account_items > p:hover::-webkit-scrollbar-thumb {
-        border-bottom: 0; }
-    .account_items > p::-webkit-scrollbar {
-      height: 4px; }
+  transition: opacity ease-in-out 0.3s, color 0.3s, border-color 0.3s;
+  opacity: 1;
+}
+.account_items > .img {
+  width: 110px;
+  height: 110px;
+  background-size: cover;
+  box-sizing: border-box;
+  border-right: beige;
+  display: block;
+  border-right: rgb(var(--main)) solid 2px;
+  box-sizing: border-box;
+}
+.account_items > .code {
+  padding-bottom: 5px;
+  box-sizing: border-box;
+  text-transform: uppercase;
+  width: calc(100% - 110px);
+  height: calc(100% - 26px);
+  display: flex;
+  position: absolute;
+  top: 0;
+  right: 0;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  flex-wrap: wrap;
+  cursor: pointer;
+}
+.account_items .coped {
+  opacity: 0;
+  height: 0em;
+}
+.account_items .guard_code {
+  height: 3.3rem;
+  font-family: monospace;
+  font-size: 3rem !important;
+  margin: 0 !important;
+}
+.account_items > p {
+  margin: 0 0 0 110px !important;
+  left: 0;
+  bottom: 0;
+  text-align: center;
+  white-space: nowrap;
+  height: min-content;
+  position: absolute;
+  overflow-x: overlay;
+  background: #0d0c1d99;
+  width: calc(100% - 110px);
+  border-top: rgb(var(--main)) solid 2px;
+  transition: border-color;
+  user-select: text;
+}
+.account_items > p:hover {
+  overflow-x: auto;
+  border-bottom: 0;
+}
+.account_items > p:hover::-webkit-scrollbar {
+  height: 10px;
+  background-color: transparent;
+}
+.account_items > p:hover::-webkit-scrollbar-thumb {
+  border-bottom: 0;
+}
+.account_items > p::-webkit-scrollbar {
+  height: 4px;
+}
 
 .del_mode > div {
   cursor: pointer;
-  color: #A69CAC;
-  border-color: #A69CAC; }
-  .del_mode > div > p {
-    cursor: pointer;
-    border-color: #A69CAC; }
-  .del_mode > div::before {
-    transition: all ease-in-out 0.3s;
-    content: "";
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1; }
-  .del_mode > div:hover::before {
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(3px); }
+  color: rgb(var(--side-1));
+  border-color: rgb(var(--side-1));
+}
+.del_mode > div > p {
+  cursor: pointer;
+  border-color: rgb(var(--side-1));
+}
+.del_mode > div::before {
+  transition: all ease-in-out 0.3s;
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+.del_mode > div:hover::before {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(3px);
+}
 
 .will_del {
   cursor: default;
-  color: #A69CAC;
-  border-color: #A69CAC; }
-  .will_del > p {
-    border-color: #A69CAC; }
-  .will_del::before {
-    transition: all ease-in-out 0.3s;
-    content: "";
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(3px); }
+  color: rgb(var(--side-1));
+  border-color: rgb(var(--side-1));
+}
+.will_del > p {
+  border-color: rgb(var(--side-1));
+}
+.will_del::before {
+  transition: all ease-in-out 0.3s;
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(3px);
+}
 
 .tag {
   position: fixed;
@@ -132,20 +153,25 @@ main#main_contant {
   margin: 5px 0;
   width: 96% !important;
   padding-top: 15px;
-  background: #161B33;
-  border: #F1DAC4 solid 2px;
+  background: rgb(var(--side-3));
+  border: rgb(var(--main)) solid 2px;
   z-index: 100;
-  animation: fade_in ease-in-out .3s both .5s;
-  transition: padding-top .3s .3s; }
-  .tag:hover {
-    padding-top: 0px; }
-    .tag:hover > #new-account > button {
-      height: 1.3em; }
+  animation: fade_in ease-in-out 0.3s both 0.5s;
+  transition: padding-top 0.3s 0.3s;
+}
+.tag:hover {
+  padding-top: 0px;
+}
+.tag:hover > #new-account > button {
+  height: 1.3em;
+}
 
 #new-account {
   margin: 0;
-  border: none; }
-  #new-account > button {
-    font-size: 1.5em;
-    height: 0;
-    transition: height 0.3s 0.3s; }
+  border: none;
+}
+#new-account > button {
+  font-size: 1.5em;
+  height: 0;
+  transition: height 0.3s 0.3s;
+}

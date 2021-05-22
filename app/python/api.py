@@ -1,8 +1,10 @@
 from steam import guard
+import steam
 from python.main import get_account_list,get_task
 import eel,winreg,datetime,vdf,json,asyncio,aiohttp,subprocess
 import steam.steamid as Sid
 from steam import guard
+import threading
 loop = asyncio.get_event_loop()
 
 # ==============================================================
@@ -104,26 +106,36 @@ def del_client_user(steamID):
     with open(path+"/config/loginusers.vdf","w",encoding="utf-8") as file :
         vdf.dump(users,file)
 
+
+
+class wait_lock:
+  def __init__(self, lock):
+    self.lock = lock
+
+  def __enter__(self):
+    while(self.lock.locked() == True):
+        eel.sleep(.1)
+    self.lock.acquire()
+
+  def __exit__(self, b, c, d):
+    while(self.lock.locked() == True):
+        eel.sleep(.1)
+    
+#steam_lock
+login_lock = threading.Lock()
+
 # ==============================================================
 #                         普通登入steam帳號
 # ==============================================================
 
 @eel.expose
-def auto_login(name):
-    key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,"SOFTWARE\Valve\Steam", 0, winreg.KEY_ALL_ACCESS ) 
-    winreg.SetValueEx(key,"AutoLoginUser",0,winreg.REG_SZ,name)
-    exe , t = winreg.QueryValueEx(key, "SteamExe")
-    winreg.CloseKey(key)
-    si = subprocess.STARTUPINFO()
-    si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-
-    if(get_task("steam.exe")):
-        subprocess.call(exe+" -shutdown", startupinfo=si,shell=True)
-        while(get_task("steam.exe") != False):
-            eel.sleep(.4)
-
-    subprocess.Popen(exe, startupinfo=si,shell=True)
-
+def auto_login(steamid,name):
+    if('login_sys' not in vars()):
+        global login_sys
+        login_sys = __import__("python.login_steam",fromlist="*")
+    with wait_lock(login_lock):
+        t = threading.Thread(target = login_sys.auto_login , args=(steamid,name,login_lock,))
+        t.start()
 
 # ==============================================================
 #                        系統模擬登入steam帳號
@@ -131,36 +143,10 @@ def auto_login(name):
 
 @eel.expose
 def user_login(steamid):
-    try:
-        acc = get_account_list(False,True)
-        acc = acc[steamid]
-    except:
-        return False
-    name=acc["name"]
-    password=acc["password"]
-    if("guard" in acc):
-        se = acc["guard"]
-    else:
-        se = False
-
-    print("username:"+name+"\npassword:"+password)
-
-    key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,"SOFTWARE\Valve\Steam", 0, winreg.KEY_QUERY_VALUE) 
-    exe , t = winreg.QueryValueEx(key, "SteamExe")
-    winreg.CloseKey(key)
-
-    si = subprocess.STARTUPINFO()
-    si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-
-    if(get_task("steam.exe")):
-        subprocess.call(exe+" -shutdown", startupinfo=si,shell=True)
-        while(get_task("steam.exe") != False):
-            eel.sleep(.4)
-
-    from python import login_steam
-    login_steam.login(name,password,exe,se)
-    Suser = get_client_users()
-    if(steamid not in Suser):
-        return True
-    else:
-        return False
+    if('login_sys' not in vars()):
+        global login_sys
+        login_sys = __import__("python.login_steam",fromlist="*")
+    with wait_lock(login_lock):
+        t = threading.Thread(target = login_sys.login,args=(steamid,login_lock,))
+        t.start()
+        
