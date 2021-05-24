@@ -58,21 +58,23 @@ body {
       background-position: 500%;
     }
 }
-#server_info{
+#server_info{//訊息
     z-index: 5000;
     top: 0;
     right: 0;
     position: fixed;
-    &>div:first-child{
-        margin-top: 1em ;
-    }
+    pointer-events: none;
+    margin:0 1em 0 0;
 }
 .info_box{
-    margin:.5em 1em 0 0;
+    margin:.5em 0 0 0;
+    pointer-events: all;
     padding: 5px;
-    background-color: BScolor($black);
+    background-color: BScolor($black,.8);
+    backdrop-filter: blur(3px);
     border-right-width: 5px;
     border-right-style: solid;
+    animation: fade_in .6s;
     &.info_log{
         border-color: BScolor($main);
     }
@@ -83,6 +85,10 @@ body {
         padding: 0 1.2em;
         margin: 0;
         
+    }
+    &>p{
+        margin: .5em 0 0 0;
+        text-align: center;
     }
 }
 header {

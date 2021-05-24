@@ -3,25 +3,26 @@
 #   帳戶控制器
 #
 import pythoncom
+import vdf
 from win32com.client import GetObject as win32_cli
 import eel
-import steam
+import winreg
 import os
 import sys
 import json
-import requests
 import asyncio
 import datetime
 import aiohttp
 import steam.webauth as wa
 import steam.steamid as Sid
 import steam.webapi as SAPI
-loop = asyncio.get_event_loop()
 
 path = os.getcwd()
 path += '/data/'
 
 def start():
+    global loop
+    loop = asyncio.get_event_loop()
     if(not os.path.exists('data')):  # 已創建
         os.mkdir(path)
         os.mkdir(path+'user_config')
@@ -223,6 +224,40 @@ def create_account(lvl,data): #引入帳號
             print("create user config [\""+data["username"]+"\"]")
 
     return next
+
+# ==============================================================
+#                         讀取steam帳號列表
+# ==============================================================
+
+@eel.expose
+def get_client_users():
+    key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,"SOFTWARE\Valve\Steam", 0, winreg.KEY_QUERY_VALUE) 
+    path , t = winreg.QueryValueEx(key, "SteamPath")
+    users = {}
+
+    path+="/config/loginusers.vdf"
+
+    with open(path,"r",encoding="utf-8") as file :
+        users = vdf.load(file)
+
+    winreg.CloseKey(key)
+    users = users["users"]
+
+    rewrite = False
+    for key,val in users.items():
+        if("AccountID" not in val):
+            users[key]["AccountID"] = str(Sid.SteamID(key).id)
+            rewrite = True
+
+    if(rewrite):
+        print("重寫 loginusers.")
+        with open(path,"w",encoding="utf-8") as file :
+            vdf.dump({"users":users},file)
+    return(users)
+
+# ==============================================================
+#                     查看進程是否運行
+# ==============================================================
 
 def get_task(task_name):
     pythoncom.CoInitialize()

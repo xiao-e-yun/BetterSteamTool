@@ -9,11 +9,16 @@ $("#new-account").on("click", "button", function () {
     }
 })
 
-var $acc = $("#Gaccount")
+var $acc = $("#Gaccount");
 
-if (localStorage.getItem("better_steam_tool$get_account_users") === null) {
-    reload_account_list()
-} else {
+(async() => {
+    if (account() === null) {
+        let $data = await eel.get_account_list()()
+        let $acc = $("#OPTaccount")
+        $("#reload").attr("disabled", "")
+        localStorage.setItem("better_steam_tool$get_account_users", JSON.stringify($data))
+        setTimeout(() => { $("#reload").removeAttr("disabled") }, 1000)
+    }
     let $html = ""
     $.each(account(), (sid, user) => {
         if (user["guard"]) {
@@ -29,7 +34,7 @@ if (localStorage.getItem("better_steam_tool$get_account_users") === null) {
         }
     })
     $acc.html($html).fadeIn()
-}
+})()
 
 async function reload_guard_account() {
     let $data = await eel.get_account_list()()
@@ -67,11 +72,11 @@ async function get_2FA(always = false) {
         const time: number = data["reload_time"]
         const next_time = time > 0 ? time : 1000 + 1000 //每三十秒刷新 30000ms
 
-        if (always) { 
-            time_line.css("width","100%").animate({ width: "0%" }, next_time, "linear")
+        if (always) {
+            time_line.css("width", "100%").animate({ width: "0%" }, next_time, "linear")
             setTimeout(() => {
                 get_2FA(true)
-            }, next_time) 
+            }, next_time)
         }
     }
 }

@@ -11,10 +11,14 @@ $("#new-account").on("click", "button", function () {
     }
 });
 var $acc = $("#Gaccount");
-if (localStorage.getItem("better_steam_tool$get_account_users") === null) {
-    reload_account_list();
-}
-else {
+(async () => {
+    if (account() === null) {
+        let $data = await eel.get_account_list()();
+        let $acc = $("#OPTaccount");
+        $("#reload").attr("disabled", "");
+        localStorage.setItem("better_steam_tool$get_account_users", JSON.stringify($data));
+        setTimeout(() => { $("#reload").removeAttr("disabled"); }, 1000);
+    }
     let $html = "";
     $.each(account(), (sid, user) => {
         if (user["guard"]) {
@@ -30,7 +34,7 @@ else {
         }
     });
     $acc.html($html).fadeIn();
-}
+})();
 async function reload_guard_account() {
     let $data = await eel.get_account_list()();
     $("#reload-account").attr("disabled", "");

@@ -38,7 +38,7 @@ async function reload_account_list() {
     $acc.fadeOut(400, () => {
         let $html = "";
         $.each(account(), (sid, user) => {
-            $html += `
+            $html += /*html*/ `
             <div data-id="${sid}" style="background:url('${user.avatar_url}')">
                 <div class="acc_txt">
                     <p>${user.persona_name}</p>

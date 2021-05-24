@@ -1,7 +1,7 @@
 import eel,json
 from steam import guard
 import steam.webauth as wa
-from python.main import get_account_list,path
+from .main import get_account_list,path
 
 @eel.expose
 def import_shared_secret(mafile,notest=False):  # mafile

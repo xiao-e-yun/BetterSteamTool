@@ -1,11 +1,10 @@
-from python.api import get_client_users
 import winreg,subprocess
 from pywinauto import Application as APP
 from pywinauto import keyboard
 from pywinauto import timings
 from time import sleep
 from steam import guard
-from python.main import get_task,get_account_list
+from .main import get_task,get_account_list,get_client_users
 
 def call_info(steamid):
     try:

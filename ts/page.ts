@@ -8,21 +8,44 @@ declare function copy(content: string): void
 declare function call_data(): object | null
 declare function open_page(href: string, get?: object | boolean): void
 declare function account(): { any: { "bg": boolean | string, "avatar_url": string, "lvl": number, "name": string, "oauth": string, "password": string, "persona_name": string, "shared_secret"?: string } } | null
+var w = 300
+var h = 600
 
-let Eclose = function () { window.close() }
-eel.expose(Eclose, "close")
-
-let Einfo = function(title,text="",type="log"){
-    let info_type = {
-        log:"info_log",
-        error:"info_error",
+let Edone = function () {
+    let url = location.pathname
+    if (url === "/load.html") {
+        location.href = "index.html"
     }
-    $("#server_info").append(/*html*/`
-    <div class="info_box ${info_type[type]}">
-        <h2>${title}</h2>
-        ${text===""?"":"<p>"+text+"</p>"}
-    </div>
-`)}
+}
+eel.expose(Edone, "done")
+
+let Einfo = function (title, text = "", type = "log") {
+    if (type === "console") {
+        if (text === "") {
+            console.log(title)
+        } else {
+            console.log(
+                title +
+                `\n==============================================\n`
+                + text)
+        }
+    } else {
+        let info_type = {
+            log: "info_log",
+            error: "info_error",
+        }
+        $(/*html*/`
+        <div class="info_box ${info_type[type]}">
+            <h2>${title}</h2>
+            ${text === "" ? "" : "<p>" + text + "</p>"}
+        </div>
+        `).appendTo('#server_info')
+            .delay(10000)
+            .slideUp(500, function () {
+                $(this).remove()
+            })
+    }
+}
 eel.expose(Einfo, "info")
 
 window["w"] = 0
@@ -30,9 +53,7 @@ window["h"] = 0
 
 window["copy"] = function (text) { navigator.clipboard.writeText(text) }
 window["account"] = function () { return JSON.parse(localStorage.getItem("better_steam_tool$get_account_users")) }
-window["call_data"] = function () {return opener["_$Bsteam_data"]}
-
-if (location.pathname === "/index.html" || location.pathname === "/") { w = 300; h = 600 }
+window["call_data"] = function () { return opener["_$Bsteam_data"] }
 
 WebSocket["onclose"] = function () {
     window.close()
@@ -48,6 +69,7 @@ $(() => {
     window["$page"] = {}
 
     if (opener) {
+        w = 1; h = 1
         $("body").append(`
         <script type="text/javascript" src="/js${location.pathname.slice(0, -5)}.js"></script>
         <link rel="stylesheet" href="/css${location.pathname.slice(0, -5)}.css" title="main">

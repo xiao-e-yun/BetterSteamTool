@@ -1,11 +1,6 @@
-from steam import guard
-import steam
-from python.main import get_account_list,get_task
-import eel,winreg,datetime,vdf,json,asyncio,aiohttp,subprocess
-import steam.steamid as Sid
-from steam import guard
+import eel,winreg,datetime,vdf,json,asyncio,aiohttp
+from . import login_steam
 import threading
-loop = asyncio.get_event_loop()
 
 # ==============================================================
 #                         外抓系統
@@ -14,6 +9,7 @@ loop = asyncio.get_event_loop()
 @eel.expose #req_list:list|dict|str
 def get(req_list,JSON = True):
     data=[]
+    from .main import loop
 
     #設置async取得
     async def _get(url,JSON,original=False,once=False):
@@ -60,36 +56,6 @@ def get(req_list,JSON = True):
     return data
 
 # ==============================================================
-#                         讀取steam帳號列表
-# ==============================================================
-
-@eel.expose
-def get_client_users():
-    key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,"SOFTWARE\Valve\Steam", 0, winreg.KEY_QUERY_VALUE) 
-    path , t = winreg.QueryValueEx(key, "SteamPath")
-    users = {}
-
-    path+="/config/loginusers.vdf"
-
-    with open(path,"r",encoding="utf-8") as file :
-        users = vdf.load(file)
-
-    winreg.CloseKey(key)
-    users = users["users"]
-
-    rewrite = False
-    for key,val in users.items():
-        if("AccountID" not in val):
-            users[key]["AccountID"] = str(Sid.SteamID(key).id)
-            rewrite = True
-
-    if(rewrite):
-        print("重寫 loginusers.")
-        with open(path,"w",encoding="utf-8") as file :
-            vdf.dump({"users":users},file)
-    return(users)
-
-# ==============================================================
 #                           刪除steam帳號
 # ==============================================================
 
@@ -130,11 +96,8 @@ login_lock = threading.Lock()
 
 @eel.expose
 def auto_login(steamid,name):
-    if('login_sys' not in vars()):
-        global login_sys
-        login_sys = __import__("python.login_steam",fromlist="*")
     with wait_lock(login_lock):
-        t = threading.Thread(target = login_sys.auto_login , args=(steamid,name,login_lock,))
+        t = threading.Thread(target = login_steam.auto_login , args=(steamid,name,login_lock,))
         t.start()
 
 # ==============================================================
@@ -143,10 +106,7 @@ def auto_login(steamid,name):
 
 @eel.expose
 def user_login(steamid):
-    if('login_sys' not in vars()):
-        global login_sys
-        login_sys = __import__("python.login_steam",fromlist="*")
     with wait_lock(login_lock):
-        t = threading.Thread(target = login_sys.login,args=(steamid,login_lock,))
+        t = threading.Thread(target = login_steam.login,args=(steamid,login_lock,))
         t.start()
         
