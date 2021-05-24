@@ -57,10 +57,44 @@ async function reload_account_list() {
 (async function () {
     let config = await eel.app_get_settings()();
     $.each(config, (key, val) => {
-        $("input[data-id=\"" + key + "\"]").val(val);
+        $("[data-id=\"" + (key === "" ? "none" : key) + "\"]").val(val);
+    });
+    //select
+    let sel = $(".select");
+    $.each(sel.children("input"), function () {
+        let val = $(this).val();
+        let text = $(this).siblings(".opt[data-val=" + (val === "" ? "none" : val) + "]").text();
+        sel.children(".type").text(text);
+        main.on("click", ".select>.type", function () {
+            let $this = $(this);
+            let list = $this.siblings(".opt");
+            $this.slideUp(300, () => {
+                list.slideDown(500);
+            });
+            main.one("click", () => {
+                list.slideUp(500, () => {
+                    $this.slideDown(300);
+                });
+            });
+            list
+                .on("click", (event) => {
+                let ethis = event.target;
+                let text = $(ethis).text();
+                let val = $(ethis).data("val");
+                $(this)
+                    .text(text)
+                    .siblings("input")
+                    .val(val)
+                    .trigger("input");
+                list.off();
+            });
+        });
     });
 })();
-main.on("input", "input", function () {
-    eel.app_chang_setting(this.dataset.id, this.value);
+main.on("input", "[data-id]", function () {
+    let id = this.dataset.id;
+    let val = $(this).val();
+    console.log(id + ":" + val);
+    eel.app_chang_setting(id, val);
 });
 console.log("settings is ready");

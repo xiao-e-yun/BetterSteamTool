@@ -1,3 +1,4 @@
+from re import I
 import winreg,subprocess
 from pywinauto import Application as APP
 from pywinauto import keyboard
@@ -42,17 +43,20 @@ def auto_login(steamid,name,lock):
     login_gui = app.window(title_re='Steam [^Guard].*', class_name='vguiPopupWindow')
 
     def waiter():
+        i = 0
         while True:
-            try:
-                Steam.wait("ready",.1)#等待主介面
-                return True
-            except:
-                pass
-            try:
-                login_gui.wait("ready",.1)#等待登入介面
-                return False
-            except:
-                pass
+            guis = [Steam,login_gui]
+            for gui in guis:
+                try:
+                    gui.wait("ready",.1)#等待主介面
+                    return True
+                except:
+                    pass
+            i +=1 #等待.2s
+            if(i <= (10 * 5)):#timeout 10s
+                i = 0
+                close_steam(exe,si)
+        
 
     if(waiter()==False): #需要模擬登入
         login(steamid,_app=app,force=True)

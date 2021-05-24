@@ -49,6 +49,7 @@ body {
   width: 100vw;
 }
 #sys_disabled > p {
+  margin: auto;
   font-size: xx-large;
   background-repeat: no-repeat;
   background-size: 80%;
@@ -176,7 +177,7 @@ header button svg {
 }
 
 ::-webkit-scrollbar {
-  background-color: Transparent;
+  background-color: rgb(Transparent);
   width: 10px;
 }
 
@@ -224,6 +225,10 @@ main#main_contant {
   padding-top: 42px;
   box-sizing: border-box;
 }
+main#main_contant::-webkit-scrollbar-thumb {
+  background-color: rgba(var(--bg),0.6);
+  border-color: rgba(var(--main),0.8);
+}
 main#main_contant > div {
   width: 100%;
 }
@@ -253,6 +258,7 @@ footer {
   max-height: 70vh;
   overflow-y: auto;
   user-select: none;
+  display: none;
 }
 
 button {

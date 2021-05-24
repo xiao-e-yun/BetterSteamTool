@@ -41,6 +41,7 @@ body {
     height: 100vh;
     width: 100vw;
     &>p{
+        margin: auto;
         font-size: xx-large;
         background-repeat: no-repeat;
         background-size: 80%;
@@ -173,7 +174,7 @@ header {
     }
 }
 ::-webkit-scrollbar  {
-    background-color: $no_color;
+    background-color: BScolor($no_color);
     width:10px;
 }
 ::-webkit-scrollbar-thumb  {
@@ -221,7 +222,10 @@ main#main_contant{
     left: 0;
     padding-top: 42px;
     box-sizing: border-box;
-
+    &::-webkit-scrollbar-thumb  {
+        background-color:BScolor($bg,.6);
+        border-color:BScolor($main,.8);
+    }
     &>div{
         width: 100%;
     }
@@ -255,6 +259,7 @@ footer {
     max-height: 70vh;
     overflow-y: auto;
     user-select: none;
+    display: none;
 }
 
 button {

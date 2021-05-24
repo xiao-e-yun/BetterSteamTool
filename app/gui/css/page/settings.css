@@ -141,6 +141,56 @@ input[data-hide]:hover {
   animation: data-hide-in 0.2s ease-in 0.3s both;
 }
 
+.select {
+  border-radius: 0;
+  width: -webkit-fill-available;
+  appearance: none;
+  font-size: 1.5rem;
+  border-color: rgb(var(--main));
+  background-color: rgb(var(--side-2));
+  color: rgb(var(--main));
+  border-width: 0 0 2px 0;
+  margin: 0.2rem 0 0 0.2rem;
+  cursor: pointer;
+}
+.select > input {
+  display: none;
+}
+.select > p {
+  padding: 0.1em;
+  margin: 0 !important;
+}
+.select > .type {
+  display: block;
+  text-align: right;
+  position: relative;
+  border-right: rgb(var(--black)) 0.2em solid;
+  transition-property: border-color, background-color;
+  transition-timing-function: ease-out;
+  transition-duration: 0.3s;
+}
+.select > .type:hover {
+  border-color: rgb(var(--main));
+  background-color: rgb(var(--side-3));
+}
+.select > div {
+  height: 2px;
+  background-color: rgb(var(--main));
+}
+.select > .opt {
+  border-width: 0 0 0 0.2em;
+  border-style: solid;
+  border-color: rgb(var(--black));
+  transition: border-color ease-in-out 0.3s, background-color ease-in-out 0.3s, color ease-in-out 0.3s;
+  text-align: left;
+  display: none;
+}
+.select > .opt:hover {
+  border-color: rgb(var(--main));
+  background-color: rgb(var(--side-3));
+  color: rgb(var(--white));
+}
+
 @keyframes data-hide-in {
   to {
     color: rgb(var(--main));

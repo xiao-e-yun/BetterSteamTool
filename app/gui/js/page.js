@@ -1,6 +1,10 @@
 "use strict";
-var w = 300;
-var h = 600;
+var w = 1, h = 1;
+if (location.pathname === "/"
+    , location.pathname === "/index.html"
+    , location.pathname === "/load.html")
+    w = 300;
+h = 600;
 let Edone = function () {
     let url = location.pathname;
     if (url === "/load.html") {
@@ -37,8 +41,6 @@ let Einfo = function (title, text = "", type = "log") {
     }
 };
 eel.expose(Einfo, "info");
-window["w"] = 0;
-window["h"] = 0;
 window["copy"] = function (text) { navigator.clipboard.writeText(text); };
 window["account"] = function () { return JSON.parse(localStorage.getItem("better_steam_tool$get_account_users")); };
 window["call_data"] = function () { return opener["_$Bsteam_data"]; };
@@ -48,19 +50,26 @@ WebSocket["onclose"] = function () {
 window.onresize = function () {
     window.resizeTo(w, h);
 };
-$(() => {
+$(async () => {
     window["footer"] = $('footer');
     window["main"] = $('main#main_contant');
     window["$page"] = {};
+    //自動加載頁面
+    let $start_page = (await eel.app_get_settings()())["start_page"];
+    if ($start_page !== "none" && $start_page !== undefined) {
+        load_page($start_page);
+    }
+    else {
+        footer.slideDown();
+    }
     if (opener) {
-        w = 1;
-        h = 1;
         $("body").append(`
         <script type="text/javascript" src="/js${location.pathname.slice(0, -5)}.js"></script>
         <link rel="stylesheet" href="/css${location.pathname.slice(0, -5)}.css" title="main">
         `);
         let moveX = (opener.screenX + (opener["w"] / 2)) - (w / 2);
         let moveY = (opener.screenY + (opener["h"] / 2)) - (h / 2);
+        resizeTo(w, h);
         moveTo(w === opener["w"] ? moveX + 10 : moveX, h === opener["h"] ? moveY + 10 : moveY);
         setInterval(() => {
             if (opener === null || !opener["waiting_screen"]) {
@@ -74,7 +83,7 @@ $(() => {
         dis.fadeIn();
         window["waiting_screen"] = true;
         let win = window.open("/request/" + href + ".html", "", `app=true,width=100,height=100`);
-        win.resizeTo(0, 0);
+        win.resizeTo(1, 1);
         if (get !== false) {
             window["_$Bsteam_data"] = get;
         }

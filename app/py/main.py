@@ -36,7 +36,7 @@ def start():
 #                         系統設置修改
 # ==============================================================
 
-@eel.expose
+@eel.expose #讀取
 def app_get_settings():
     with open(path+"settings.json", "r") as f:
         return json.load(f)

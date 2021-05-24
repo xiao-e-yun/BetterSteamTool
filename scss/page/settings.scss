@@ -139,6 +139,58 @@ input[data-hide]{
         animation: data-hide-in .2s ease-in .3s both;
     }
 }
+.select{
+    &>input{
+        display: none;
+    }
+    border-radius: 0;
+    width: -webkit-fill-available;
+    appearance: none;
+    font-size: 1.5rem;
+    border-color: BScolor($main);
+    background-color: BScolor($side-2);
+    color: BScolor($main);
+    border-width:0 0 2px 0;
+    margin: .2rem 0 0 .2rem;
+    cursor: pointer;
+    &>p{
+        padding: 0.1em;
+        margin: 0!important;
+    }
+    &>.type{
+        display: block;
+        text-align: right;
+        position: relative;
+        border-right:BScolor($black) .2em solid;
+        transition-property: border-color,background-color;
+        transition-timing-function: ease-out;
+        transition-duration:.3s ;
+        &:hover{
+            border-color: BScolor($main);
+            background-color: BScolor($side-3);
+        }
+    }
+    &>div{//hr
+        height: 2px;
+        background-color: BScolor($main);
+    }
+    &>.opt{
+        &:hover{
+            border-color: BScolor($main);
+            background-color: BScolor($side-3);
+            color:BScolor($white)
+        }
+        border-width:0 0 0 .2em;
+        border-style: solid;
+        border-color: BScolor($black);
+        transition:
+            border-color ease-in-out .3s,
+            background-color ease-in-out .3s ,
+            color ease-in-out .3s;
+        text-align: left;
+        display: none;
+    }
+}
 @keyframes data-hide-in{
     to{
         color:BScolor($main);

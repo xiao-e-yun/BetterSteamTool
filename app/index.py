@@ -87,7 +87,6 @@ info("all done")
 
 load_time = str((done_time - start_time)*1000)
 all_done_time = str((loaded_time - start_time)*1000)
-print("load time : "+load_time+"ms")
 
 eel.sleep(3)
 eel.info("啟動時間",load_time+"ms","console")
