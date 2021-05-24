@@ -3,7 +3,7 @@ import winreg,subprocess
 from pywinauto import Application as APP
 from pywinauto import keyboard
 from pywinauto import timings
-from time import sleep
+from time import sleep, time
 from steam import guard
 from .main import get_task,get_account_list,get_client_users
 
@@ -44,16 +44,17 @@ def auto_login(steamid,name,lock):
 
     def waiter():
         i = 0
+        sleep(6)
         while True:
             guis = [Steam,login_gui]
             for gui in guis:
                 try:
-                    gui.wait("ready",.1)#等待主介面
+                    gui.wait("ready",.1)#等待介面
                     return True
                 except:
                     pass
             i +=1 #等待.2s
-            if(i <= (10 * 5)):#timeout 10s
+            if(i <= (25 * 5)):#timeout 25s
                 i = 0
                 close_steam(exe,si)
         
