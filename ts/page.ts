@@ -12,15 +12,25 @@ declare function account(): { any: { "bg": boolean | string, "avatar_url": strin
 var w = 1,h = 1;
 
 if( location.pathname==="/"
-    ,location.pathname==="/index.html"
-    ,location.pathname==="/load.html")
-w = 300
-h = 600
+    ||location.pathname==="/index.html"
+    ||location.pathname==="/load.html"){
+    w = 300
+    h = 600
+}
 
 let Edone = function () {
     let url = location.pathname
     if (url === "/load.html") {
-        location.href = "index.html"
+        $.get("/",data=>{
+            let reg = /(?<=<body bgcolor="#0d0c1d">).*(?=<\/body>)/gms
+            let req = reg.exec(data)
+            $(req[0]).appendTo("body").hide().fadeIn()
+            $("#sys_disabled").hide()
+            $("#loading").fadeOut(400,function(){
+                $(this).remove()
+                history.pushState("", "", "/");
+            })
+        })
     }
 }
 eel.expose(Edone, "done")

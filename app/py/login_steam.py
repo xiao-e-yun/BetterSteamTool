@@ -54,9 +54,10 @@ def auto_login(steamid,name,lock):
                 except:
                     pass
             i +=1 #等待.2s
-            if(i <= (25 * 5)):#timeout 25s
+            if(i >= (25 * 5)):#timeout 25s
                 i = 0
                 close_steam(exe,si)
+                return True
         
 
     if(waiter()==False): #需要模擬登入
