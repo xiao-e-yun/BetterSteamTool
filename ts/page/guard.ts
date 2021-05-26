@@ -14,7 +14,6 @@ var $acc = $("#Gaccount");
 (async() => {
     if (account() === null) {
         let $data = await eel.get_account_list()()
-        let $acc = $("#OPTaccount")
         $("#reload").attr("disabled", "")
         localStorage.setItem("better_steam_tool$get_account_users", JSON.stringify($data))
         setTimeout(() => { $("#reload").removeAttr("disabled") }, 1000)
@@ -81,6 +80,13 @@ async function get_2FA(always = false) {
     }
 }
 get_2FA(true)
+
+main.on("click",".account_items>.img",function(){
+    let $this = $(this)
+    let Sid:string = ($this.parent())[0].dataset.steamid
+    
+    open_page("guard$trade",{"steamid":Sid})
+})
 
 main.on("click", "div.code", function () {
     const text = $(this).children(".guard_code").text()

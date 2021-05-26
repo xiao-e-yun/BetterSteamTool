@@ -13,16 +13,16 @@ let Edone = function () {
             let reg = /(?<=<body bgcolor="#0d0c1d">).*(?=<\/body>)/gms;
             let req = reg.exec(data);
             $(req[0]).appendTo("body").hide().fadeIn();
-            $("#sys_disabled").hide();
+            $("#sys_disabled,footer").hide();
             $("#loading").fadeOut(400, function () {
-                $(this).remove();
                 history.pushState("", "", "/");
-            });
+                location.reload();
+            }); // 美觀 :3
         });
     }
 };
 eel.expose(Edone, "done");
-let Einfo = function (title, text = "", type = "log") {
+window["Einfo"] = function (title, text = "", type = "log") {
     if (type === "console") {
         if (text === "") {
             console.log(title);
@@ -45,7 +45,7 @@ let Einfo = function (title, text = "", type = "log") {
         </div>
         `).appendTo('#server_info')
             .delay(10000)
-            .slideUp(500, function () {
+            .fadeOut(500, function () {
             $(this).remove();
         });
     }
@@ -60,33 +60,72 @@ WebSocket["onclose"] = function () {
 window.onresize = function () {
     window.resizeTo(w, h);
 };
-$(async () => {
-    window["footer"] = $('footer');
-    window["main"] = $('main#main_contant');
-    window["$page"] = {};
+async function get_start_page() {
     //自動加載頁面
-    let $start_page = (await eel.app_get_settings()())["start_page"];
-    if ($start_page !== "none" && $start_page !== undefined) {
+    let $start_page = await eel.app_setting("start_page")();
+    if ($start_page !== "BSnone" && $start_page !== undefined) {
         load_page($start_page);
     }
     else {
         footer.slideDown();
     }
-    if (opener) {
+}
+window["now_page"] = "";
+function load_page(id) {
+    if (id !== now_page) {
+        console.log("open \"" + id + "\" page");
+        window["now_page"] = id;
+        if (window["$page"][id]) {
+            main.fadeOut(100, () => {
+                main
+                    .off() //刪除監聽
+                    .html(window["$page"][id])
+                    .fadeIn(100);
+                $.getScript(`/js/page/${id}.js`);
+            });
+        }
+        else {
+            main.fadeOut(100, () => {
+                $.get("/page/" + id + ".html", function (data) {
+                    window["$page"][id] =
+                        data + `<link rel="stylesheet" href="/css/page/${id}.css">`;
+                    main
+                        .off() //刪除監聽
+                        .html(window["$page"][id])
+                        .fadeIn(100);
+                    $.getScript(`/js/page/${id}.js`);
+                });
+            });
+        }
+    }
+}
+$(() => {
+    if (location.pathname === "/"
+        || location.pathname === "/index.html") {
+        start();
+    }
+    else if (opener) {
         $("body").append(`
         <script type="text/javascript" src="/js${location.pathname.slice(0, -5)}.js"></script>
         <link rel="stylesheet" href="/css${location.pathname.slice(0, -5)}.css" title="main">
         `);
         let moveX = (opener.screenX + (opener["w"] / 2)) - (w / 2);
         let moveY = (opener.screenY + (opener["h"] / 2)) - (h / 2);
-        resizeTo(w, h);
         moveTo(w === opener["w"] ? moveX + 10 : moveX, h === opener["h"] ? moveY + 10 : moveY);
         setInterval(() => {
             if (opener === null || !opener["waiting_screen"]) {
                 window.close();
             }
         }, 500);
+        start();
     }
+});
+async function start() {
+    console.log("初始化");
+    window["footer"] = $('footer');
+    window["main"] = $('main#main_contant');
+    window["$page"] = {};
+    get_start_page();
     $("#sys_disabled").hide();
     window["open_page"] = function (href, get = false) {
         let dis = $("#sys_disabled");
@@ -123,30 +162,4 @@ $(async () => {
     }).on("mouseleave", "input[data-hide]", function () {
         this.setAttribute("type", "password");
     });
-});
-function load_page(id) {
-    console.log("open \"" + id + "\" page");
-    window["now_page"] = id;
-    if (window["$page"][id]) {
-        main.fadeOut(100, () => {
-            main
-                .off() //刪除監聽
-                .html(window["$page"][id])
-                .fadeIn(100);
-            $.getScript(`/js/page/${id}.js`);
-        });
-    }
-    else {
-        main.fadeOut(100, () => {
-            $.get("/page/" + id + ".html", function (data) {
-                window["$page"][id] =
-                    data + `<link rel="stylesheet" href="/css/page/${id}.css">`;
-                main
-                    .off() //刪除監聽
-                    .html(window["$page"][id])
-                    .fadeIn(100);
-                $.getScript(`/js/page/${id}.js`);
-            });
-        });
-    }
 }

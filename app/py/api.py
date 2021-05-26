@@ -1,3 +1,4 @@
+import os
 import eel,winreg,datetime,vdf,json,asyncio,aiohttp
 from . import login_steam
 import threading
@@ -73,7 +74,9 @@ def del_client_user(steamID):
         vdf.dump(users,file)
 
 
-
+# ==============================================================
+#                         鎖等待
+# ==============================================================
 class wait_lock:
   def __init__(self, lock):
     self.lock = lock
@@ -109,4 +112,3 @@ def user_login(steamid):
     with wait_lock(login_lock):
         t = threading.Thread(target = login_steam.login,args=(steamid,login_lock,))
         t.start()
-        

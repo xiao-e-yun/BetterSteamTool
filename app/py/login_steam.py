@@ -1,4 +1,3 @@
-from re import I
 import winreg,subprocess
 from pywinauto import Application as APP
 from pywinauto import keyboard

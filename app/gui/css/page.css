@@ -8,6 +8,10 @@
   --black:58, 58, 58;
 }
 
+.fade-in {
+  animation: fade_in 0.4s ease-in-out;
+}
+
 .inline_btn {
   display: flex;
   margin: 0 5px;
@@ -115,7 +119,9 @@ header {
   user-select: none;
 }
 header a.title {
+  border-radius: 0;
   color: rgb(var(--main));
+  background-color: Transparent;
   text-decoration: none;
   font-weight: 550;
   box-sizing: border-box;
@@ -276,6 +282,14 @@ button:hover {
 button:active {
   background: rgb(var(--side-1));
   color: rgb(var(--bg));
+}
+
+a {
+  color: rgb(var(--bg));
+  background-color: rgb(var(--main));
+  padding: 0 0.2em;
+  text-decoration: none;
+  border-radius: 0.1em;
 }
 
 @keyframes fade_in {

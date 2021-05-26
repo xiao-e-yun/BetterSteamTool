@@ -1,7 +1,7 @@
 "use strict";
+/// <reference path="../page.ts" />
 w = 400;
 h = 200;
-main = $("main");
 $("#get_mafile_input").on('change', (el) => {
     let input = $(el.target);
     let from = $("#get_mafile>p");

@@ -56,8 +56,6 @@ done_time = time.process_time()
 info("loading")
 import threading,queue
 
-# 開發模式使用
-# from python import main,api,guard
 
 need_import = {"pkg":"py","main":"py.main"}
 def load_mod(need_import,q):

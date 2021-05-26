@@ -1,4 +1,5 @@
 "use strict";
+/// <reference path="../page.ts" />
 w = 1000;
 h = 500;
 const call = call_data();

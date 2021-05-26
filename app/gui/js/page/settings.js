@@ -55,7 +55,7 @@ async function reload_account_list() {
 //                  設置
 //=============================================
 (async function () {
-    let config = await eel.app_get_settings()();
+    let config = await eel.app_setting()();
     $.each(config, (key, val) => {
         $("[data-id=\"" + (key === "" ? "none" : key) + "\"]").val(val);
     });
@@ -95,6 +95,6 @@ main.on("input", "[data-id]", function () {
     let id = this.dataset.id;
     let val = $(this).val();
     console.log(id + ":" + val);
-    eel.app_chang_setting(id, val);
+    eel.app_setting(id, val);
 });
 console.log("settings is ready");

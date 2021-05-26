@@ -1,3 +1,4 @@
+/// <reference path="../page.ts" />
 w = 800
 h = 500;
 

@@ -7,3 +7,7 @@
   --white:212, 212, 212;
   --black:58, 58, 58;
 }
+
+.fade-in {
+  animation: fade_in 0.4s ease-in-out;
+}

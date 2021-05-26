@@ -106,7 +106,9 @@ header {
     user-select: none;
 
     & a.title {
+        border-radius: 0;
         color: BScolor($main);
+        background-color: $no_color;
         text-decoration: none;
         font-weight: 550;
         box-sizing: border-box;
@@ -279,6 +281,14 @@ button {
         background: BScolor($side-1);
         color: BScolor($bg);
     }
+}
+
+a{
+    color: BScolor($bg);
+    background-color: BScolor($main);
+    padding: 0 .2em;
+    text-decoration: none;
+    border-radius: .1em;
 }
 
 @keyframes fade_in{

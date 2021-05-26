@@ -1,4 +1,5 @@
 "use strict";
+/// <reference path="../page.ts" />
 w = 270;
 h = 550;
 let $body = $("body");
