@@ -1,3 +1,4 @@
+"use strict";
 /// <reference path="../page.ts" />
 w = 800;
 h = 500;
@@ -63,4 +64,3 @@ async function post_form(val, trade_id) {
         return req["success"];
     });
 }
-export {};

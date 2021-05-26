@@ -91,4 +91,22 @@ eel.info("啟動時間",load_time+"ms","console")
 eel.info("總加載時間",all_done_time+"ms","console")
 
 while True:
-    eel.sleep(5)
+    #設置定時執行
+    eel.sleep(15)
+
+    #設置config索引
+    user_path = path + "data/user_config/"
+    config_users_list = os.listdir(user_path)
+    app_users_list = list(main.app_setting("user_config_index").values())
+
+    if(config_users_list != app_users_list):
+        print("set user config index")
+        index_file = {}
+        for account in config_users_list:
+            if(account[-5:] == ".json"):
+                with open(user_path + account, "r") as f:
+                    file = json.load(f)
+                    index = file["steam_id"]
+                    index_file[index] = account
+
+        main.app_setting("user_config_index",index_file)

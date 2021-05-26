@@ -1,7 +1,4 @@
 /// <reference path="../page.ts" />
-
-import { data } from "jquery";
-
 w = 800
 h = 500
 const steamid: string = (call_data()["steamid"] as String).toString()
