@@ -1,7 +1,50 @@
-import eel,json
+from functools import cache
+import eel,json,sys
 from steam import guard
 import steam.webauth as wa
-from .main import get_account_list,path
+from .main import get_account_list,path,user_conf
+from steampy.client import SteamClient
+
+# ==============================================================
+#                           取得API
+# ==============================================================
+
+steam_session={}
+@eel.expose
+def post_confirmation(steamid,api,val,trade_id):
+    user = user_conf(steamid)
+    try:
+        try:
+            client=steam_session[steamid]
+            print("use steampy cache")
+        except:
+            print("use steampy login")
+            g = user["guard"]
+            g["steamid"] = steamid
+            Sguard = json.dumps(g)
+            client = SteamClient(api)
+            client.login(user["name"], user["password"],Sguard)
+            globals()["steam_session"][steamid]=client
+        if(val):
+            try:
+                client._confirm_transaction(trade_id)
+            except:
+                client.accept_trade_offer(trade_id)
+        else:
+            client.cancel_trade_offer(trade_id)
+            client.decline_trade_offer(trade_id)
+                
+        return {"success":True}
+    except Exception as e:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        return {"success":False,
+            "err_type":e.__class__.__name__,
+            "err_info":e.args[0],
+            "err_line":str(exc_tb.tb_lineno)
+        }
+# ==============================================================
+#                           取得API
+# ==============================================================
 
 @eel.expose
 def import_shared_secret(mafile,notest=False):  # mafile

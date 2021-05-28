@@ -61,18 +61,20 @@ async function reload_guard_account() {
 }
 async function get_2FA(always = false) {
     if (now_page === "guard") {
-        let data = await eel.get_2FA()();
         let time_line = $("#last_time");
+        let data = await eel.get_2FA()();
         $.each(data["twoFA"], (key, val) => {
             $acc.find(`div[data-steamid="${key}"] .guard_code`).text(val);
         });
-        const time = data["reload_time"];
-        const next_time = time > 0 ? time : 1000 + 1000; //每三十秒刷新 30000ms
-        if (always) {
-            time_line.css("width", "100%").animate({ width: "0%" }, next_time, "linear");
-            setTimeout(() => {
-                get_2FA(true);
-            }, next_time);
+        if (time_line.css("width") === "0px" || always) {
+            const time = data["reload_time"];
+            const next_time = time > 0 ? time : 1000 + 1000; //每三十秒刷新 30000ms
+            if (always) {
+                time_line.css("width", "100%").stop().animate({ width: "0%" }, next_time, "linear");
+                setTimeout(() => {
+                    get_2FA(true);
+                }, next_time);
+            }
         }
     }
 }

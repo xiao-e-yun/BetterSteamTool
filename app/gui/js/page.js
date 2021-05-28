@@ -1,27 +1,37 @@
 "use strict";
 var w = 1, h = 1;
 if (location.pathname === "/"
-    || location.pathname === "/index.html"
-    || location.pathname === "/load.html") {
+    || location.pathname === "/index.html") {
     w = 300;
     h = 600;
+}
+else if (location.pathname === "/load.html") {
+    w = 300;
+    h = 600;
+    window["_loading_page"] = setInterval(async () => {
+        if (await eel.is_done()()) {
+            Edone();
+        }
+    }, 500);
 }
 let Edone = function () {
     let url = location.pathname;
     if (url === "/load.html") {
-        $.get("/", data => {
-            let reg = /(?<=<body bgcolor="#0d0c1d">).*(?=<\/body>)/gms;
-            let req = reg.exec(data);
-            $(req[0]).appendTo("body").hide().fadeIn();
-            $("#sys_disabled,footer").hide();
-            $("#loading").fadeOut(400, function () {
-                history.pushState("", "", "/");
-                location.reload();
-            }); // 美觀 :3
-        });
+        if (window["_loading_page"]) {
+            clearInterval(window["_loading_page"]);
+            $.get("/", data => {
+                let reg = /(?<=<body bgcolor="#0d0c1d">).*(?=<\/body>)/gms;
+                let req = reg.exec(data);
+                $(req[0]).appendTo("body").hide().fadeIn();
+                $("#sys_disabled,footer").hide();
+                $("#loading").fadeOut(400, function () {
+                    history.pushState("", "", "/");
+                    location.reload();
+                }); // 美觀 :3
+            });
+        }
     }
 };
-eel.expose(Edone, "done");
 window["Einfo"] = function (title, text = "", type = "log") {
     if (type === "console") {
         if (text === "") {
@@ -63,7 +73,7 @@ window.onresize = function () {
 async function get_start_page() {
     //自動加載頁面
     let $start_page = await eel.app_setting("start_page")();
-    if ($start_page !== "BSnone" && $start_page !== undefined) {
+    if ($start_page !== "BSnone" && $start_page !== "none") {
         load_page($start_page);
     }
     else {
@@ -106,12 +116,18 @@ $(() => {
     }
     else if (opener) {
         $("body").append(`
-        <script type="text/javascript" src="/js${location.pathname.slice(0, -5)}.js"></script>
         <link rel="stylesheet" href="/css${location.pathname.slice(0, -5)}.css" title="main">
+        <script src="/js${location.pathname.slice(0, -5)}.js">
         `);
-        let moveX = (opener.screenX + (opener["w"] / 2)) - (w / 2);
-        let moveY = (opener.screenY + (opener["h"] / 2)) - (h / 2);
-        moveTo(w === opener["w"] ? moveX + 10 : moveX, h === opener["h"] ? moveY + 10 : moveY);
+        resizeTo(w, h);
+        let url = new URL(location.href);
+        let open = url.searchParams.get("open");
+        if (open === "") {
+            let moveX = ((opener.screenX + (opener["w"] / 2)) - (w / 2));
+            let moveY = ((opener.screenY + (opener["h"] / 2)) - (h / 2));
+            moveTo(w === opener["w"] ? moveX + 10 : moveX, h === opener["h"] ? moveY + 10 : moveY);
+            history.replaceState("", "", url.pathname);
+        }
         setInterval(() => {
             if (opener === null || !opener["waiting_screen"]) {
                 window.close();
@@ -131,8 +147,7 @@ async function start() {
         let dis = $("#sys_disabled");
         dis.fadeIn();
         window["waiting_screen"] = true;
-        let win = window.open("/request/" + href + ".html", "", `app=true,width=100,height=100`);
-        win.resizeTo(1, 1);
+        let win = window.open("/request/" + href + ".html?open", "", `app=true,width=100,height=100`);
         if (get !== false) {
             window["_$Bsteam_data"] = get;
         }

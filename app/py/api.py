@@ -14,11 +14,19 @@ def get(req_list,JSON = True):
 
     #設置async取得
     async def _get(url,JSON,original=False,once=False):
-        print("start "+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
+        start_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
+        print("start "+start_time)
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as response:
                 req = await response.text()
-                print("req "+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
+                get_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
+                print("req "+get_time)
+                eel.info(
+                    "要求已得到",
+                    "送出時間:"+start_time+
+                    "\n取得時間:"+get_time,
+                    "console",
+                    )
                 if (JSON==True):
                     try:
                         req = json.loads(req)

@@ -1,4 +1,4 @@
-import os,sys,datetime,time
+import os,sys,datetime,time,json
 def info(txt):
     print(txt+" |"+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
 
@@ -19,36 +19,20 @@ lock.write("0")
 info("start")
 import eel
 
-def EEL_start(port):
-    eel.init(os.path.dirname(os.path.abspath(__file__))+'\gui')
-    eel.start('load.html',
-    port = port,
-    suppress_error=True,
-    block=False,
-    size = (300,600),
-    mode='edge'
-    )
+_app_is_done=False
+@eel.expose
+def is_done():
+    return _app_is_done
 
-try:
-    EEL_start(8700)
-except:
-    info("test port")#檢視port
-    run_status = {"Status":False,"Port":8701}
-    import socket
 
-    while not run_status["Status"]:
-        try:
-            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            s.settimeout(0.05)
-            s.connect(('127.0.0.1', run_status["Port"]))
-            run_status["Status"] = False
-            run_status["Port"]+=1
-        except socket.error:
-            run_status["Status"] = True
-        finally:
-            if s:
-                s.close()
-    EEL_start(run_status["Port"])
+eel.init(os.path.dirname(os.path.abspath(__file__))+'\gui')
+eel.start('load.html',
+port = 8701,
+suppress_error=True,
+block=False,
+size = (300,600),
+mode='edge'
+)
 
 done_time = time.process_time()
 
@@ -78,7 +62,7 @@ for name,file in mods.items():
     globals()[name] = file
 loaded_time = time.process_time()
 #================================================
-eel.done()
+_app_is_done = True
 main.start()
 
 info("all done")

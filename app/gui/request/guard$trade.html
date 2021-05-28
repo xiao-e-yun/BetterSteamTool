@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hant-TW">
 <head>
-    <title>設置</title>
+    <title>加載資料中</title>
     <meta charset="utf-8">
     <meta name="author" content=" 小惡運 / xiao e yun ">
     <meta http-equiv="Content-Language" content="zh-TW">
@@ -9,13 +9,16 @@
     <link rel="icon" href="/logo.ico">
     <link rel="stylesheet" href="/css/page.css">
     <script type="text/javascript" src="/eel.js"></script>
-    <script type="text/javascript" src="/jquery.js"></script>
+    <script type="text/javascript" src="/js/jquery.js"></script>
     <script type="text/javascript" src="/js/page.js"></script>
 </head>
 
 <body bgcolor="#0d0c1d">
     <div id="loading"><p>加載資料中</p></div>
-    <aside id="trade_list"></aside>
-    <main></main>
+    <span class="loader" style="display: none;"><span class="loader-inner"></span></span>
+    <div id="root">
+        <div id="trade_root"><aside id="trade_list"></aside></div>
+        <main></main>
+    </div>
 </body>
 </html>

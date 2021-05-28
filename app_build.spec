@@ -12,6 +12,7 @@ a = Analysis(['app/index.py'],
                 ('app\\gui', 'gui')
                 ],
              hiddenimports=[
+                'steampy',
                 'bottle_websocket',
                 'py'
                 ],

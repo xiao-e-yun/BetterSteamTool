@@ -75,6 +75,7 @@ main#main_contant{
         font-family: monospace;
         font-size: 3rem !important;
         margin: 0 !important;
+        animation:fade_in .6s ease-in both .4s;
     }
     & > p {
         margin:0 0 0 $img_width!important;

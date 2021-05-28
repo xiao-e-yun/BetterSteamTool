@@ -29,6 +29,7 @@ def close_steam(exe,si):
 def auto_login(steamid,name,lock):
     key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,"SOFTWARE\Valve\Steam", 0, winreg.KEY_ALL_ACCESS)
     winreg.SetValueEx(key, "AutoLoginUser", 0, winreg.REG_SZ, name)
+    winreg.SetValueEx(key, "RememberPassword", 0, winreg.REG_DWORD, 0x00000001)
     exe, t = winreg.QueryValueEx(key, "SteamExe")
     winreg.CloseKey(key)
 
@@ -45,17 +46,16 @@ def auto_login(steamid,name,lock):
         i = 0
         sleep(6)
         while True:
-            guis = [Steam,login_gui]
-            for gui in guis:
+            guis = {Steam:True,login_gui:False}
+            for gui,val in guis.items():
                 try:
                     gui.wait("ready",.1)#等待介面
-                    return True
+                    return val
                 except:
                     pass
             i +=1 #等待.2s
             if(i >= (25 * 5)):#timeout 25s
                 i = 0
-                close_steam(exe,si)
                 return True
         
 
@@ -114,8 +114,8 @@ def login(steamid,lock=False,_app=False,force=False):
     login_gui.set_focus()
     sleep(.1)
     if(_app == False):
-        keyboard.send_keys(acc["name"]+"{TAB}")
-    keyboard.send_keys(password+"{TAB}{ENTER}")
+        keyboard.send_keys(acc["name"]+"""{TAB}""")
+    keyboard.send_keys(password+"""{TAB}{ENTER}""")
 
     if(acc["se"] != False): #guard
         sa = guard.SteamAuthenticator(acc["se"])
@@ -123,15 +123,15 @@ def login(steamid,lock=False,_app=False,force=False):
         guard_gui = app.window(title_re='Steam Guard - .*',class_name='vguiPopupWindow')
         try:
             guard_gui.wait("ready")
+            guard_gui.set_focus()
         except timings.TimeoutError:
             print("timeout")
             del app
             if(lock != False):
                 lock.release()
             pass
-        guard_gui.set_focus()
         sleep(.1)
-        keyboard.send_keys(sa.get_code()+"{ENTER}")
+        keyboard.send_keys(sa.get_code()+"""{ENTER}""")
     login_gui.wait_not("visible", 60000)
     del app
     if(lock != False):

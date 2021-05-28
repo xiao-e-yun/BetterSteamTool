@@ -2,7 +2,6 @@
 #   後臺主程序
 #   帳戶控制器
 #
-from pickle import load
 import re
 import pythoncom
 import vdf
@@ -99,7 +98,7 @@ def get_steam_web_api(key=False):
 # ==============================================================
 
 @eel.expose
-def user_conf(steamid="BSnone",value:dict="BSnone"):
+def user_conf(steamid="BSnone",value="BSnone"):
     if(steamid=="BSnone"):
         return app_setting("user_config_index")
     user_path = os.getcwd() + "/data/user_config/"
@@ -107,15 +106,15 @@ def user_conf(steamid="BSnone",value:dict="BSnone"):
     user_file = user_path+user[steamid]
 
     with open(user_file,"r") as f:
-        type = json.load(f)
+        req_type = json.load(f)
         
     if(value=="BSnone"):
-        return type
+        return req_type
     elif(type(value) == dict):
         for key,val in value.items():
-            type[key] = val
+            req_type[key] = val
             with open(user_file,"w") as f:
-                json.dump(type,f)
+                json.dump(req_type,f)
 
 # ==============================================================
 #                           顯示帳號
@@ -364,6 +363,19 @@ def test_login(Sid,get_API=False):
 #                     查看進程是否運行
 # ==============================================================
 
+@eel.expose
+def to_steamid(steamid,to_account_id=False):
+    Steam = Sid.SteamID(steamid)
+    if(to_account_id):
+        #accountID
+        return str(Steam.as_32)
+    else:
+        #steamID
+        return str(Steam.as_64)
+
+# ==============================================================
+#                     查看進程是否運行
+# ==============================================================
 
 def get_task(task_name):
     pythoncom.CoInitialize()
