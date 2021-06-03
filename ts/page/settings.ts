@@ -59,8 +59,15 @@ async function reload_account_list() {
 //=============================================
 (async function () {
     let config = await eel.app_setting()()
-    $.each(config, (key: string, val) => {
-        $("[data-id=\"" + (key === "" ? "none" : key) + "\"]").val(val)
+    $.each(config, (key: string, val:string|boolean) => {
+        if(typeof val === "string"){
+            $("[data-id=\"" + (key === "" ? "none" : key) + "\"]").val(val)
+        }else if(typeof val === "boolean"){
+            let input = $("input[data-checkbox]")
+            input
+                .prop('checked',val)
+                .parent()[val?"addClass":"removeClass"]("checked")
+        }
     })
 
     //select
@@ -97,11 +104,21 @@ async function reload_account_list() {
         })
     })
 })()
-main.on("input", "[data-id]", function () {
+main.on("input", "input[data-id]", function () {
     let id = this.dataset.id
     let val = $(this).val()
     console.log(id + ":" + val)
-    eel.app_setting(id, val)
+    eel.app_setting(id, val)()
+}).on("click", ".checkbox", function () {
+    let $this = $(this)
+    let input = $this.find("input")
+    let id = input.data("checkbox")
+    let val = !(input.prop("checked"))
+
+    $(this)[val?"addClass":"removeClass"]("checked")
+    input.prop("checked",val)
+    console.log(id + ":" + val)
+    eel.app_setting(id, val)()
 })
 
 console.log("settings is ready")

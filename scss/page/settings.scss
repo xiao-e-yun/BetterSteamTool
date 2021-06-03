@@ -58,6 +58,27 @@
         color: BScolor($bg);
         outline: none;
     }
+    & .checkbox{
+        margin: 0!important;
+        cursor: pointer;
+        &::before{
+            content: "";
+            display: inline-block;
+            box-sizing: border-box;
+            width: .9em;
+            height: .9em;
+            border: $border;
+            background-color:BScolor($bg);
+            margin-right: .1em;
+            transition: background .2s ease-in-out;
+        }
+        &.checked::before{
+            background-color:BScolor($main);
+        }
+        &>input{
+            display: none;
+        }
+    }
 }
 .acc_txt {
     cursor: default;
@@ -151,7 +172,7 @@ input[data-hide]{
     background-color: BScolor($side-2);
     color: BScolor($main);
     border-width:0 0 2px 0;
-    margin: .2rem 0 0 .2rem;
+    margin-bottom:.2em;
     cursor: pointer;
     &>p{
         padding: 0.1em;

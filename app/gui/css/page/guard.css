@@ -3,6 +3,7 @@ main#main_contant {
 }
 
 #reload_line {
+  position: absolute;
   width: 100%;
   height: 0.3em;
   background-color: rgb(var(--side-2));
@@ -18,6 +19,7 @@ main#main_contant {
 }
 
 #Gaccount {
+  margin-top: 0.3em;
   display: flex;
   flex-wrap: wrap;
   user-select: none;
@@ -27,7 +29,7 @@ main#main_contant {
   background-color: rgb(var(--side-3));
   flex: 0 0 96%;
   position: relative;
-  background-size: cover;
+  background-size: cover !important;
   margin: 2%;
   height: max-content;
   animation: fade_in 0.5s;
@@ -39,7 +41,7 @@ main#main_contant {
 .account_items > .img {
   width: 110px;
   height: 110px;
-  background-size: cover;
+  background-size: cover !important;
   box-sizing: border-box;
   border-right: beige;
   display: block;

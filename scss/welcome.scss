@@ -1,0 +1,29 @@
+@import "main.scss";
+#main_contant{
+    &>h1{
+        font-size: 1.8em;
+        width: -webkit-fill-available;
+        border-bottom: $border;
+        margin: .2em 0 .3em 1em;
+    }
+    &>.card{
+        margin-bottom: .3em;
+        &>h2{
+            font-size: 1.5em;
+            width: -webkit-fill-available;
+            cursor: n-resize;
+            user-select: none;
+        }
+        &>div{
+            border-top: $border;
+            margin:0 0 0 5%;
+            font-size: 1.1em;
+            & div{
+                position: relative;
+                left: 1em;
+                border-left: $border;
+                padding-left: .2em;
+            }
+        }
+    }
+}

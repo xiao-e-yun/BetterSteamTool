@@ -1,0 +1,26 @@
+#main_contant > h1 {
+  font-size: 1.8em;
+  width: -webkit-fill-available;
+  border-bottom: rgb(var(--main)) solid 2px;
+  margin: 0.2em 0 0.3em 1em;
+}
+#main_contant > .card {
+  margin-bottom: 0.3em;
+}
+#main_contant > .card > h2 {
+  font-size: 1.5em;
+  width: -webkit-fill-available;
+  cursor: n-resize;
+  user-select: none;
+}
+#main_contant > .card > div {
+  border-top: rgb(var(--main)) solid 2px;
+  margin: 0 0 0 5%;
+  font-size: 1.1em;
+}
+#main_contant > .card > div div {
+  position: relative;
+  left: 1em;
+  border-left: rgb(var(--main)) solid 2px;
+  padding-left: 0.2em;
+}

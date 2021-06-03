@@ -77,7 +77,17 @@ async function get_start_page() {
         load_page($start_page);
     }
     else {
+        eel.app_setting("dont_show_welcome")().then((dont_show_welcome) => {
+            if (dont_show_welcome !== true) {
+                main.append(`<link rel="stylesheet" href="/css/welcome.css">`);
+                $.get("/welcome.html", (data) => {
+                    main.append(data);
+                    $.getScript("/js/welcome.js");
+                });
+            }
+        });
         footer.slideDown();
+        main.on("click", () => { footer.slideUp(); });
     }
 }
 window["now_page"] = "";
@@ -87,11 +97,7 @@ function load_page(id) {
         window["now_page"] = id;
         if (window["$page"][id]) {
             main.fadeOut(100, () => {
-                main
-                    .off() //刪除監聽
-                    .html(window["$page"][id])
-                    .fadeIn(100);
-                $.getScript(`/js/page/${id}.js`);
+                reset(id);
             });
         }
         else {
@@ -99,13 +105,17 @@ function load_page(id) {
                 $.get("/page/" + id + ".html", function (data) {
                     window["$page"][id] =
                         data + `<link rel="stylesheet" href="/css/page/${id}.css">`;
-                    main
-                        .off() //刪除監聽
-                        .html(window["$page"][id])
-                        .fadeIn(100);
-                    $.getScript(`/js/page/${id}.js`);
+                    reset(id);
                 });
             });
+        }
+        function reset(id) {
+            main
+                .off() //刪除監聽
+                .on("click", () => { footer.slideUp(); })
+                .html(window["$page"][id])
+                .fadeIn(100);
+            $.getScript(`/js/page/${id}.js`);
         }
     }
 }

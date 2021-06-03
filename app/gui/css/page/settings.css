@@ -58,6 +58,27 @@
   color: rgb(var(--bg));
   outline: none;
 }
+.card .checkbox {
+  margin: 0 !important;
+  cursor: pointer;
+}
+.card .checkbox::before {
+  content: "";
+  display: inline-block;
+  box-sizing: border-box;
+  width: 0.9em;
+  height: 0.9em;
+  border: rgb(var(--main)) solid 2px;
+  background-color: rgb(var(--bg));
+  margin-right: 0.1em;
+  transition: background 0.2s ease-in-out;
+}
+.card .checkbox.checked::before {
+  background-color: rgb(var(--main));
+}
+.card .checkbox > input {
+  display: none;
+}
 
 .acc_txt {
   cursor: default;
@@ -150,7 +171,7 @@ input[data-hide]:hover {
   background-color: rgb(var(--side-2));
   color: rgb(var(--main));
   border-width: 0 0 2px 0;
-  margin: 0.2rem 0 0 0.2rem;
+  margin-bottom: 0.2em;
   cursor: pointer;
 }
 .select > input {

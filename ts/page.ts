@@ -92,7 +92,17 @@ async function get_start_page() {
     if ($start_page !== "BSnone" && $start_page !== "none") {
         load_page($start_page)
     } else {
+        eel.app_setting("dont_show_welcome")().then((dont_show_welcome: boolean) => {
+            if (dont_show_welcome!==true) {
+                main.append(`<link rel="stylesheet" href="/css/welcome.css">`)
+                $.get("/welcome.html",(data)=>{
+                    main.append(data)
+                    $.getScript("/js/welcome.js")
+                })
+            }
+        })
         footer.slideDown()
+        main.on("click",()=>{footer.slideUp()})
     }
 }
 
@@ -103,24 +113,24 @@ function load_page(id: string) {
         window["now_page"] = id
         if (window["$page"][id]) {
             main.fadeOut(100, () => {
-                main
-                    .off() //刪除監聽
-                    .html(window["$page"][id])
-                    .fadeIn(100)
-                $.getScript(`/js/page/${id}.js`)
+                reset(id)
             })
         } else {
             main.fadeOut(100, () => {
                 $.get("/page/" + id + ".html", function (data) {
                     window["$page"][id] =
                         data + `<link rel="stylesheet" href="/css/page/${id}.css">`
-                    main
-                        .off() //刪除監聽
-                        .html(window["$page"][id])
-                        .fadeIn(100)
-                    $.getScript(`/js/page/${id}.js`)
+                    reset(id)
                 })
             })
+        }
+        function reset(id:string) {
+            main
+                .off() //刪除監聽
+                .on("click",()=>{footer.slideUp()})
+                .html(window["$page"][id])
+                .fadeIn(100)
+            $.getScript(`/js/page/${id}.js`)
         }
     }
 }
@@ -128,8 +138,8 @@ function load_page(id: string) {
 $(() => {
     if (location.pathname === "/"
         || location.pathname === "/index.html") {
-        get_start_page()
-        start()
+            get_start_page()
+            start()
     } else if (opener) {
         $("body").append(`
         <link rel="stylesheet" href="/css${location.pathname.slice(0, -5)}.css" title="main">
