@@ -80,7 +80,9 @@ main#main_contant {
 }
 .del_mode > div:hover::before {
   background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(3px);
+}
+.del_mode > div::-webkit-scrollbar-thumb {
+  border-color: rgb(var(--side-1));
 }
 
 .will_del {
@@ -132,7 +134,7 @@ main#main_contant {
   transition: height 0.3s 0.3s;
 }
 
-#del_mode, #reload_mode {
+#del_mode {
   display: inline;
   text-align: center;
   margin: 3% 0 0 0 !important;
@@ -141,18 +143,8 @@ main#main_contant {
   font-weight: 1000;
   font-size: 1.2em !important;
   letter-spacing: 2px;
-}
-
-#del_mode {
   border: rgb(var(--side-1)) solid 2px;
   color: rgb(var(--side-1));
   background: rgb(var(--bg));
   z-index: 10;
-}
-
-#reload_mode {
-  border: rgb(var(--bg)) solid 2px;
-  color: rgb(var(--bg));
-  background: rgb(var(--main));
-  z-index: 11;
 }

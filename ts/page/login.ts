@@ -7,14 +7,16 @@ async function show_acc_items(reload: boolean = true) {
 
     onClick()
     function onClick() {
-        $acc.one("click", ".account_items",async function () {
-            let user = this.dataset.username
-            let steamid = this.dataset.steamid
-            console.log(steamid)
-            $("#loading").fadeIn()
-            eel.auto_login(steamid,user)().then(()=>{
-                $("#loading").fadeOut()
-            })
+        $acc.one("click", ".account_items", async function () {
+            if($("#account.del_mode").length===0){
+                let user = this.dataset.username
+                let steamid = this.dataset.steamid
+                console.log(steamid)
+                $("#loading").fadeIn()
+                eel.auto_login(steamid, user)().then(() => {
+                    $("#loading").fadeOut()
+                })
+            }
             setTimeout(() => { onClick() }, 1000)
         })
     }
@@ -145,66 +147,34 @@ $("#reload").on("click", function () {
 $("#delete")
     .on("click", function () {
         let $this = $(this)
-        if (!del_mode()) {
+        let del_mode:boolean = $(".del_mode").length === 0
+        Einfo("刪除模式","模式:"+del_mode.toString(),"console")
+        let tips = $("#del_mode")
+        let del_event:JQuery.ClickEvent
+        if (del_mode) {
+            tips.fadeIn()
             $acc
-                .off()
                 .addClass("del_mode")
-                .on("click", ".account_items", function () {
-                    $acc
-                        .removeClass("del_mode")
-                        .off()
-                        .on("click", ".account_items p", (event) => {
-                            event.stopPropagation()
-                        })
-                    del_mode(false)
-
-                    eel.del_client_user(this.dataset.steamid)
+                .on("click", ".account_items", function (event){
                     let $this = $(this)
+                    del_event = event
+                    eel.del_client_user(this.dataset.steamid)()
                     $this
                         .addClass("will_del")
                         .fadeOut(400, () => {
                             $this.remove()
-                            onClick()
                         })
                 })
-            del_mode(true)
         } else {
+            tips.fadeOut()
             $acc
                 .removeClass("del_mode")
-                .off()
-            onClick()
-            del_mode(false)
+                .off(del_event)
         }
         $this.attr("disabled", "")
         setTimeout(() => { $this.removeAttr("disabled") }, 300);
 
-        function onClick() {
-            $acc.one("click", ".account_items", function () {
-                let user = this.dataset.username
-                let steamid = this.dataset.steamid
-                console.log(user)
-                eel.auto_login(steamid,user)
-                setTimeout(() => { onClick() }, 1000)
-            })
-        }
     })
-
-function del_mode(type?: boolean) {
-    let e = $("#del_mode")
-    let b = $("#delete")
-    if (typeof (type) === "undefined") {
-        return (b.data("use") == 'true')
-    } else {
-        b.data("use", type.toString())
-        if (type) {
-            e.fadeIn(300)
-        } else {
-            e.fadeOut(300)
-        }
-        console.log("delete mode:" + type)
-    }
-}
-
 $(".tip").hide()
 
 main.on("mouseenter mouseleave", ".account_items", function () {

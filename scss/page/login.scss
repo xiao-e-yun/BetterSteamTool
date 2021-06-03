@@ -83,7 +83,9 @@ main#main_contant{
     }
     &:hover::before {
         background: rgba(0, 0, 0, 0.8);
-        backdrop-filter: blur(3px);
+    }
+    &::-webkit-scrollbar-thumb{
+        border-color: BScolor($side-1);
     }
 }
 
@@ -135,7 +137,7 @@ main#main_contant{
         transition: height 0.3s 0.3s;
     }
 }
-#del_mode,#reload_mode{
+#del_mode{
     display: inline;
     text-align: center;
     margin:3% 0 0 0!important;
@@ -144,16 +146,8 @@ main#main_contant{
     font-weight: 1000;
     font-size: 1.2em!important;
     letter-spacing: 2px;
-}
-#del_mode{
     border: BScolor($side-1) solid 2px;
     color: BScolor($side-1);
     background: BScolor($bg);
     z-index: 10;
-}
-#reload_mode{
-    border: BScolor($bg) solid 2px;
-    color: BScolor($bg);
-    background: BScolor($main);
-    z-index: 11;
 }
