@@ -27,7 +27,7 @@
 }
 
 body {
-  position: fixed;
+  position: absolute;
   overflow-x: hidden;
   width: 100vw;
   color: rgb(var(--main));

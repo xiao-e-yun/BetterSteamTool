@@ -17,7 +17,7 @@ lock.write("0")
 
 #================================================
 info("start")
-import eel
+import eel,socket
 
 _app_is_done=False
 @eel.expose
@@ -25,14 +25,26 @@ def is_done():
     return _app_is_done
 
 
-eel.init(os.path.dirname(os.path.abspath(__file__))+'\gui')
-eel.start('load.html',
-port = 8701,
-suppress_error=True,
-block=False,
-size = (300,600),
-mode='edge'
-)
+ge = {"port":8700,"get_port":False}
+while ge["get_port"] is False:
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.settimeout(.1)
+        s.connect(("localhost", ge["port"]))
+        ge['port'] += 1
+    except socket.error:
+        ge["get_port"]=True
+        eel.init(os.path.dirname(os.path.abspath(__file__))+'\gui')
+        eel.start('load.html',
+        port = ge["port"],
+        suppress_error=True,
+        block=False,
+        size = (300,600),
+        mode='edge'
+        )
+    finally:
+        if s:
+            s.close()
 
 done_time = time.process_time()
 
@@ -71,8 +83,7 @@ load_time = str((done_time - start_time)*1000)
 all_done_time = str((loaded_time - start_time)*1000)
 
 eel.sleep(3)
-eel.info("啟動時間",load_time+"ms","console")
-eel.info("總加載時間",all_done_time+"ms","console")
+eel.info("調試訊息",'啟動時間:'+str(load_time)+"ms\n總加載時間:"+str(all_done_time)+"ms\n使用端口:"+str(ge["port"]),"console")
 
 while True:
     #設置定時執行

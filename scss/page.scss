@@ -17,19 +17,19 @@
 }
 //基礎
 body {
-    position: fixed;
+    position: absolute;
     overflow-x: hidden;
     width: 100vw;
-    color:BScolor($main);
+    color: BScolor($main);
     background-color: BScolor($bg);
     width: 100vw;
     height: 100vh;
     margin: 0;
     font-family: "Microsoft JhengHei";
 }
-#sys_disabled{
+#sys_disabled {
     z-index: 99999;
-    background: BScolor($bg,.4);
+    background: BScolor($bg, 0.4);
     backdrop-filter: blur(3px);
     position: fixed;
     top: 0;
@@ -40,55 +40,55 @@ body {
     align-items: center;
     height: 100vh;
     width: 100vw;
-    &>p{
+    & > p {
         margin: auto;
         font-size: xx-large;
         background-repeat: no-repeat;
         background-size: 80%;
-        background-image: linear-gradient(90deg, transparent,#f1dac4b3,$BSmain, $BSmain, #f1dac4b3,transparent);
+        background-image: linear-gradient(90deg, transparent, #f1dac4b3, $BSmain, $BSmain, #f1dac4b3, transparent);
         -webkit-background-clip: text;
         -webkit-text-fill-color: #00000000;
-        animation: _sys_disabled 6s cubic-bezier(.1, .8, .9, .2)  infinite;
+        animation: _sys_disabled 6s cubic-bezier(0.1, 0.8, 0.9, 0.2) infinite;
     }
 }
 @keyframes _sys_disabled {
     0% {
-      background-position: -500%;
+        background-position: -500%;
     }
     100% {
-      background-position: 500%;
+        background-position: 500%;
     }
 }
-#server_info{//訊息
+#server_info {
+    //訊息
     z-index: 5000;
     top: 0;
     right: 0;
     position: fixed;
     pointer-events: none;
-    margin:0 1em 0 0;
+    margin: 0 1em 0 0;
 }
-.info_box{
-    margin:.5em 0 0 0;
+.info_box {
+    margin: 0.5em 0 0 0;
     pointer-events: all;
     padding: 5px;
-    background-color: BScolor($black,.8);
+    background-color: BScolor($black, 0.8);
     backdrop-filter: blur(3px);
     border-right-width: 5px;
     border-right-style: solid;
-    animation: fade_in .6s;
-    &.info_log{
+    animation: fade_in 0.6s;
+    &.info_log {
         border-color: BScolor($main);
     }
-    &>h2{
-        &:not(:only-child){
+    & > h2 {
+        &:not(:only-child) {
             border-bottom: $border;
         }
         padding: 0 1.2em;
         margin: 0;
-        
     }
-    &>p{
-        margin: .5em 0 0 0;
+    & > p {
+        margin: 0.5em 0 0 0;
         text-align: center;
     }
 }
@@ -120,7 +120,7 @@ header {
         overflow: hidden;
         transition: all 0.3s ease-in-out;
 
-        &::before{
+        &::before {
             box-sizing: border-box;
             content: "";
             z-index: -1;
@@ -152,20 +152,20 @@ header {
         border: none;
         border-radius: 0;
         border-left: $border;
-        transition: background ease-in-out .2s,color ease-in-out .2s;
+        transition: background ease-in-out 0.2s, color ease-in-out 0.2s;
         background: BScolor(var(--side-3));
 
-        &:focus::before{
+        &:focus::before {
             content: "";
             position: absolute;
             background-color: BScolor($main);
-            color: BScolor($side-3)
+            color: BScolor($side-3);
         }
 
         &:active {
             position: absolute;
             background-color: BScolor($main);
-            color: BScolor($side-3)
+            color: BScolor($side-3);
         }
 
         & svg {
@@ -174,18 +174,18 @@ header {
         }
     }
 }
-::-webkit-scrollbar  {
+::-webkit-scrollbar {
     background-color: BScolor($no_color);
-    width:10px;
+    width: 10px;
 }
-::-webkit-scrollbar-thumb  {
-    background-color:BScolor($bg);
-    border:$border;
+::-webkit-scrollbar-thumb {
+    background-color: BScolor($bg);
+    border: $border;
 }
 
-#loading{
+#loading {
     z-index: 99999;
-    background:BScolor($bg,.4);
+    background: BScolor($bg, 0.4);
     backdrop-filter: blur(3px);
     position: fixed;
     top: 0;
@@ -196,36 +196,34 @@ header {
     align-items: center;
     height: 100vh;
     width: 100vw;
-    &>p{
+    & > p {
         font-size: 2rem;
         background-repeat: no-repeat;
         background-size: 80%;
-        background-image: linear-gradient(90deg, transparent,#f1dac4b3,$BSmain,$BSmain
-        , #f1dac4b3,transparent);
+        background-image: linear-gradient(90deg, transparent, #f1dac4b3, $BSmain, $BSmain, #f1dac4b3, transparent);
         -webkit-background-clip: text;
         -webkit-text-fill-color: $no_color;
-        animation: _sys_disabled 6s cubic-bezier(.1, .8, .9, .2)  infinite;
+        animation: _sys_disabled 6s cubic-bezier(0.1, 0.8, 0.9, 0.2) infinite;
     }
 }
 
-
-main#main_contant{
+main#main_contant {
     overflow: hidden overlay;
     width: 100%;
-    height:calc(100% - 42px);
+    height: calc(100% - 42px);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    transition:width ease-in-out .5s;
+    transition: width ease-in-out 0.5s;
     top: 0;
     left: 0;
     box-sizing: border-box;
-    &::-webkit-scrollbar-thumb  {
-        background-color:BScolor($bg,.6);
-        border-color:BScolor($main,.8);
+    &::-webkit-scrollbar-thumb {
+        background-color: BScolor($bg, 0.6);
+        border-color: BScolor($main, 0.8);
     }
-    &>div{
+    & > div {
         width: 100%;
     }
 
@@ -264,7 +262,7 @@ footer {
 button {
     color: BScolor($main);
     background: BScolor($side-3);
-    border:$border;
+    border: $border;
     width: 100%;
     font-size: 200%;
     margin: 5px 0;
@@ -280,19 +278,19 @@ button {
     }
 }
 
-a{
+a {
     color: BScolor($bg);
     background-color: BScolor($main);
-    padding: 0 .2em;
+    padding: 0 0.2em;
     text-decoration: none;
-    border-radius: .1em;
+    border-radius: 0.1em;
 }
 
-@keyframes fade_in{
-    from{
+@keyframes fade_in {
+    from {
         opacity: 0;
     }
-    to{
+    to {
         opacity: 1;
     }
 }

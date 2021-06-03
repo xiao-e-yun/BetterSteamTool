@@ -112,6 +112,7 @@ function load_page(id) {
 $(() => {
     if (location.pathname === "/"
         || location.pathname === "/index.html") {
+        get_start_page();
         start();
     }
     else if (opener) {
@@ -141,7 +142,6 @@ async function start() {
     window["footer"] = $('footer');
     window["main"] = $('main#main_contant');
     window["$page"] = {};
-    get_start_page();
     $("#sys_disabled").hide();
     window["open_page"] = function (href, get = false) {
         let dis = $("#sys_disabled");

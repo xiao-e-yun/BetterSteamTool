@@ -1,4 +1,3 @@
-from functools import cache
 import eel,json,sys
 from steam import guard
 import steam.webauth as wa
@@ -6,7 +5,7 @@ from .main import get_account_list,path,user_conf
 from steampy.client import SteamClient
 
 # ==============================================================
-#                           取得API
+#                       發出交易提示
 # ==============================================================
 
 steam_session={}
@@ -42,6 +41,95 @@ def post_confirmation(steamid,api,val,trade_id):
             "err_info":e.args[0],
             "err_line":str(exc_tb.tb_lineno)
         }
+# ==============================================================
+#                          　設置guard
+# ==============================================================
+
+@eel.expose
+def guard_phone(type,a=False,b=False,c=False):
+    if(type=="login"):
+        try:
+            g:BSguard = globals()["BSguard_"+a]#a = steamid ,b = oauth ,c = name
+        except:
+            g = globals()["BSguard_"+a] = BSguard(c,b,a)
+        try:
+            return g.status()
+        except:
+            return "oauth_error"
+    else:
+        g:BSguard = globals()["BSguard_"+a]
+
+        if(type=='has_phone'):
+            return g.has_phone()
+
+        elif(type=="add_phone"):#b=phone_number
+            try:
+                g.add_phone_num(b)
+                return True
+            except:
+                return False
+        elif(type=="cfm_mail"):
+            return g.cfm_mail()["success"]
+
+        elif(type=="cfm_phone_num"):#b=SMS_code
+            return g.sa.confirm_phone_number(b)
+
+        elif(type=="send_phone"):#a=steamid
+            try:
+                g.sa.add()
+                user_conf(a,{"guard":g.sa.secrets})
+                return True
+            except:
+                return False
+        elif(type=="finalize"):#b=SMS_code
+            try:
+                g.sa.finalize(b)
+                return True
+            except:
+                return False
+
+class BSguard:
+    def __init__(self,name:str,oauth:str,steamid:str) -> None: #創建驗證器
+        self.name = name
+        self.oauth = oauth
+        self.steamid = steamid
+        self.wa = wa.MobileWebAuth(name)
+        try:
+            self.wa.oauth_login(oauth,steamid)
+        except:
+            return print("oauth_error")
+        self.sa = guard.SteamAuthenticator(backend=self.wa)
+
+    def status(self):
+        return self.sa.status()["steamguard_scheme"]
+
+    def has_phone(self):
+        return self.sa.has_phone_number()
+
+    def add_phone_num(self,num=False): #新增電話號碼
+        if(self.sa.has_phone_number()==True):#無電話
+            return "BStrue"
+        if(num!=False):
+            self.sa.add_phone_number(num)
+
+    def cfm_mail(self):
+        sess = self.sa._get_web_session()
+
+        try:
+            resp = sess.post('https://steamcommunity.com/steamguard/phoneajax',
+                             data={
+                                 'op': 'email_confirmation',
+                                 'arg': '',
+                                 'checkfortos': 1,
+                                 'skipvoip': 1,
+                                 'sessionid': sess.cookies.get('sessionid', domain='steamcommunity.com'),
+                                 },
+                             timeout=15).json()
+        except:
+            return {'fatal': True, 'success': False}
+
+        return resp
+
 # ==============================================================
 #                           取得API
 # ==============================================================

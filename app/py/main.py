@@ -98,7 +98,7 @@ def get_steam_web_api(key=False):
 # ==============================================================
 
 @eel.expose
-def user_conf(steamid="BSnone",value="BSnone"):
+def user_conf(steamid:str="BSnone",value:dict="BSnone"):
     if(steamid=="BSnone"):
         return app_setting("user_config_index")
     user_path = os.getcwd() + "/data/user_config/"
@@ -386,7 +386,6 @@ def get_task(task_name):
     if len(processCodeCov) > 0:
         is_exist = True
     return is_exist
-
 
 if __name__ == '__main__':
     start()

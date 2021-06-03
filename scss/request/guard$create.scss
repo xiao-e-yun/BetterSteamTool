@@ -1,0 +1,115 @@
+@import "../main.scss";
+#root{
+    &>p{
+        text-align: center;
+        font-size: 2em;
+        margin: 0;
+    }
+}
+.title {
+    margin: 1em 0 1em 1.2em;
+    border-bottom: $border;
+    font-size: 2em;
+}
+body{
+    height: 100vh;
+    overflow: overlay;
+}
+button{
+    margin: 2em 2em 0 2em;
+    width: -webkit-fill-available;
+}
+.user_list{
+    display: flex;
+    flex-wrap:wrap;
+    padding-bottom: 16px;
+}
+.user_item{
+    border: $border;
+    box-sizing: border-box;
+    width:162px;
+    height: 162px;
+    position: relative;
+    margin:16px 10px 0 20px;
+    animation: fade_in .5s;
+    &:nth-child(even){
+        margin:16px 20px 0 10px;
+    }
+    
+    &>p{
+        width: 100%;
+        box-sizing: border-box;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        border-top: $border;
+        display: inline;
+        padding: .2em;
+        background-color: BScolor($bg,.6);
+        margin: 0;
+    }
+}
+
+.main_info{
+    text-align: center;
+    font-size: 1.8em;
+    margin: 0;
+}
+
+.info{
+    margin: 0;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border-top: $border;
+    background-color: BScolor($bg,.6);
+    padding: .2em;
+    font-size: 1.4em;
+    font-weight: 800;
+}
+
+input{
+    background: BScolor($side-3);
+    color: BScolor($main);
+    width: -webkit-fill-available;
+    margin: 1.2em 2em 0 2em;
+    font-size: 1.6em;
+    outline: none;
+    border-style: solid;
+    border-bottom: $border;
+    border-width: 0 0 2px 0;
+    border-radius: 0;
+}
+#finish_input{
+    margin: 1em 5em;
+    padding: .2em;
+}
+
+.iti__country-list {
+    background: BScolor($side-3);
+    width: -webkit-fill-available;
+    &::-webkit-scrollbar{
+        height:4px;
+    }
+}
+.iti{
+    margin: 0 auto 0 25%;
+    &>.iti__flag-container{
+        width: -webkit-fill-available;
+    }
+    &>input{
+        font-size: 1.8em;
+        outline: none;
+        color: BScolor($main);
+        background-color: BScolor($side-3,.6);
+        border-style:solid;
+        border-color: BScolor($main);
+        border-width: 0 0 2px 0;
+        border-radius: 0;
+    }
+}
+.iti__selected-flag{
+    width: min-content;
+}
+.iti__flag {background-image: url("/img/lib/intl-tel-input/flags.png");}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {.iti__flag {background-image: url("/img/lib/intl-tel-input/flags@2x.png");}}

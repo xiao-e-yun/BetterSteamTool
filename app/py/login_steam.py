@@ -44,7 +44,7 @@ def auto_login(steamid,name,lock):
 
     def waiter():
         i = 0
-        sleep(6)
+        Steam.wait_not("exists")
         while True:
             guis = {Steam:True,login_gui:False}
             for gui,val in guis.items():
