@@ -8,7 +8,7 @@ async function show_acc_items(reload: boolean = true) {
     onClick()
     function onClick() {
         $acc.one("click", ".account_items", async function () {
-            if($("#account.del_mode").length===0){
+            if (!$acc.data("del")) {
                 let user = this.dataset.username
                 let steamid = this.dataset.steamid
                 console.log(steamid)
@@ -147,38 +147,42 @@ $("#reload").on("click", function () {
 $("#delete")
     .on("click", function () {
         let $this = $(this)
-        let del_mode:boolean = $(".del_mode").length === 0
-        Einfo("刪除模式","模式:"+del_mode.toString(),"console")
+        let del_mode: boolean = $(".del_mode").length === 0
+        Einfo("刪除模式", "模式:" + del_mode.toString(), "console")
         let tips = $("#del_mode")
-        let del_event:JQuery.ClickEvent
         if (del_mode) {
             tips.fadeIn()
             $acc
                 .addClass("del_mode")
-                .on("click", ".account_items", function (event){
-                    let $this = $(this)
-                    del_event = event
-                    eel.del_client_user(this.dataset.steamid)()
-                    $this
-                        .addClass("will_del")
-                        .fadeOut(400, () => {
-                            $this.remove()
-                        })
-                })
+                .data("del", true)
         } else {
             tips.fadeOut()
             $acc
                 .removeClass("del_mode")
-                .off(del_event)
+                .data("del", false)
         }
         $this.attr("disabled", "")
         setTimeout(() => { $this.removeAttr("disabled") }, 300);
 
     })
 $(".tip").hide()
+$acc.on("click", ".account_items", function (event) {
+        if ($acc.data("del")) {
+            let $this = $(this)
+            window["_del_event"] = event
+            eel.del_client_user(this.dataset.steamid)()
+            $this
+                .addClass("will_del")
+                .fadeOut(400, () => {
+                    $this.remove()
+                })
+        }
+    })
 
-main.on("mouseenter mouseleave", ".account_items", function () {
-    $acc.toggleClass("act")
+main.on("mouseenter", ".account_items", function () {
+    $acc.addClass("act")
+}).on("mouseleave", ".account_items", function () {
+    $acc.removeClass("act")
 })
 
 show_acc_items()

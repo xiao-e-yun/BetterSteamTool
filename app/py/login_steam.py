@@ -1,8 +1,8 @@
-import winreg,subprocess
+import winreg,subprocess,eel
 from pywinauto import Application as APP
 from pywinauto import keyboard
 from pywinauto import timings
-from time import sleep, time
+from time import sleep
 from steam import guard
 from .main import get_task,get_account_list,get_client_users
 
@@ -45,6 +45,7 @@ def auto_login(steamid,name,lock):
     def waiter():
         i = 0
         Steam.wait_not("exists")
+        eel.sleep(.5)
         while True:
             guis = {Steam:True,login_gui:False}
             for gui,val in guis.items():

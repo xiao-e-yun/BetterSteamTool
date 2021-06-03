@@ -93,6 +93,7 @@ main#main_contant{
     cursor: default;
     color: BScolor($side-1);
     border-color: BScolor($side-1);
+    transition: none;
     &>p{
         border-color: BScolor($side-1);
     }
@@ -106,7 +107,6 @@ main#main_contant{
         left: 0;
         z-index: 1;
         background: rgba(0, 0, 0, 0.8);
-        backdrop-filter: blur(3px);
     }
 }
 

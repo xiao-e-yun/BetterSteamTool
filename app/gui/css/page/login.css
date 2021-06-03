@@ -89,6 +89,7 @@ main#main_contant {
   cursor: default;
   color: rgb(var(--side-1));
   border-color: rgb(var(--side-1));
+  transition: none;
 }
 .will_del > p {
   border-color: rgb(var(--side-1));
@@ -103,7 +104,6 @@ main#main_contant {
   left: 0;
   z-index: 1;
   background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(3px);
 }
 
 .tag {
