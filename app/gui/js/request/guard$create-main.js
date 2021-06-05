@@ -4,13 +4,16 @@
 w = 600;
 h = 400;
 let list = $(".user_list");
+let exited = true;
 list.fadeOut(300, async () => {
     list.remove();
     resizeTo(w, h);
     //開始
     console.log("====================================已接管=");
     document.title = `正在為 ${main_data.name} 設置驗證器`;
-    $(window).on('beforeunload', async function () { return ''; });
+    $(window).on('beforeunload', async function () {
+        return exited ? true : undefined;
+    });
     if (await eel.guard_phone("has_phone", main_data.steamid)()) {
         set_guard();
     }
@@ -115,6 +118,7 @@ list.fadeOut(300, async () => {
                             .then((bol) => {
                             if (bol) {
                                 opener["reload_guard_account"]();
+                                exited = false;
                                 close();
                             }
                         });

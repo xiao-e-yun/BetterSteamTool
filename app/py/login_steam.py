@@ -44,6 +44,7 @@ def auto_login(steamid,name,lock):
 
     def waiter():
         i = 0
+        Steam.wait("exists")
         Steam.wait_not("exists")
         eel.sleep(.5)
         while True:
