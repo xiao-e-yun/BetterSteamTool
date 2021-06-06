@@ -5,25 +5,6 @@ var $acc = $("#account")
 async function show_acc_items(reload: boolean = true) {
     let list: any = await eel.get_client_users()()
 
-    onClick()
-    function onClick() {
-        $acc.one("click", ".account_items", async function () {
-            if (!$acc.data("del")) {
-                let user = this.dataset.username
-                let steamid = this.dataset.steamid
-                console.log(steamid)
-                $("#loading").fadeIn()
-                eel.auto_login(steamid, user)().then(() => {
-                    $("#loading").fadeOut()
-                })
-            }
-            setTimeout(() => { onClick() }, 1000)
-        })
-    }
-    $acc.on("click", ".account_items p", (event) => {
-        event.stopPropagation()
-    })
-
     let session = false
     let Sdata = localStorage.getItem("better_steam_tool$get_client_users")
     if (Sdata !== null && reload) {
@@ -132,7 +113,6 @@ $("#import").on("click", function () {
 $("#reload").on("click", function () {
     $acc.fadeOut(100, () => {
         $acc
-            .off()
             .html("")
             .show()
         show_acc_items(false)
@@ -177,6 +157,8 @@ $acc.on("click", ".account_items", function (event) {
                     $this.remove()
                 })
         }
+    }).on("click", ".account_items p", (event) => {
+        event.stopPropagation()
     })
 
 main.on("mouseenter", ".account_items", function () {
@@ -185,5 +167,20 @@ main.on("mouseenter", ".account_items", function () {
     $acc.removeClass("act")
 })
 
+onClick()
+function onClick() {
+    $acc.one("click", ".account_items", async function () {
+        if (!$acc.data("del")) {
+            let user = this.dataset.username
+            let steamid = this.dataset.steamid
+            console.log(steamid)
+            $("#loading").fadeIn()
+            eel.auto_login(steamid, user)().then(() => {
+                $("#loading").fadeOut()
+            })
+        }
+        setTimeout(() => { onClick() }, 1000)
+    })
+}
 show_acc_items()
 console.log("settings is ready")
