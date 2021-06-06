@@ -37,7 +37,7 @@
   font-family: "Microsoft JhengHei";
 }
 :where(html) #sys_disabled {
-  z-index: 99999;
+  z-index: 5000;
   background: rgba(var(--bg),0.4);
   backdrop-filter: blur(3px);
   position: fixed;
@@ -69,7 +69,7 @@
   }
 }
 :where(html) #server_info {
-  z-index: 5000;
+  z-index: 8000;
   top: 0;
   right: 0;
   position: fixed;
@@ -184,7 +184,7 @@
   border: rgb(var(--main)) solid 2px;
 }
 :where(html) #loading {
-  z-index: 99999;
+  z-index: 5000;
   background: rgba(var(--bg),0.4);
   backdrop-filter: blur(3px);
   position: fixed;

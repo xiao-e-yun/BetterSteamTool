@@ -150,7 +150,7 @@ $(() => {
 async function start() {
     console.log("初始化");
     window["footer"] = $('footer');
-    window["main"] = $('main#main_contant');
+    window["main"] = $('#main_contant');
     window["$page"] = {};
     $("#sys_disabled").hide();
     window["open_page"] = function (href, get = false) {

@@ -29,7 +29,7 @@
         font-family: "Microsoft JhengHei";
     }
     & #sys_disabled {
-        z-index: 99999;
+        z-index: 5000;
         background: BScolor($bg, 0.4);
         backdrop-filter: blur(3px);
         position: fixed;
@@ -62,7 +62,7 @@
     }
     & #server_info {
         //訊息
-        z-index: 5000;
+        z-index: 8000;
         top: 0;
         right: 0;
         position: fixed;
@@ -185,7 +185,7 @@
     }
 
     & #loading {
-        z-index: 99999;
+        z-index: 5000;
         background: BScolor($bg, 0.4);
         backdrop-filter: blur(3px);
         position: fixed;
