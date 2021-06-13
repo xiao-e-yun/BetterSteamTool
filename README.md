@@ -1,6 +1,7 @@
 # BSteam
-快速登入steam帳號
-手機steam功能
+快速登入steam帳號  
+手機steam功能  
+
 ---
 ## BSteam帳號
 通過登入帳號提供
