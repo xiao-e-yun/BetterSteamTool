@@ -2,6 +2,7 @@
 /// <reference path="../page.ts" />
 w = 800;
 h = 500;
+let wait = false;
 const steamid = call_data()["steamid"].toString();
 const aside = $("#trade_list");
 var api;
@@ -104,6 +105,9 @@ async function all_done(main) {
         aside.css("top", "-" + aside_scr + "px");
     });
     aside.on("click", ".trade_item:not(.checking)", function () {
+        if (!wait) {
+            return;
+        }
         aside.children(".checking").removeClass("checking");
         let $this = $(this).addClass("checking");
         let tradeofferid = this.dataset.tradeofferid;
@@ -149,8 +153,10 @@ async function all_done(main) {
                 let type = this.id === "accept" ? true : false;
                 let loader = $(".loader");
                 loader.fadeIn();
+                wait = true;
                 post_form(type, tradeofferid).then((req) => {
                     loader.fadeOut();
+                    wait = false;
                     Einfo("已發出交易", `交易ID:${tradeofferid}\n送出類型:${this.id}`, "console");
                     if (req.success) {
                         $(".trade_item.checking").remove();

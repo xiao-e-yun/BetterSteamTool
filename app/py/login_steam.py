@@ -51,8 +51,8 @@ def auto_login(steamid,name,lock):
         eel.info("等待 '登入中 頁面'","","console")
 
         try:
-            Steam.wait("ready",30)
-            Steam.wait_not("ready",30)
+            Steam.wait("ready",10)
+            Steam.wait_not("ready",10)
         except:
             eel.info("偵測到超時","即將重啟steam","error")
             eel.info("偵測超時，重啟steam","","console")
