@@ -5,7 +5,7 @@ block_cipher = None
 
 
 a = Analysis(['app/index.py'],
-             pathex=['C:\\Users\a0970\\Desktop\\project'],
+             pathex=['C:\\Users\a0970\\Desktop\\project\\Bsteam'],
              binaries=[],
              datas=[
                 ('C:\\Users\\a0970\\AppData\\Local\\Programs\\Python\\Python39\\lib\\site-packages\\eel\\eel.js', 'eel'),
@@ -36,7 +36,7 @@ exe = EXE(pyz,
           strip=False,
           upx=True,
           console=False,
-          icon="C:\\Users\\a0970\\Desktop\\project\\app\\logo.ico"
+          icon="C:\\Users\\a0970\\Desktop\\project\\Bsteam\\app\\logo.ico"
 		  )
 coll = COLLECT(exe,
                a.binaries,
