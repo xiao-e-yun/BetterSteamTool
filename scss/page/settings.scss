@@ -57,6 +57,12 @@
         background-color: BScolor($main);
         color: BScolor($bg);
         outline: none;
+        &[type="number"]{
+            width: 25%;
+            text-align: left;
+            float: right;
+            margin: .5em;
+        }
     }
     & .checkbox{
         margin: 0!important;
@@ -79,6 +85,9 @@
             display: none;
         }
     }
+}
+.float-left{
+    float: left;
 }
 .acc_txt {
     cursor: default;

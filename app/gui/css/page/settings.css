@@ -58,6 +58,12 @@
   color: rgb(var(--bg));
   outline: none;
 }
+.card > input[type=number] {
+  width: 25%;
+  text-align: left;
+  float: right;
+  margin: 0.5em;
+}
 .card .checkbox {
   margin: 0 !important;
   cursor: pointer;
@@ -78,6 +84,10 @@
 }
 .card .checkbox > input {
   display: none;
+}
+
+.float-left {
+  float: left;
 }
 
 .acc_txt {

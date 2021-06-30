@@ -4,8 +4,7 @@ from pywinauto import keyboard
 from pywinauto import timings
 from time import sleep
 from steam import guard
-import steam
-from .main import get_task,get_account_list,get_client_users
+from .main import get_task,get_account_list,get_client_users,app_setting
 
 def call_info(steamid):
     try:
@@ -43,49 +42,21 @@ def auto_login(steamid,name,lock):
 
     eel.info("啟動steam","","console")
     app = APP().start(exe)
-    Steam = app.window(title='Steam', class_name='vguiPopupWindow')
     login_gui = app.window(title_re='Steam [^Guard].*', class_name='vguiPopupWindow')
 
-    def waiter():
-        i = 0
-        eel.info("等待 '登入中 頁面'","","console")
-
-        try:
-            Steam.wait("ready",10)
-            Steam.wait_not("ready",10)
-        except:
-            eel.info("偵測到超時","即將重啟steam","error")
-            eel.info("偵測超時，重啟steam","","console")
-            auto_login(steamid,name,lock)
-            return "BSnone"
-
-        eel.info("等待 '主頁面'","","console")
-        eel.sleep(.5)
-        while True:
-            guis = {Steam:True,login_gui:False}
-            for gui,val in guis.items():
-                try:
-                    gui.wait("ready",.1)#等待介面
-                    return val
-                except:
-                    pass
-            i +=1 #等待.2s
-            if(i >= (25 * 5)):#timeout 25s
-                i = 0
-                return True
-        
-    code = waiter()
-    if(code == "BSnone"):
-        eel.info("已轉交控制權","","console")
-    else:
-        if(code ==False): #需要模擬登入
-            eel.info("注意!","無法使用快取登入\n將使用模擬登入","console")
-            login(steamid,_app=app,force=True)
-
+    eel.info("等待 '主頁面'","","console")
+    wait_time = app_setting("wait_steam_start")
+    eel.info("容許等待時間"+wait_time,"","console")
+    eel.sleep(int(wait_time))
+    try:
+        login_gui.wait("ready",wait_time)#等待介面
+    except:
         del app
         lock.release()
         eel.info("登入成功","","console")
-
+    else:
+        eel.info("注意!","無法使用快取登入\n將使用模擬登入","console")
+        login(steamid,_app=app,force=True)
 
 
 def login(steamid,lock=False,_app=False,force=False):
