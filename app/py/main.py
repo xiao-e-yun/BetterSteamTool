@@ -30,7 +30,7 @@ def start():
         os.mkdir(path)
         os.mkdir(path+'user_config')
         with open(path+"settings.json", "w") as f:
-            wr = {'key': '','user_config_index':{},"wait_steam_start": 5}
+            wr = {'key': '','user_config_index':{},"wait_steam_start": "10"}
             json.dump(wr, f)
 
         print("create data")
