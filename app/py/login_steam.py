@@ -51,12 +51,12 @@ def auto_login(steamid,name,lock):
     try:
         login_gui.wait("ready",wait_time)#等待介面
     except:
+        eel.info("注意!","無法使用快取登入\n將使用模擬登入","console")
+        login(steamid,_app=app,force=True)
+    else:
         del app
         lock.release()
         eel.info("登入成功","","console")
-    else:
-        eel.info("注意!","無法使用快取登入\n將使用模擬登入","console")
-        login(steamid,_app=app,force=True)
 
 
 def login(steamid,lock=False,_app=False,force=False):
