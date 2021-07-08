@@ -52,7 +52,7 @@ def auto_login(steamid,name,lock):
         login_gui.wait_not("ready",wait_time)#等待介面
     except:
         eel.info("注意!","無法使用快取登入\n將使用模擬登入","console")
-        login(steamid,_app=app,force=True)
+        login(steamid,lock,app,True)
     else:
         del app
         lock.release()
@@ -86,8 +86,11 @@ def login(steamid,lock=False,_app=False,force=False):
         close_steam(exe,si)
 
     # str replace
-    password = str.replace(acc["password"], " ", "{SPACE}")
-    password = str.replace(password,"{","{{}")
+    password = str.replace(acc["password"],"{","{{}")
+    password = str.replace(password, " ", "{SPACE}")
+    password = str.replace(password,"+","{+}")
+    password = str.replace(password,"^","{^}")
+    password = str.replace(password,"%","{%}")
     # set RememberPassword
     key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,
                          "SOFTWARE\Valve\Steam", 0, winreg.KEY_SET_VALUE)

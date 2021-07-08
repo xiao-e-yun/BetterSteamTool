@@ -1,4 +1,3 @@
-import os
 import eel,winreg,datetime,vdf,json,asyncio,aiohttp
 from . import login_steam
 import threading
