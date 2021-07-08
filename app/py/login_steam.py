@@ -49,7 +49,7 @@ def auto_login(steamid,name,lock):
     eel.info("容許等待時間"+wait_time,"","console")
     eel.sleep(int(wait_time))
     try:
-        login_gui.wait("ready",wait_time)#等待介面
+        login_gui.wait_not("ready",wait_time)#等待介面
     except:
         eel.info("注意!","無法使用快取登入\n將使用模擬登入","console")
         login(steamid,_app=app,force=True)
@@ -70,6 +70,8 @@ def login(steamid,lock=False,_app=False,force=False):
 
     if(acc == False):
         eel.info("無帳號","","error")
+        if(lock != False):
+            lock.release()
         return "no_account"
 
     key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,"SOFTWARE\Valve\Steam", 0, winreg.KEY_QUERY_VALUE) 
@@ -85,6 +87,7 @@ def login(steamid,lock=False,_app=False,force=False):
 
     # str replace
     password = str.replace(acc["password"], " ", "{SPACE}")
+    password = str.replace(password,"{","{{}")
     # set RememberPassword
     key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,
                          "SOFTWARE\Valve\Steam", 0, winreg.KEY_SET_VALUE)
@@ -114,7 +117,8 @@ def login(steamid,lock=False,_app=False,force=False):
         eel.info("自動輸入名稱 [未輸入名稱]","","console")
         keyboard.send_keys(acc["name"]+"""{TAB}""")
     eel.info("自動輸入密碼","","console")
-    keyboard.send_keys(password+"""{TAB}{ENTER}""")
+    keyboard.send_keys(password)
+    keyboard.send_keys("""{TAB}{ENTER}""")
 
     if(acc["se"] == False): #guard
         eel.info("無guard","跳過guard登入頁面","console")  
