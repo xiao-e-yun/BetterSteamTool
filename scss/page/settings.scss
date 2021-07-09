@@ -32,61 +32,116 @@
         }
     }
 }
-.card{
-    margin: .6em;
+.card {
+    margin: 0.6em;
     border-left: BScolor($main);
-    &>.title{
+    & > .title {
         margin: 0 5% 0 10%;
         font-size: 1.5em;
-        border-bottom:$border;
+        border-bottom: $border;
+        cursor: n-resize;
     }
-    &>.info{
-        margin: .4em 0 0 0!important;
-        &>a{
-            color:BScolor($bg);
+    & > .info {
+        margin: 0.4em 0 0 0 !important;
+        & > a {
+            color: BScolor($bg);
             background-color: BScolor($main);
             text-decoration: none;
         }
     }
-    &>input{
+    & > input {
         height: 1.5em;
-        font-size: .8em;
+        font-size: 0.8em;
         width: -webkit-fill-available;
         border: BScolor($bg);
         border-radius: 0;
         background-color: BScolor($main);
         color: BScolor($bg);
         outline: none;
-        &[type="number"]{
+        &[type="number"] {
             width: 25%;
             text-align: left;
             float: right;
-            margin: .5em;
+            margin: 0.5em;
         }
     }
-    & .checkbox{
-        margin: 0!important;
+    & .checkbox {
+        margin: 0 !important;
         cursor: pointer;
-        &::before{
+        &::before {
             content: "";
             display: inline-block;
             box-sizing: border-box;
-            width: .9em;
-            height: .9em;
+            width: 0.9em;
+            height: 0.9em;
             border: $border;
-            background-color:BScolor($bg);
-            margin-right: .1em;
-            transition: background .2s ease-in-out;
+            background-color: BScolor($bg);
+            margin-right: 0.1em;
+            transition: background 0.2s ease-in-out;
         }
-        &.checked::before{
-            background-color:BScolor($main);
+        &.checked::before {
+            background-color: BScolor($main);
         }
-        &>input{
+        & > input {
             display: none;
         }
     }
 }
-.float-left{
+.theme_color {
+    width: 98%;
+    padding: .3em;
+    box-sizing: border-box;
+    display: flex;
+    background-color: BScolor($black);
+    & > div {
+        width: -webkit-fill-available;
+        height: 1em;
+        position: relative;
+        & > input {
+            opacity: 0;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+        }
+    }
+    & > .main-color {background-color: $BSmain;}
+    & > .side-1-color {background-color: $BSside-1;}
+    & > .side-2-color {background-color: $BSside-2;}
+    & > .side-3-color {background-color: $BSside-3;}
+    & > .bg-color {background-color: $BSbg;}
+}
+.bg_img {
+    width: 96%;
+    color: BScolor($main);
+    background-color: BScolor($side-2);
+    border-bottom: $border;
+    transition: background 0.2s ease-in-out;
+    margin: 0;
+    position: relative;
+    overflow-x: auto;
+    overflow-y: hidden;
+    &:hover{
+        background-color: BScolor($side-3);
+    }
+    &::-webkit-scrollbar{
+        border-bottom: none;
+        height: 4px;
+    }
+    & > p {
+        margin: 0;
+        pointer-events: none;
+    }
+    & > input {
+        top: 0;
+        left: 0;
+        position: absolute;
+        cursor: pointer;
+        opacity: 0;
+        height: 100%;
+        width: 100%;
+    }
+}
+.float-left {
     float: left;
 }
 .acc_txt {
@@ -123,7 +178,7 @@
     }
 }
 .items {
-    margin: 0 0 .5em 0 ;
+    margin: 0 0 0.5em 0;
     & > h2 {
         display: inline;
         cursor: n-resize;
@@ -138,7 +193,7 @@
             bottom: 0;
             left: -8px;
             width: 4px;
-            background-color: #f1dac4;
+            background-color: BScolor($main);
             transform: scaleY(0);
             transform-origin: center bottom;
             transition: transform 0.5s ease-in-out;
@@ -157,20 +212,20 @@
     flex: 1;
     border-left: $border;
 }
-input[data-hide]{
-    color: transparent; 
+input[data-hide] {
+    color: transparent;
     position: relative;
     box-sizing: border-box;
     border-left: BScolor($black) solid 2px;
     background-color: BScolor($side-2);
     padding-left: 4px;
     user-select: none;
-    &:hover{
-        animation: data-hide-in .2s ease-in .3s both;
+    &:hover {
+        animation: data-hide-in 0.2s ease-in 0.3s both;
     }
 }
-.select{
-    &>input{
+.select {
+    & > input {
         display: none;
     }
     border-radius: 0;
@@ -180,51 +235,49 @@ input[data-hide]{
     border-color: BScolor($main);
     background-color: BScolor($side-2);
     color: BScolor($main);
-    border-width:0 0 2px 0;
-    margin-bottom:.2em;
+    border-width: 0 0 2px 0;
+    margin-bottom: 0.2em;
     cursor: pointer;
-    &>p{
+    & > p {
         padding: 0.1em;
-        margin: 0!important;
+        margin: 0 !important;
     }
-    &>.type{
+    & > .type {
         display: block;
         text-align: right;
         position: relative;
-        border-right:BScolor($black) .2em solid;
-        transition-property: border-color,background-color;
+        border-right: BScolor($black) 0.2em solid;
+        transition-property: border-color, background-color;
         transition-timing-function: ease-out;
-        transition-duration:.3s ;
-        &:hover{
+        transition-duration: 0.3s;
+        &:hover {
             border-color: BScolor($main);
             background-color: BScolor($side-3);
         }
     }
-    &>div{//hr
+    & > div {
+        //hr
         height: 2px;
         background-color: BScolor($main);
     }
-    &>.opt{
-        &:hover{
+    & > .opt {
+        &:hover {
             border-color: BScolor($main);
             background-color: BScolor($side-3);
-            color:BScolor($white)
+            color: BScolor($white);
         }
-        border-width:0 0 0 .2em;
+        border-width: 0 0 0 0.2em;
         border-style: solid;
         border-color: BScolor($black);
-        transition:
-            border-color ease-in-out .3s,
-            background-color ease-in-out .3s ,
-            color ease-in-out .3s;
+        transition: border-color ease-in-out 0.3s, background-color ease-in-out 0.3s, color ease-in-out 0.3s;
         text-align: left;
         display: none;
     }
 }
-@keyframes data-hide-in{
-    to{
-        color:BScolor($main);
-        border-left-color:BScolor($main);
+@keyframes data-hide-in {
+    to {
+        color: BScolor($main);
+        border-left-color: BScolor($main);
         user-select: text;
     }
 }

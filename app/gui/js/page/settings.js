@@ -1,7 +1,12 @@
 "use strict";
 /// <reference path="../page.ts" />
-main.on("click", ".items>h2", function () {
-    $(this).siblings().slideToggle(1000);
+main.on("click", ".items>h2,.card>.title:not(.action)", function () {
+    const $this = $(this);
+    const content = $this.siblings();
+    $this.addClass("action");
+    content.fadeToggle(300, () => {
+        $this.removeClass("action");
+    });
 });
 if (localStorage.getItem("better_steam_tool$get_account_users") === null) {
     reload_account_list();
@@ -57,8 +62,19 @@ async function reload_account_list() {
 (async function () {
     let config = await eel.app_setting()();
     $.each(config, (key, val) => {
-        if (typeof val === "string") {
-            $("[data-id=\"" + (key === "" ? "none" : key) + "\"]").val(val);
+        if (typeof val === "string" && key !== "") {
+            const input = $(`[data-id="${key}"]`);
+            switch (input.attr("type")) {
+                case "file":
+                    input.siblings("p").html(val === "BSnone" || val === "" ? "點擊選擇檔案" : val);
+                    break;
+                case "color":
+                    input.parent().css("background-color", val);
+                    input.val(val);
+                    break;
+                default:
+                    input.val(val);
+            }
         }
         else if (typeof val === "boolean") {
             let input = $("input[data-checkbox]");
@@ -100,11 +116,39 @@ async function reload_account_list() {
     });
 })();
 main.on("input", "input[data-id]", function () {
-    let id = this.dataset.id;
-    let val = $(this).val();
+    //input應用設置
+    const id = this.dataset.id;
+    const $this = $(this);
+    const val = $this.val();
     console.log(id + ":" + val);
     eel.app_setting(id, val)();
+    switch (this.type) {
+        case "color":
+            //input顏色
+            $(this).parent().css("background-color", val);
+            break;
+        case "file":
+            $this.siblings("p").html(val === "BSnone" || val === "" ? "點擊選擇檔案" : val);
+            break;
+    }
+})
+    .on("contextmenu", "input", function (event) {
+    //color 右鍵刪除
+    event.preventDefault();
+    const id = this.dataset.id;
+    const $this = $(this);
+    switch (this.type) {
+        case "color":
+            eel.app_setting(id, "BSdel");
+            $this.parent().css("background-color", "");
+            break;
+        case "file":
+            eel.app_setting(id, "BSdel");
+            $this.siblings("p").html("點擊選擇檔案");
+            break;
+    }
 }).on("click", ".checkbox", function () {
+    //checkbox應用設置
     let $this = $(this);
     let input = $this.find("input");
     let id = input.data("checkbox");
@@ -113,5 +157,17 @@ main.on("input", "input[data-id]", function () {
     input.prop("checked", val);
     console.log(id + ":" + val);
     eel.app_setting(id, val)();
+}).on("contextmenu input", ".theme_color input", function () {
+    change_app_color(true);
+}).on("change", "#chg_bg_img", function (event) {
+    const reader = new FileReader();
+    reader.addEventListener("load", function (event) {
+        localStorage.setItem("better_steam_tool$bg_image", event.target.result);
+        change_app_image();
+    });
+    reader.readAsDataURL(event.target.files[0]);
+}).on("contextmenu", "#chg_bg_img", function (event) {
+    localStorage.removeItem("better_steam_tool$bg_image");
+    $("body").css({ "background-image": "none" });
 });
 console.log("settings is ready");

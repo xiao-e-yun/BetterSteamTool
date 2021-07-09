@@ -39,6 +39,7 @@
   margin: 0 5% 0 10%;
   font-size: 1.5em;
   border-bottom: rgb(var(--main)) solid 2px;
+  cursor: n-resize;
 }
 .card > .info {
   margin: 0.4em 0 0 0 !important;
@@ -84,6 +85,72 @@
 }
 .card .checkbox > input {
   display: none;
+}
+
+.theme_color {
+  width: 98%;
+  padding: 0.3em;
+  box-sizing: border-box;
+  display: flex;
+  background-color: rgb(var(--black));
+}
+.theme_color > div {
+  width: -webkit-fill-available;
+  height: 1em;
+  position: relative;
+}
+.theme_color > div > input {
+  opacity: 0;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+.theme_color > .main-color {
+  background-color: #F1DAC4;
+}
+.theme_color > .side-1-color {
+  background-color: #A69CAC;
+}
+.theme_color > .side-2-color {
+  background-color: #474973;
+}
+.theme_color > .side-3-color {
+  background-color: #161B33;
+}
+.theme_color > .bg-color {
+  background-color: #0D0C1D;
+}
+
+.bg_img {
+  width: 96%;
+  color: rgb(var(--main));
+  background-color: rgb(var(--side-2));
+  border-bottom: rgb(var(--main)) solid 2px;
+  transition: background 0.2s ease-in-out;
+  margin: 0;
+  position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.bg_img:hover {
+  background-color: rgb(var(--side-3));
+}
+.bg_img::-webkit-scrollbar {
+  border-bottom: none;
+  height: 4px;
+}
+.bg_img > p {
+  margin: 0;
+  pointer-events: none;
+}
+.bg_img > input {
+  top: 0;
+  left: 0;
+  position: absolute;
+  cursor: pointer;
+  opacity: 0;
+  height: 100%;
+  width: 100%;
 }
 
 .float-left {
@@ -140,7 +207,7 @@
   bottom: 0;
   left: -8px;
   width: 4px;
-  background-color: #f1dac4;
+  background-color: rgb(var(--main));
   transform: scaleY(0);
   transform-origin: center bottom;
   transition: transform 0.5s ease-in-out;

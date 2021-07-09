@@ -86,23 +86,68 @@ window.onresize = function () {
     window.resizeTo(w, h)
 }
 
+change_app_color(false)
+change_app_image()
+async function change_app_color(reload = false) {
+    let css = `:root{`
+    let done_i = 0
+    const color_arr = [
+        "main-color",
+        "side-1-color",
+        "side-2-color",
+        "side-3-color",
+        "bg-color",
+    ]
+    for (let key of color_arr) {
+        eel.app_setting(key)().then((color: string) => {
+            if (color !== "BSnone") {
+                const rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(color)
+                const rgb_color = `${parseInt(rgb[1], 16)}, ${parseInt(rgb[2], 16)}, ${parseInt(rgb[3], 16)}`
+                key = key.replace("-color", "")
+                css += `--${key}:${rgb_color};`
+            }
+
+            done_i++
+            if (done_i === color_arr.length) {
+                done()
+            }
+        })
+    }
+    function done() {
+        css += `}`
+        if (reload) {
+            $("#custom-css").html(css)
+        } else {
+            $("head").append(`<style id="custom-css">${css}</style>`)
+        }
+    }
+}
+async function change_app_image() {
+    //注意:這是瀏覽器config
+    const file = localStorage.getItem("better_steam_tool$bg_image")
+    if(file){
+        $("body").css("background-image",`url(${file})`)
+    }
+}
+
 async function get_start_page() {
+    change_app_image()
     //自動加載頁面
     let $start_page = await eel.app_setting("start_page")()
     if ($start_page !== "BSnone" && $start_page !== "none") {
         load_page($start_page)
     } else {
         eel.app_setting("dont_show_welcome")().then((dont_show_welcome: boolean) => {
-            if (dont_show_welcome!==true) {
+            if (dont_show_welcome !== true) {
                 main.append(`<link rel="stylesheet" href="/css/welcome.css">`)
-                $.get("/welcome.html",(data)=>{
+                $.get("/welcome.html", (data) => {
                     main.append(data)
                     $.getScript("/js/welcome.js")
                 })
             }
         })
         footer.slideDown()
-        main.on("click",()=>{footer.slideUp()})
+        main.on("click", () => { footer.slideUp() })
     }
 }
 
@@ -124,10 +169,10 @@ function load_page(id: string) {
                 })
             })
         }
-        function reset(id:string) {
+        function reset(id: string) {
             main
                 .off() //刪除監聽
-                .on("click",()=>{footer.slideUp()})
+                .on("click", () => { footer.slideUp() })
                 .html(window["$page"][id])
                 .fadeIn(100)
             $.getScript(`/js/page/${id}.js`)
@@ -138,8 +183,8 @@ function load_page(id: string) {
 $(() => {
     if (location.pathname === "/"
         || location.pathname === "/index.html") {
-            get_start_page()
-            start()
+        get_start_page()
+        start()
     } else if (opener) {
         $("body").append(`
         <link rel="stylesheet" href="/css${location.pathname.slice(0, -5)}.css" title="main">

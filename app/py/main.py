@@ -68,6 +68,10 @@ def app_setting(key="BSnone", val="BSnone") -> any:
             return conf[key]
         except:
             return "BSnone"
+    elif(val == "BSdel"):
+        del conf[key]
+        with open(path+"settings.json", "w") as f:
+            json.dump(conf, f)
     else:
         conf[key] = val
         with open(path+"settings.json", "w") as f:

@@ -4,7 +4,7 @@ h1 {
     text-align: left;
     margin: 20px 0 20px 50px;
     position: relative;
-    border-bottom: #f1dac4 solid 3px;
+    border-bottom: BScolor($main) solid 3px;
     user-select: none;
 
     &::after {
@@ -34,7 +34,7 @@ h1 {
         width: -webkit-fill-available;
         display: -webkit-box;
         padding: 0.4em 0;
-        border: solid 2px #f1dac4;
+        border: $border;
         margin: 0 5em 1em;
     }
     & > div * {

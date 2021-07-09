@@ -27,6 +27,11 @@
         height: 100vh;
         margin: 0;
         font-family: "Microsoft JhengHei";
+        background-size: cover;
+        background-attachment: fixed;
+        & path {
+            fill: BScolor($main);
+        }
     }
     & #sys_disabled {
         z-index: 5000;
@@ -134,7 +139,7 @@
                 transition: all 0.3s ease-in-out;
             }
             &:hover {
-                color: BScolor($black);
+                color: BScolor($bg);
 
                 &::before {
                     bottom: 0;
@@ -251,7 +256,7 @@
         bottom: 0;
         left: 0;
         width: 100vw;
-        background-color: BScolor($side-3);
+        background-color: BScolor($bg);
         border-top: $border;
         box-sizing: content-box;
         max-height: 70vh;

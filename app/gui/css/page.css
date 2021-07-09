@@ -35,6 +35,11 @@
   height: 100vh;
   margin: 0;
   font-family: "Microsoft JhengHei";
+  background-size: cover;
+  background-attachment: fixed;
+}
+:where(html) body path {
+  fill: rgb(var(--main));
 }
 :where(html) #sys_disabled {
   z-index: 5000;
@@ -141,7 +146,7 @@
   transition: all 0.3s ease-in-out;
 }
 :where(html) header a.title:hover {
-  color: rgb(var(--black));
+  color: rgb(var(--bg));
 }
 :where(html) header a.title:hover::before {
   bottom: 0;
@@ -245,7 +250,7 @@
   bottom: 0;
   left: 0;
   width: 100vw;
-  background-color: rgb(var(--side-3));
+  background-color: rgb(var(--bg));
   border-top: rgb(var(--main)) solid 2px;
   box-sizing: content-box;
   max-height: 70vh;
