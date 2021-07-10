@@ -80,9 +80,20 @@ input{
     border-width: 0 0 2px 0;
     border-radius: 0;
 }
-#finish_input{
+#finish_from{
     margin: 1em 5em;
-    padding: .2em;
+    padding: 0.2em;
+    display: flex;
+}
+#finish_input{
+    margin:0;
+}
+#finish_btn{
+    margin: 0;
+    border-radius: 0;
+}
+#skip_btn{
+    margin: 0 2em;
 }
 
 .iti__country-list {
