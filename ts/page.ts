@@ -101,6 +101,7 @@ async function change_app_color(reload = false) {
     for (let key of color_arr) {
         eel.app_setting(key)().then((color: string) => {
             if (color !== "BSnone") {
+                //hex to rgb
                 const rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(color)
                 const rgb_color = `${parseInt(rgb[1], 16)}, ${parseInt(rgb[2], 16)}, ${parseInt(rgb[3], 16)}`
                 key = key.replace("-color", "")
